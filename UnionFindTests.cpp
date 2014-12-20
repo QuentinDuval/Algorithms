@@ -1,5 +1,6 @@
 #include "UnionFindTests.h"
 
+#include "Timer.h"
 #include "UnionFind.h"
 #include "UnionFindExample.h"
 #include "Utils.h"
@@ -48,11 +49,28 @@ namespace algorithm
       assert(10 == uf.count());
    }
 
+   static void performanceTest()
+   {
+      size_t size = 1000;
+      std::cout << "Performance test..." << std::endl;
+      std::cout << "Number of entries: " << size * size << std::endl;
+
+      std::chrono::duration<double, std::milli> duration;
+      time(duration, [=](){
+         UnionFind uf(size);
+         for (size_t i = 0; i < size; ++i)
+            for (size_t j = 0; j < size; ++j)
+               uf.connect(i, j);
+      });
+      
+      std::cout << "Time spent: " << duration.count() << " milliseconds" << std::endl;
+   }
+
    void unionFindTests()
    {
       basicTest();
       boundaryCheckTest();
-      //TODO - Add performance tests
+      performanceTest();
    }
 
    //--------------------------------------------------------------------------
