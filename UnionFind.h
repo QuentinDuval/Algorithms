@@ -18,9 +18,10 @@ namespace algorithm
       UnionFind(IdType elementCount);
       ~UnionFind() = default;
 
-      int  count     () const;
-      bool connect   (IdType a, IdType b);
-      bool connected (IdType a, IdType b);
+      IdType   addId       ();
+      int      count       () const;
+      bool     connect     (IdType a, IdType b);
+      bool     connected   (IdType a, IdType b);
       
       //TODO - Add boundary checks
       //TODO - Add the possiblity to add new ids (non-connected ones)

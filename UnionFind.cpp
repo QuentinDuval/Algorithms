@@ -12,6 +12,13 @@ namespace algorithm
       generate(m_fathers, 0, [](IdType const& in){ return in + 1; });
    }
 
+   UnionFind::IdType UnionFind::addId()
+   {
+      m_weights.push_back(1);
+      m_fathers.push_back(m_fathers.size());
+      return m_fathers.back();
+   }
+
    int UnionFind::count() const
    {
       int count = 0;
@@ -46,10 +53,10 @@ namespace algorithm
       m_weights[rb] += m_weights[ra];
    };
 
-   UnionFind::IdType UnionFind::getRoot(IdType a)
+   UnionFind::IdType UnionFind::getRoot(IdType current)
    {
       std::vector<IdType> path;
-      auto root = a;
+      auto root = current;
       for (; root != m_fathers[root]; root = m_fathers[root])
          path.push_back(root);
       

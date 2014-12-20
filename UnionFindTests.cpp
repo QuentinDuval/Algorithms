@@ -24,6 +24,11 @@ namespace algorithm
          for (auto j : ids)
             assert(true == uf.connected(i, j));
       assert(6 == uf.count());
+
+      auto newId = uf.addId();
+      uf.connect(0, newId);
+      assert(true == uf.connected(1, newId));
+      assert(6 == uf.count());
    }
 
    static void boundaryCheckTest()
