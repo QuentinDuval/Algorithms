@@ -8,7 +8,7 @@
 namespace algorithm
 {
    //TODO - Add policies to choose the synchronization mechanism?
-   //TODO - Add a good example with people joining a social network (with map to connect to ids)
+   //TODO - Add an example with people joining a network (with map to connect to ids - and automatic adds)
    class UnionFind
       : public NonCopyable
    {
