@@ -1,6 +1,7 @@
 #pragma once
-#include "NonCopyable.h"
 
+#include "NonCopyable.h"
+#include <exception>
 #include <vector>
 
 
@@ -18,13 +19,17 @@ namespace algorithm
       UnionFind(IdType elementCount);
       ~UnionFind() = default;
 
-      IdType   addId       ();
-      int      count       () const;
-      bool     connect     (IdType a, IdType b);
-      bool     connected   (IdType a, IdType b);
-      
-      //TODO - Add boundary checks
-      //TODO - Add the possiblity to add new ids (non-connected ones)
+      IdType   addId       ();                     /*Basic guaranty*/
+      int      count       () const;               /*noexcept*/
+      bool     connect     (IdType a, IdType b);   /*Strong guaranty*/
+      bool     connected   (IdType a, IdType b);   /*Strong guaranty*/
+
+   public:
+      class InvalidId : public std::domain_error
+      {
+         InvalidId(IdType);
+         friend UnionFind;
+      };
 
    private:
       IdType getRoot (IdType a);

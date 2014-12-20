@@ -1,5 +1,6 @@
 #include "UnionFindTests.h"
 #include "UnionFind.h"
+#include "Utils.h"
 #include <assert.h>
 
 
@@ -33,7 +34,14 @@ namespace algorithm
 
    static void boundaryCheckTest()
    {
-      //TODO
+      UnionFind uf(10);
+
+      ExceptionChecker<UnionFind::InvalidId> tester;
+      tester.assertE([&]{ uf.connect(1, 11); });
+      tester.assertE([&]{ uf.connect(11, 1); });
+      tester.assertE([&]{ uf.connected(1, 11); });
+      tester.assertE([&]{ uf.connected(11, 1); });
+      assert(10 == uf.count());
    }
 
    void unionFindTests()

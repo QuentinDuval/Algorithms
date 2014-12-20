@@ -55,6 +55,9 @@ namespace algorithm
 
    UnionFind::IdType UnionFind::getRoot(IdType current)
    {
+      if (current >= m_fathers.size())
+         throw InvalidId(current);
+
       std::vector<IdType> path;
       auto root = current;
       for (; root != m_fathers[root]; root = m_fathers[root])
@@ -65,4 +68,8 @@ namespace algorithm
       ++(m_weights[root]);
       return root;
    }
+
+   UnionFind::InvalidId::InvalidId(IdType id)
+      : std::domain_error("Invalid id: " + toString(id))
+   {}
 }

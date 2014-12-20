@@ -1,5 +1,10 @@
 #pragma once
 
+#include <assert.h>
+#include <sstream>
+#include <string>
+
+
 namespace algorithm
 {
    template<typename FwdIter, typename ValueType, typename NextFct>
@@ -17,4 +22,29 @@ namespace algorithm
    {
       generate(begin(cont), end(cont), val, next);
    }
+
+   template<typename T>
+   std::string toString(T const& t)
+   {
+      std::ostringstream os;
+      os << t;
+      return os.str();
+   }
+
+   template<typename ExceptionType>
+   struct ExceptionChecker
+   {
+      template<typename Fct, typename... Args>
+      void assertE(Fct fct, Args&&... args)
+      {
+         try {
+            fct(std::forward<Args>(args)...);
+            assert(false);
+         }
+         catch (ExceptionType const&) {}
+         catch (...) {
+            assert(false);
+         }
+      }
+   };
 }
