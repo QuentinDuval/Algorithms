@@ -52,7 +52,7 @@ namespace algorithm
    static void performanceTest()
    {
       size_t size = 1000;
-      std::cout << "Performance test..." << std::endl;
+      std::cout << "[Union-Find] Performance test" << std::endl;
       std::cout << "Number of entries: " << size * size << std::endl;
 
       std::chrono::duration<double, std::milli> duration;
@@ -96,7 +96,7 @@ namespace algorithm
       network.connect("Scott", "Jones");
 
       auto showConnection = [&network](std::string const& a, std::string const& b) {
-         std::cout << a << " is " << (network.connected(a, b) ? "" : "not");
+         std::cout << " - " << a << " is " << (network.connected(a, b) ? "" : "not");
          std::cout << " connected to " << b << std::endl;
       };
 

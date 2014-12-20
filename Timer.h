@@ -2,12 +2,12 @@
 #include <chrono>
 
 
-//-----------------------------------------------------------------------------
-// Allows timing the execution of a function, with perfect forwarding of the arguments
-//-----------------------------------------------------------------------------
-
 namespace algorithm
 {
+   //-----------------------------------------------------------------------------
+   // Allows timing the execution of a function, with perfect forwarding of the arguments
+   //-----------------------------------------------------------------------------
+
    template <typename Duration>
    struct ScopedTimer
    {
