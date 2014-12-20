@@ -7,5 +7,7 @@ using namespace algorithm;
 int main()
 {
    unionFindTests();
+   unionFindExample();
+
    system("PAUSE");
 }

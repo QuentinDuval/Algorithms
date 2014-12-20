@@ -1,7 +1,11 @@
 #include "UnionFindTests.h"
+
 #include "UnionFind.h"
+#include "UnionFindExample.h"
 #include "Utils.h"
+
 #include <assert.h>
+#include <iostream>
 
 
 namespace algorithm
@@ -48,5 +52,36 @@ namespace algorithm
    {
       basicTest();
       boundaryCheckTest();
+   }
+
+   //--------------------------------------------------------------------------
+
+   void unionFindExample()
+   {
+      SocialNetwork network;
+      auto accounts = {
+         "John", "Kimberly", "Bill", "Linda",
+         "Ruth", "Carol", "Martin", "Scott",
+         "Susan", "Jason", "Kevin", "Jones",
+         "Helen", "Laura", "James", "Elizabeth"
+      };
+
+      for (auto const& a : accounts)
+         network.addAccount(a);
+
+      network.connect("Bill", "Linda");
+      network.connect("Bill", "Jones");
+      network.connect("Laura", "James");
+      network.connect("Helen", "Scott");
+      network.connect("Bill", "Helen");
+      network.connect("Scott", "Jones");
+
+      auto showConnection = [&network](std::string const& a, std::string const& b) {
+         std::cout << a << " is " << (network.connected(a, b) ? "" : "not");
+         std::cout << " connected to " << b << std::endl;
+      };
+
+      showConnection("Jones", "Linda");
+      showConnection("Bill", "Ruth");
    }
 }
