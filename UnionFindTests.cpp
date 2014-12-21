@@ -51,7 +51,7 @@ namespace algorithm
 
    static void performanceTest()
    {
-      size_t size = 1000;
+      size_t size = 100;
       std::cout << "[Union-Find] Performance test" << std::endl;
       std::cout << "Number of entries: " << size * size << std::endl;
 

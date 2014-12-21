@@ -5,11 +5,11 @@
 
 namespace algorithm
 {
-   UnionFind::UnionFind(size_t elementCount)
+   UnionFind::UnionFind(IdType elementCount)
       : m_fathers(elementCount, 0)
       , m_weights(elementCount, 1)
    {
-      generate(m_fathers, 0, [](IdType const& in){ return in + 1; });
+      generate(m_fathers, 0, [](IdType in){ return in + 1; });
    }
 
    UnionFind::IdType UnionFind::addId()
