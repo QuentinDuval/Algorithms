@@ -89,7 +89,7 @@ namespace algorithm
          if (first == last)
             return;
 
-         auto mid = std::partition(first, last, std::bind(less, _1, *first)); //Stack overflow with ordered list...
+         auto mid = std::partition(first, last, std::bind(less, _1, *first));
          sort(first, mid, less);
          sort(mid + 1, last, less);
       }
