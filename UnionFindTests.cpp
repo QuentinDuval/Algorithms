@@ -1,5 +1,6 @@
 #include "UnionFindTests.h"
 
+#include "TestUtils.h"
 #include "Timer.h"
 #include "UnionFind.h"
 #include "UnionFindExample.h"
