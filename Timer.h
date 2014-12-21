@@ -1,5 +1,6 @@
 #pragma once
 #include <chrono>
+#include <iostream>
 
 
 namespace algorithm
@@ -28,5 +29,17 @@ namespace algorithm
    {
       ScopedTimer<Duration> timer(duration);
       return fct(forward<Args>(args)...);
+   }
+
+   //-----------------------------------------------------------------------------
+   // Helpers to display the results
+   //-----------------------------------------------------------------------------
+
+   template<typename Unit = std::milli, typename Fct, typename... Args>
+   void showTime(std::ostream& output, Fct&& fct, Args&&... args)
+   {
+      std::chrono::duration<double, Unit> duration;
+      time(duration, fct, std::forward<Args>(args)...);
+      output << " - Time spent: " << duration.count() << std::endl;
    }
 }
