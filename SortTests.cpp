@@ -36,6 +36,7 @@ namespace algorithm
       std::vector<int> v2 = orderedSet(Count);
       showTime(std::cout, [&](){ Algorithm::sort(v2, std::less<int>()); });
       showTime(std::cout, [&](){ Algorithm::sort(v2, std::greater<int>()); });
+      assert(isSorted(v2, std::greater<int>()));
    }
 
    //--------------------------------------------------------------------------

@@ -36,6 +36,29 @@ namespace algorithm
       return std::min_element(begin(cont), end(cont), less);
    }
 
+   //--------------------------------------------------------------------------
+
+   template<typename Predicate>
+   struct LogicalNot
+   {
+      LogicalNot(Predicate pred) : m_pred(pred) {}
+      Predicate m_pred;
+
+      template<typename T>
+      bool operator() (T t)
+      {
+         return !m_pred(t);
+      }
+   };
+
+   template<typename Predicate>
+   LogicalNot<Predicate> logicalNot(Predicate pred)
+   {
+      return LogicalNot<Predicate>(pred);
+   }
+
+   //--------------------------------------------------------------------------
+
    template<typename T>
    std::string toString(T const& t)
    {

@@ -7,6 +7,29 @@ using namespace std::placeholders;
 
 namespace algorithm
 {
+   template<typename FwdIter, typename Lesser>
+   static bool isSorted(FwdIter first, FwdIter last, Lesser less)
+   {
+      if (first == last)
+         return true;
+
+      auto next = first + 1;
+      for (; next != last; ++first, ++next)
+      {
+         if (less(*next, *first))
+            return false;
+      }
+      return true;
+   }
+
+   template<typename Container, typename Lesser>
+   static bool isSorted(Container const& cont, Lesser less)
+   {
+      return isSorted(begin(cont), end(cont), less);
+   }
+
+   //--------------------------------------------------------------------------
+
    struct SelectionSort
    {
       template<typename FwdIter, typename Lesser>
@@ -33,17 +56,18 @@ namespace algorithm
       template<typename BidirIter, typename Lesser>
       static void sort(BidirIter first, BidirIter last, Lesser less)
       {
-         if (first == --last)
+         if (first == last)
             return;
 
-         for (auto it = first; it != last; ++it)
+         for (auto it = first + 1; it != last; ++it)
          {
-            auto next = it + 1;
-            auto curr = it;
-            while (curr != first && less(*next, *curr))
+            for (auto curr = it; curr != first; --curr)
             {
-               std::swap(*next, *curr);
-               --curr, --next;
+               auto prev = curr - 1;
+               if (!less(*curr, *prev))
+                  break;
+               
+               std::swap(*curr, *prev);
             }
          }
       }
@@ -65,15 +89,14 @@ namespace algorithm
          if (first == last)
             return;
 
-         auto snd = first + 1;
-         for (; snd != last; --last)
+         for (auto start = first + 1; start != last; --last)
          {
             bool move = false;
-            for (auto p = first, c = snd ; c != last; ++p, ++c)
+            for (auto prev = start - 1, curr = start; curr != last; ++prev, ++curr)
             {
-               if (less(*c, *p))
+               if (less(*curr, *prev))
                {
-                  std::swap(*p, *c);
+                  std::swap(*prev, *curr);
                   move = true;
                }
             }
@@ -102,7 +125,7 @@ namespace algorithm
          std::random_device rd;
          std::mt19937 g(rd());
          std::shuffle(first, last, g);
-         sort_(first, last, less);
+         sortImpl(first, last, less);
       }
 
       template<typename Container, typename Lesser>
@@ -113,14 +136,17 @@ namespace algorithm
 
    private:
       template<typename FwdIter, typename Lesser>
-      static void sort_(FwdIter first, FwdIter last, Lesser less)
+      static void sortImpl(FwdIter first, FwdIter last, Lesser less)
       {
          if (first == last)
             return;
 
-         auto mid = std::partition(first, last, std::bind(less, _1, *first));
-         sort_(first, mid, less);
-         sort_(mid + 1, last, less);
+         auto pivot = *first;
+         auto lowEnd = std::partition(first, last,  std::bind(less, _1, pivot));
+         auto highIt = std::partition(lowEnd, last, logicalNot(std::bind(less, pivot, _1)));
+
+         sortImpl(first, lowEnd, less);
+         sortImpl(highIt, last, less);
       }
    };
 }
