@@ -119,8 +119,8 @@ namespace algorithm
             return;
 
          auto mid = std::partition(first, last, std::bind(less, _1, *first));
-         sort(first, mid, less);
-         sort(mid + 1, last, less);
+         sort_(first, mid, less);
+         sort_(mid + 1, last, less);
       }
    };
 }
