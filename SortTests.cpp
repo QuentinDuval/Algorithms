@@ -28,7 +28,7 @@ namespace algorithm
    void sortBasicTest(std::string const& algorithmName)
    {
       std::cout << algorithmName << std::endl;
-      const size_t Count = 10000;
+      const size_t Count = 50000;
 
       std::vector<int> v1 = uniformSet(Count);
       showTime(std::cout, [&](){ Algorithm::sort(v1, std::less<int>()); });
@@ -44,9 +44,9 @@ namespace algorithm
    void sortingTests()
    {
       std::cout << std::endl << "[Sort timings] (milliseconds)" << std::endl;
-      sortBasicTest<SelectionSort>  ("* Selection sort");
-      sortBasicTest<BubbleSort>     ("* Bubble sort");
-      sortBasicTest<InsertionSort>  ("* Insertion sort");
-      sortBasicTest<QuickSort>      ("* Quick sort");
+      sortBasicTest<SelectionSort>     ("* Selection sort");
+      sortBasicTest<BubbleSort>        ("* Bubble sort");
+      sortBasicTest<InsertionSort>     ("* Insertion sort");
+      sortBasicTest<ThreeWayQuickSort> ("* Quick sort");
    }
 }

@@ -114,7 +114,7 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   struct QuickSort
+   struct ThreeWayQuickSort
    {
       template<typename FwdIter, typename Lesser>
       static void sort(FwdIter first, FwdIter last, Lesser less)
