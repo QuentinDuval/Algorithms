@@ -30,8 +30,8 @@ namespace algorithm
       std::cout << algorithmName << std::endl;
       const size_t Count = 10000;
 
-      //std::vector<int> v1 = uniformSet(Count);
-      //showTime(std::cout, [&](){ Algorithm::sort(v1, std::less<int>()); });
+      std::vector<int> v1 = uniformSet(Count);
+      showTime(std::cout, [&](){ Algorithm::sort(v1, std::less<int>()); });
 
       std::vector<int> v2 = orderedSet(Count);
       showTime(std::cout, [&](){ Algorithm::sort(v2, std::less<int>()); });
