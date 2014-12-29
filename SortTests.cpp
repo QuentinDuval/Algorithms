@@ -10,6 +10,11 @@
 
 namespace algorithm
 {
+   static std::vector<int> uniformSet(size_t size)
+   {
+      return std::vector<int>(size, 1);
+   }
+
    static std::vector<int> orderedSet(size_t size)
    {
       std::vector<int> data(size, 0);
@@ -22,19 +27,25 @@ namespace algorithm
    template<typename Algorithm>
    void sortBasicTest(std::string const& algorithmName)
    {
-      std::cout << algorithmName  << " (milliseconds)" << std::endl;
-      std::vector<int> v1 = orderedSet(100000);
+      std::cout << algorithmName << std::endl;
+      const size_t Count = 10000;
 
-      showTime(std::cout, [&](){ Algorithm::sort(v1, std::less<int>()); });
-      showTime(std::cout, [&](){ Algorithm::sort(v1, std::greater<int>()); });
+      //std::vector<int> v1 = uniformSet(Count);
+      //showTime(std::cout, [&](){ Algorithm::sort(v1, std::less<int>()); });
+
+      std::vector<int> v2 = orderedSet(Count);
+      showTime(std::cout, [&](){ Algorithm::sort(v2, std::less<int>()); });
+      showTime(std::cout, [&](){ Algorithm::sort(v2, std::greater<int>()); });
    }
 
    //--------------------------------------------------------------------------
 
    void sortingTests()
    {
+      std::cout << std::endl << "[Sort timings] (milliseconds)" << std::endl;
       sortBasicTest<SelectionSort>  ("* Selection sort");
       sortBasicTest<BubbleSort>     ("* Bubble sort");
+      sortBasicTest<InsertionSort>  ("* Insertion sort");
       sortBasicTest<QuickSort>      ("* Quick sort");
    }
 }

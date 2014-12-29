@@ -28,6 +28,35 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
+   struct InsertionSort
+   {
+      template<typename BidirIter, typename Lesser>
+      static void sort(BidirIter first, BidirIter last, Lesser less)
+      {
+         if (first == --last)
+            return;
+
+         for (auto it = first; it != last; ++it)
+         {
+            auto next = it + 1;
+            auto curr = it;
+            while (curr != first && less(*next, *curr))
+            {
+               std::swap(*next, *curr);
+               --curr, --next;
+            }
+         }
+      }
+
+      template<typename Container, typename Lesser>
+      static void sort(Container& cont, Lesser less)
+      {
+         sort(begin(cont), end(cont), less);
+      }
+   };
+
+   //--------------------------------------------------------------------------
+
    struct BubbleSort
    {
       template<typename FwdIter, typename Lesser>
