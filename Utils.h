@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <assert.h>
+#include <iterator>
 #include <random>
 #include <sstream>
 #include <string>
@@ -51,6 +52,24 @@ namespace algorithm
       shuffle(begin(cont), end(cont));
    }
 
+   //--------------------------------------------------------------------------
+
+   template<typename Iterator>
+   void advance(Iterator& current, Iterator end,
+      typename std::iterator_traits<Iterator>::difference_type n = 1)
+   {
+      for (int i = 0; i < n && current != end; ++i)
+         ++current;
+   }
+
+   template<typename Iterator>
+   Iterator next(Iterator current, Iterator end,
+      typename std::iterator_traits<Iterator>::difference_type n = 1)
+   {
+      auto ret = current;
+      advance(ret, end, n);
+      return ret;
+   }
 
    //--------------------------------------------------------------------------
 
