@@ -1,7 +1,6 @@
 #pragma once
 
 #include <functional>
-#include <random>
 using namespace std::placeholders;
 
 
@@ -122,9 +121,7 @@ namespace algorithm
          if (first == last)
             return;
 
-         std::random_device rd;
-         std::mt19937 g(rd());
-         std::shuffle(first, last, g);
+         shuffle(first, last);
          sortImpl(first, last, less);
       }
 

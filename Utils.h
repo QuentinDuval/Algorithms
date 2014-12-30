@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <assert.h>
+#include <random>
 #include <sstream>
 #include <string>
 
@@ -35,6 +36,21 @@ namespace algorithm
    {
       return std::min_element(begin(cont), end(cont), less);
    }
+
+   template<typename Iterator>
+   void shuffle(Iterator first, Iterator last)
+   {
+      std::random_device rd;
+      std::mt19937 g(rd());
+      std::shuffle(first, last, g);
+   }
+
+   template<typename Container>
+   void shuffle(Container& cont)
+   {
+      shuffle(begin(cont), end(cont));
+   }
+
 
    //--------------------------------------------------------------------------
 

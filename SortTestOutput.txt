@@ -1,0 +1,21 @@
+[Sort timings](50000 entries - in milliseconds)
+* Selection sort
+ - Time spent: 3020.95
+ - Time spent: 3034.02
+ - Time spent: 3002.87
+ - Time spent: 3007.89
+* Bubble sort
+ - Time spent: 0
+ - Time spent: 0
+ - Time spent: 1693.12
+ - Time spent: 3094.45
+* Insertion sort
+ - Time spent: 0
+ - Time spent: 0.5014
+ - Time spent: 1696.72
+ - Time spent: 848.314
+* Quick sort
+ - Time spent: 1.002
+ - Time spent: 4.0488
+ - Time spent: 5.0052
+ - Time spent: 5.0058
