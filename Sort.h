@@ -120,10 +120,10 @@ for (auto it = first + 1; it != last; ++it)
       {
          typedef typename std::iterator_traits<FwdIter>::value_type ValueType;
          const size_t colSize = std::distance(first, last);
+         std::vector<ValueType> temp(colSize);
 
          for (size_t step = 1; step < colSize; step = step * 2)
          {
-            std::vector<ValueType> temp(colSize);
             auto out = temp.begin();
             for (auto b = first; b != last; advance(b, last, step * 2))
             {
@@ -145,28 +145,15 @@ for (auto it = first + 1; it != last; ++it)
       template<typename FwdIter, typename Output, typename Lesser>
       static void merge(FwdIter lhs, FwdIter lhsEnd, FwdIter rhs, FwdIter rhsEnd, Lesser less, Output& out)
       {
+         auto select = [&out](FwdIter& input) { *out = *input; ++input; };
          for (; lhs != lhsEnd || rhs != rhsEnd; ++out)
          {
             if (rhs == rhsEnd)
-            {
-               *out = *lhs;
-               ++lhs;
-            }
-            else if (lhs == lhsEnd)
-            {
-               *out = *rhs;
-               ++rhs;
-            }
-            else if (less(*rhs, *lhs))
-            {
-               *out = *rhs;
-               ++rhs;
-            }
+               select(lhs);
+            else if (lhs == lhsEnd || less(*rhs, *lhs))
+               select(rhs);
             else
-            {
-               *out = *lhs;
-               ++lhs;
-            }
+               select(lhs);
          }
       }
    };
