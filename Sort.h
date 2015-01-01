@@ -119,8 +119,8 @@ namespace algorithm
        template<typename FwdIter, typename Lesser>
        static void sort(FwdIter first, FwdIter last, Lesser less)
        {
-           typedef typename std::iterator_traits<FwdIter>::value_type ValueType;
-           PriorityQueue<ValueType, Lesser> pq(less, first, last); //TODO - Avoid copy...
+           using ValueType = typename std::iterator_traits<FwdIter>::value_type;
+           PriorityQueue<ValueType, Lesser> pq(less, first, last); //Optim: do not copy and extract algorithms
            for (; !pq.empty(); pq.pop())
            {
                --last;
