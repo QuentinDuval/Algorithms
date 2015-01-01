@@ -59,17 +59,17 @@ namespace algorithm
          if (first == last)
             return;
 
-		 for (auto it = first + 1; it != last; ++it)
-		 {
-			 for (auto curr = it; curr != first; --curr)
-			 {
-				 auto prev = curr - 1;
-				 if (!less(*curr, *prev))
-					 break;
+         for (auto it = first + 1; it != last; ++it)
+         {
+            for (auto curr = it; curr != first; --curr)
+            {
+               auto prev = curr - 1;
+               if (!less(*curr, *prev))
+                  break;
 
-				 std::swap(*curr, *prev);
-			 }
-		 }
+               std::swap(*curr, *prev);
+            }
+         }
       }
 
       template<typename Container, typename Lesser>
@@ -116,23 +116,23 @@ namespace algorithm
 
    struct HeapSort
    {
-       template<typename FwdIter, typename Lesser>
-       static void sort(FwdIter first, FwdIter last, Lesser less)
-       {
-           using ValueType = typename std::iterator_traits<FwdIter>::value_type;
-           PriorityQueue<ValueType, Lesser> pq(less, first, last); //Optim: do not copy and extract algorithms
-           for (; !pq.empty(); pq.pop())
-           {
-               --last;
-               *last = pq.max();
-           }
-       }
+      template<typename FwdIter, typename Lesser>
+      static void sort(FwdIter first, FwdIter last, Lesser less)
+      {
+         using ValueType = typename std::iterator_traits<FwdIter>::value_type;
+         PriorityQueue<ValueType, Lesser> pq(less, first, last); //Optim: do not copy and extract algorithms
+         for (; !pq.empty(); pq.pop())
+         {
+            --last;
+            *last = pq.max();
+         }
+      }
 
-       template<typename Container, typename Lesser>
-       static void sort(Container& cont, Lesser less)
-       {
-           sort(begin(cont), end(cont), less);
-       }
+      template<typename Container, typename Lesser>
+      static void sort(Container& cont, Lesser less)
+      {
+         sort(begin(cont), end(cont), less);
+      }
    };
 
    //--------------------------------------------------------------------------
@@ -210,7 +210,7 @@ namespace algorithm
             return;
 
          auto pivot = *first;
-         auto lowEnd = std::partition(first, last,  std::bind(less, _1, pivot));
+         auto lowEnd = std::partition(first, last, std::bind(less, _1, pivot));
          auto highIt = std::partition(lowEnd, last, logicalNot(std::bind(less, pivot, _1)));
 
          sortImpl(first, lowEnd, less);
