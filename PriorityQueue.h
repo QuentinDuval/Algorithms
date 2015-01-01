@@ -17,9 +17,8 @@ namespace algorithm
 			: m_less(less), m_keys(first, last)
 		{
 			size_t lastSubHeap = size() / 2;
-			for (size_t k = lastSubHeap; k >= 1; --k)
-				sink(k);
-            sink(0);
+            for (size_t k = 0; k <= lastSubHeap; ++k)
+                sink(lastSubHeap - k);
 		}
 
 		void add(Key k)
