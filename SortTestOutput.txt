@@ -14,6 +14,11 @@
  - Time spent: 0
  - Time spent: 1666.6
  - Time spent: 844.809
+ * Heap sort
+ - Time spent: 1.0012
+ - Time spent: 3.0032
+ - Time spent: 3.0028
+ - Time spent: 4.0046
 * Quick sort
  - Time spent: 1.0006
  - Time spent: 4.0046

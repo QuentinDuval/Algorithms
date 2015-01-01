@@ -1,5 +1,6 @@
 #pragma once
 
+#include "PriorityQueue.h"
 #include <functional>
 using namespace std::placeholders;
 
@@ -109,6 +110,29 @@ namespace algorithm
       {
          sort(begin(cont), end(cont), less);
       }
+   };
+
+   //--------------------------------------------------------------------------
+
+   struct HeapSort
+   {
+       template<typename FwdIter, typename Lesser>
+       static void sort(FwdIter first, FwdIter last, Lesser less)
+       {
+           typedef typename std::iterator_traits<FwdIter>::value_type ValueType;
+           PriorityQueue<ValueType, Lesser> pq(less, first, last); //TODO - Avoid copy...
+           for (; !pq.empty(); pq.pop())
+           {
+               --last;
+               *last = pq.max();
+           }
+       }
+
+       template<typename Container, typename Lesser>
+       static void sort(Container& cont, Lesser less)
+       {
+           sort(begin(cont), end(cont), less);
+       }
    };
 
    //--------------------------------------------------------------------------

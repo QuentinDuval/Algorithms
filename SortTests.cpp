@@ -54,6 +54,7 @@ namespace algorithm
       tester.runTest<SelectionSort>     ("* Selection sort");
       tester.runTest<BubbleSort>        ("* Bubble sort");
       tester.runTest<InsertionSort>     ("* Insertion sort");
+      tester.runTest<HeapSort>			("* Heap sort");
       tester.runTest<ThreeWayQuickSort> ("* Quick sort");
       tester.runTest<MergeSort>         ("* Merge sort");
    }
