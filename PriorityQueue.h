@@ -28,7 +28,7 @@ namespace algorithm
 			swim(size() - 1);
 		}
 
-		Key	max() const
+		Key const& max() const
 		{
 			return m_keys.at(0);
 		}
