@@ -86,7 +86,7 @@ namespace algorithm
 		{
             size_t child = fstChild(k);
             if (hasSndChild(k) && less(child, sndChild(k)))
-				child = sndChild(k);
+				return sndChild(k);
 			return child;
 		}
 
