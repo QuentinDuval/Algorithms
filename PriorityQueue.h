@@ -85,8 +85,8 @@ namespace algorithm
 		size_t maxChild(size_t k) const
 		{
             size_t child = fstChild(k);
-            if (hasSndChild(k) && less(child, child + 1))
-				++child;
+            if (hasSndChild(k) && less(child, sndChild(k)))
+				child = sndChild(k);
 			return child;
 		}
 
