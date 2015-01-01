@@ -58,17 +58,17 @@ namespace algorithm
          if (first == last)
             return;
 
-for (auto it = first + 1; it != last; ++it)
-{
-   for (auto curr = it; curr != first; --curr)
-   {
-      auto prev = curr - 1;
-      if (!less(*curr, *prev))
-         break;
+		 for (auto it = first + 1; it != last; ++it)
+		 {
+			 for (auto curr = it; curr != first; --curr)
+			 {
+				 auto prev = curr - 1;
+				 if (!less(*curr, *prev))
+					 break;
 
-      std::swap(*curr, *prev);
-   }
-}
+				 std::swap(*curr, *prev);
+			 }
+		 }
       }
 
       template<typename Container, typename Lesser>
