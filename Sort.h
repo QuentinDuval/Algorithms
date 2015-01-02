@@ -120,11 +120,10 @@ namespace algorithm
       static void sort(FwdIter first, FwdIter last, Lesser less)
       {
          using ValueType = typename std::iterator_traits<FwdIter>::value_type;
-         MaxPriorityQueue<ValueType, Lesser> pq(less, first, last); //Optim: do not copy and extract algorithms
-         for (; !pq.empty(); pq.pop())
+         MinPriorityQueue<ValueType, Lesser> pq(less, first, last); //Optim: do not copy and extract algorithms
+         for (; !pq.empty(); pq.pop(), ++first)
          {
-            --last;
-            *last = pq.max();
+            *first = pq.top();
          }
       }
 

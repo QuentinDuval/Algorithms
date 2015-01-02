@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Utils.h"
 #include <vector>
 
 
@@ -19,7 +20,7 @@ namespace algorithm
          swim(size() - 1);
       }
 
-      Key const& max() const
+      Key const& top() const
       {
          return m_keys.at(0);
       }
@@ -60,6 +61,11 @@ namespace algorithm
       Less m_less;
       std::vector<Key> m_keys;
    };
+
+   //--------------------------------------------------------------------------
+
+   template<typename Key, typename Less>
+   using MinPriorityQueue = MaxPriorityQueue<Key, ReverseCompare<Less>>;
 }
 
 #include "PriorityQueue.inl.h"

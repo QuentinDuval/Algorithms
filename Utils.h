@@ -94,6 +94,27 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
+   template<typename Less>
+   struct ReverseCompare
+   {
+      ReverseCompare(Less less) : m_less(less) {}
+      Less m_less;
+
+      template<typename T>
+      bool operator()(T const& lhs, T const& rhs) const
+      {
+         return m_less(rhs, lhs);
+      }
+   };
+
+   template<typename Less>
+   ReverseCompare<Less> reverseComparison(Less less)
+   {
+      return ReverseCompare<Less>(less);
+   }
+
+   //--------------------------------------------------------------------------
+
    template<typename T>
    std::string toString(T const& t)
    {
