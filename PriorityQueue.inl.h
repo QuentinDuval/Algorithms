@@ -5,6 +5,21 @@
 namespace algorithm
 {
    template<typename Key, typename Less>
+   MaxPriorityQueue<Key, Less>::MaxPriorityQueue(Less less)
+      : m_less(less), m_keys()
+   {}
+
+   template<typename Key, typename Less>
+   template<typename Iter>
+   MaxPriorityQueue<Key, Less>::MaxPriorityQueue(Less less, Iter first, Iter last)
+      : m_less(less), m_keys(first, last)
+   {
+      size_t lastSubHeap = size() / 2;
+      for (size_t k = 0; k <= lastSubHeap; ++k)
+         sink(lastSubHeap - k);
+   }
+
+   template<typename Key, typename Less>
    void MaxPriorityQueue<Key, Less>::swim(size_t k)
    {
       while (hasFather(k))

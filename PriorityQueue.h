@@ -9,17 +9,9 @@ namespace algorithm
    class MaxPriorityQueue
    {
    public:
-      MaxPriorityQueue(Less less)
-         : m_less(less), m_keys() {}
-
       template<typename Iter>
-      MaxPriorityQueue(Less less, Iter first, Iter last)
-         : m_less(less), m_keys(first, last)
-      {
-         size_t lastSubHeap = size() / 2;
-         for (size_t k = 0; k <= lastSubHeap; ++k)
-            sink(lastSubHeap - k);
-      }
+      MaxPriorityQueue(Less less, Iter first, Iter last);
+      explicit MaxPriorityQueue(Less less);
 
       void add(Key k)
       {
@@ -71,4 +63,3 @@ namespace algorithm
 }
 
 #include "PriorityQueue.inl.h"
-
