@@ -6,14 +6,14 @@
 namespace algorithm
 {
    template<typename Key, typename Less>
-   class PriorityQueue
+   class MaxPriorityQueue
    {
    public:
-      PriorityQueue(Less less)
+      MaxPriorityQueue(Less less)
          : m_less(less), m_keys() {}
 
-      template<typename Iterator>
-      PriorityQueue(Less less, Iterator first, Iterator last)
+      template<typename Iter>
+      MaxPriorityQueue(Less less, Iter first, Iter last)
          : m_less(less), m_keys(first, last)
       {
          size_t lastSubHeap = size() / 2;
@@ -50,45 +50,11 @@ namespace algorithm
       }
 
    private:
-      void swim(size_t k) //Bottom-up key re-ordering
-      {
-         while (hasFather(k))
-         {
-            size_t f = father(k);
-            if (!less(f, k)) break;
-            swap(f, k);
-            k = f;
-         }
-      }
-
-      void sink(size_t k) //Top-down key re-ordering
-      {
-         while (hasChild(k))
-         {
-            int c = maxChild(k);
-            if (!less(k, c)) break;
-            swap(k, c);
-            k = c;
-         }
-      }
-
-      bool less(size_t lhs, size_t rhs) const
-      {
-         return m_less(m_keys[lhs], m_keys[rhs]);
-      }
-
-      void swap(size_t lhs, size_t rhs)
-      {
-         std::swap(m_keys[lhs], m_keys[rhs]);
-      }
-
-      size_t maxChild(size_t k) const
-      {
-         size_t child = fstChild(k);
-         if (hasSndChild(k) && less(child, sndChild(k)))
-            return sndChild(k);
-         return child;
-      }
+      void   swim       (size_t k); //Bottom-up key re-ordering
+      void   sink       (size_t k); //Top-down key re-ordering
+      size_t maxChild   (size_t k) const;
+      bool   less       (size_t lhs, size_t rhs) const;
+      void   swap       (size_t lhs, size_t rhs);
 
    private:
       size_t father     (size_t c) const { return (c + 1) / 2 - 1; }
@@ -103,3 +69,6 @@ namespace algorithm
       std::vector<Key> m_keys;
    };
 }
+
+#include "PriorityQueue.inl.h"
+
