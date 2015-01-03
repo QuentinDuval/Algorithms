@@ -134,6 +134,23 @@ namespace algorithm
       }
    };
 
+   struct SystemHeapSort
+   {
+      template<typename FwdIter, typename Lesser>
+      static void sort(FwdIter first, FwdIter last, Lesser less)
+      {
+         std::make_heap(first, last, less);
+         for (; first != last; --last)
+            std::pop_heap(first, last, less);
+      }
+
+      template<typename Container, typename Lesser>
+      static void sort(Container& cont, Lesser less)
+      {
+         sort(begin(cont), end(cont), less);
+      }
+   };
+
    //--------------------------------------------------------------------------
 
    struct MergeSort
