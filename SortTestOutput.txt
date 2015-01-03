@@ -19,6 +19,11 @@
  - Time spent: 3.0032
  - Time spent: 3.0028
  - Time spent: 4.0046
+ * System Heap sort
+ - Time spent: 1.0006
+ - Time spent: 2.0012
+ - Time spent: 2.0024
+ - Time spent: 3.0016
 * Quick sort
  - Time spent: 1.0006
  - Time spent: 4.0046
