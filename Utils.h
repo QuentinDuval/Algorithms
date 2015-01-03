@@ -73,6 +73,17 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
+   struct GetSecond
+   {
+      template<typename A, typename B>
+      B const& operator() (std::pair<A, B> const& p) const { return p.second; }
+
+      template<typename A, typename B>
+      B const& operator() (std::pair<A const, B> const& p) const { return p.second; }
+   };
+
+   //--------------------------------------------------------------------------
+
    template<typename Predicate>
    struct LogicalNot
    {
@@ -111,6 +122,28 @@ namespace algorithm
    ReverseCompare<Less> reverseComparison(Less less)
    {
       return ReverseCompare<Less>(less);
+   }
+
+   //--------------------------------------------------------------------------
+
+   template<typename Projection, typename Less>
+   struct ComparingWith
+   {
+      ComparingWith(Projection proj, Less less) : m_proj(proj), m_less(less) {}
+      Projection m_proj;
+      Less m_less;
+
+      template<typename T>
+      bool operator()(T const& lhs, T const& rhs) const
+      {
+         return m_less(m_proj(lhs), m_proj(rhs));
+      }
+   };
+
+   template<typename Projection, typename Less>
+   ComparingWith<Projection, Less> comparingWith(Projection proj, Less less)
+   {
+      return ComparingWith<Projection, Less>(proj, less);
    }
 
    //--------------------------------------------------------------------------

@@ -1,11 +1,18 @@
 #pragma once
 
 #include "Utils.h"
+
 #include <vector>
+#include <utility>
 
 
 namespace algorithm
 {
+   struct EmptyQueueException : public std::logic_error
+   {
+      EmptyQueueException() : std::logic_error("Priority queue is empty") {}
+   };
+
    template<typename Key, typename Less>
    class MaxPriorityQueue
    {
@@ -22,25 +29,20 @@ namespace algorithm
 
       Key const& top() const
       {
+         if (empty()) throw EmptyQueueException();
          return m_keys.at(0);
       }
 
       void pop()
       {
+         if (empty()) throw EmptyQueueException();
          swap(0, size() - 1);
          m_keys.pop_back();
          sink(0);
       }
 
-      bool empty() const
-      {
-         return m_keys.empty();
-      }
-
-      size_t size() const
-      {
-         return m_keys.size();
-      }
+      bool   empty() const { return m_keys.empty(); }
+      size_t size()  const { return m_keys.size(); }
 
    private:
       void   swim       (size_t k); //Bottom-up key re-ordering
@@ -53,7 +55,7 @@ namespace algorithm
       size_t father     (size_t c) const { return (c + 1) / 2 - 1; }
       size_t fstChild   (size_t f) const { return (f + 1) * 2 - 1; }
       size_t sndChild   (size_t f) const { return (f + 1) * 2; }
-      bool   hasFather  (size_t c) const { return father(c) > 0; }
+      bool   hasFather  (size_t c) const { return c > 0; }
       bool   hasChild   (size_t f) const { return fstChild(f) < size(); }
       bool   hasSndChild(size_t f) const { return sndChild(f) < size(); }
 
@@ -66,6 +68,32 @@ namespace algorithm
 
    template<typename Key, typename Less>
    using MinPriorityQueue = MaxPriorityQueue<Key, ReverseCompare<Less>>;
+
+   //--------------------------------------------------------------------------
+
+   template<typename T, typename Priority, typename Less>
+   class MaxPriorityIndexedQueue
+   {
+   public:
+      MaxPriorityIndexedQueue() : m_impl(comparingWith(GetSecond(), Less())) {}
+      explicit MaxPriorityIndexedQueue(Less less) : m_impl(comparingWith(GetSecond(), less)) {}
+
+      void add(T k, Priority p)
+      {
+         m_impl.add(std::make_pair(std::move(k), std::move(p)));
+      }
+
+      T const& top() const    { return m_impl.top().first; }
+      void     pop()          { return m_impl.pop(); }
+      bool     empty() const  { return m_impl.empty(); }
+      size_t   size() const   { return m_impl.size(); }
+
+   private:
+      MaxPriorityQueue<std::pair<T, Priority>, ComparingWith<GetSecond, Less>> m_impl;
+   };
+
+   template<typename T, typename Priority, typename Less>
+   using MinPriorityIndexedQueue = MaxPriorityIndexedQueue<T, Priority, ReverseCompare<Less>>;
 }
 
 #include "PriorityQueue.inl.h"
