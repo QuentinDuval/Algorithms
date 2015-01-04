@@ -52,19 +52,24 @@ namespace algorithm
 
    static void performanceTest()
    {
-      size_t size = 100;
+      const size_t size = 1000000;
       std::cout << "[Union-Find] Performance test" << std::endl;
-      std::cout << "Number of entries: " << size * size << std::endl;
+      std::cout << "Number of entries, union and finds: " << size << std::endl;
 
-      std::chrono::duration<double, std::milli> duration;
-      time(duration, [=](){
+      std::vector<size_t> sources(size);
+      generate(sources, 0, [](int i) { return i + 1; });
+      std::vector<size_t> destinations(sources);
+
+      shuffle(sources);
+      shuffle(destinations);
+
+      showTime(std::cout, [&]{
          UnionFind uf(size);
          for (size_t i = 0; i < size; ++i)
-            for (size_t j = 0; j < size; ++j)
-               uf.connect(i, j);
+            uf.connect(sources[i], destinations[i]);
+         for (size_t i = 0; i < size; ++i)
+            assert(true == uf.connected(sources[i], destinations[i]));
       });
-      
-      std::cout << "Time spent: " << duration.count() << " milliseconds" << std::endl;
    }
 
    void unionFindTests()
