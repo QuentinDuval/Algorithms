@@ -58,5 +58,6 @@ namespace algorithm
       tester.runTest<SystemHeapSort>      ("* System Heap sort");
       tester.runTest<ThreeWayQuickSort>   ("* Quick sort");
       tester.runTest<MergeSort>           ("* Merge sort");
+      tester.runTest<SystemSort>          ("* System sort");
    }
 }

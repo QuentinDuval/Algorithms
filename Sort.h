@@ -233,5 +233,22 @@ namespace algorithm
          sortImpl(highIt, last, less);
       }
    };
+
+   //--------------------------------------------------------------------------
+
+   struct SystemSort
+   {
+      template<typename FwdIter, typename Lesser>
+      static void sort(FwdIter first, FwdIter last, Lesser less)
+      {
+         std::sort(first, last, less);
+      }
+
+      template<typename Container, typename Lesser>
+      static void sort(Container& cont, Lesser less)
+      {
+         sort(begin(cont), end(cont), less);
+      }
+   };
 }
 
