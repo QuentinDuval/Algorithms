@@ -1,6 +1,7 @@
 #include "SubStringSearchTests.h"
 #include "SubStringSearch.h"
 #include "Timer.h"
+#include "Utils.h"
 
 #include <assert.h>
 #include <iostream>
@@ -26,11 +27,16 @@ namespace algorithm
    {
       std::cout << " * " << algorithmName << std::endl;
       const size_t N = 1000000;
+      const std::string aText(N, 'a');
 
       for (size_t M : { 10, 100 })
       {
-         showTime(std::cout, [=]{ search(std::string(N, 'a'), "b" + std::string(M - 1, 'a')); });
-         showTime(std::cout, [=]{ search(std::string(N, 'a'), std::string(M - 1, 'a') + "b"); });
+         showTime(std::cout, [&]{ search(aText, "b" + std::string(M - 1, 'a')); });
+         showTime(std::cout, [&]{ search(aText, std::string(M - 1, 'a') + "b"); });
+
+         std::string incrPattern(M, ' ');
+         generate(incrPattern, 'a', [](char i) { return 'a' + (i - 'a' + 1) % 26; });
+         showTime(std::cout, [&]{ search(aText, incrPattern); });
       }
    }
 
