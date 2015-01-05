@@ -26,10 +26,12 @@ namespace algorithm
    {
       std::cout << " * " << algorithmName << std::endl;
       const size_t N = 1000000;
-      const size_t M = 100;
 
-      showTime(std::cout, [=]{ search(std::string(N, 'a'), "b" + std::string(M-1, 'a')); });
-      showTime(std::cout, [=]{ search(std::string(N, 'a'), std::string(M-1, 'a') + "b"); });
+      for (size_t M : { 10, 100 })
+      {
+         showTime(std::cout, [=]{ search(std::string(N, 'a'), "b" + std::string(M - 1, 'a')); });
+         showTime(std::cout, [=]{ search(std::string(N, 'a'), std::string(M - 1, 'a') + "b"); });
+      }
    }
 
    //--------------------------------------------------------------------------
