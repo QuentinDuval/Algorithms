@@ -5,6 +5,9 @@ namespace algorithm
 {
    size_t BruteForceSearch::search(std::string const& text, std::string const& pattern)
    {
+      if (pattern.empty() || text.empty())
+         return std::string::npos;
+
       size_t m = pattern.size();
       for (size_t i = 0; i <= text.size() - m; ++i)
       {
