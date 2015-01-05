@@ -1,5 +1,6 @@
 #include "PriorityQueueTests.h"
 #include "SortTests.h"
+#include "SubStringSearchTests.h"
 #include "UnionFindTests.h"
 #include <iostream>
 
@@ -12,6 +13,7 @@ int main()
    unionFindExample();
    priorityQueueTests();
    sortingTests();
+   subStringSearchTests();
 
    system("PAUSE");
 }
