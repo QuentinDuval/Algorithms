@@ -13,7 +13,7 @@ namespace algorithm
       EmptyQueueException() : std::logic_error("Priority queue is empty") {}
    };
 
-   template<typename Key, typename Less>
+   template<typename Key, typename Less = std::less<Key>>
    class MaxPriorityQueue
    {
    public:
@@ -71,7 +71,7 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   template<typename T, typename Priority, typename Less>
+   template<typename T, typename Priority, typename Less = std::less<Priority>>
    class MaxPriorityIndexedQueue
    {
    public:

@@ -9,7 +9,7 @@ namespace algorithm
 {
    void priorityQueueTests()
    {
-      MaxPriorityIndexedQueue<std::string, int, std::less<int>> queue;
+      MaxPriorityIndexedQueue<std::string, int> queue;
       queue.add("A", 1);
       queue.add("B", 3);
       queue.add("C", 2);
