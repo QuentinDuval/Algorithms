@@ -9,10 +9,10 @@ using namespace algorithm;
 
 int main()
 {
-   //unionFindTests();
-   //unionFindExample();
-   //priorityQueueTests();
-   //sortingTests();
+   unionFindTests();
+   unionFindExample();
+   priorityQueueTests();
+   sortingTests();
    subStringSearchTests();
 
    system("PAUSE");
