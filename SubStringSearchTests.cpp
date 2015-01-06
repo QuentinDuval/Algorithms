@@ -45,8 +45,11 @@ namespace algorithm
    void subStringSearchTests()
    {
       basicTests(BruteForceSearch::search);
+      basicTests(BoyerMooreSearch::search);
+
       std::cout << std::endl << "[String search timings] (in milliseconds)" << std::endl;
-      performanceTests(BruteForceSearch::search, "Brute force");
+      performanceTests(BruteForceSearch::search, "Brute Force");
+      performanceTests(BoyerMooreSearch::search, "Boyer Moore");
    }
 }
 
