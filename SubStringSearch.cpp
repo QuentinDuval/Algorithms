@@ -1,4 +1,5 @@
 #include "SubStringSearch.h"
+#include <numeric>
 #include <vector>
 
 
@@ -62,10 +63,8 @@ namespace algorithm
 
    static size_t hashOf(size_t r, size_t q, std::string::const_iterator first, std::string::const_iterator last)
    {
-      size_t hash = 0;
-      for (; first != last; ++first)
-         hash = (hash * r + (*first - CHAR_MIN)) % q;
-      return hash;
+      return std::accumulate(first, last, 0,
+         [=](size_t h, char c){ return (h * r + (c - CHAR_MIN)) % q; });
    }
 
    static size_t charAt(std::string const& s, size_t i)
