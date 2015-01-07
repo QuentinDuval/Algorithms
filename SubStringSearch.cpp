@@ -20,9 +20,13 @@ namespace algorithm
       return std::string::npos;
    }
 
+   //--------------------------------------------------------------------------
 
    size_t BoyerMooreSearch::search(std::string const& text, std::string const& pattern)
    {
+      if (pattern.empty() || text.empty())
+         return std::string::npos;
+
       const size_t n = pattern.size();
       std::vector<size_t> alphabet(CHAR_MAX - CHAR_MIN, std::string::npos);
       for (size_t k = 0; k < n; ++k)
@@ -46,6 +50,57 @@ namespace algorithm
          else
             ++i;
       }
+      return std::string::npos;
+   }
+
+   //--------------------------------------------------------------------------
+
+   static bool check(std::string const& text, std::string const& pattern, size_t start)
+   {
+      return std::equal(pattern.begin(), pattern.end(), text.begin() + start);
+   }
+
+   static size_t hashOf(size_t r, size_t q, std::string::const_iterator first, std::string::const_iterator last)
+   {
+      size_t hash = 0;
+      for (; first != last; ++first)
+         hash = (hash * r + (*first - CHAR_MIN)) % q;
+      return hash;
+   }
+
+   static size_t charAt(std::string const& s, size_t i)
+   {
+      return s[i] - CHAR_MIN;
+   }
+
+   size_t RabinKarpSearch::search(std::string const& text, std::string const& pattern)
+   {
+      if (pattern.empty() || text.empty())
+         return std::string::npos;
+
+      const size_t n = pattern.size();
+      const size_t r = CHAR_MAX - CHAR_MIN;
+      const size_t q = 999983; //15485863; //2147483647; //largest prime
+      const size_t patternHash = hashOf(r, q, pattern.begin(), pattern.end());
+
+      size_t f = 1; // r ^ (m - 1) % q
+      for (size_t i = 0; i < n - 1; ++i)
+         f = (f * r) % q;
+
+      size_t hash = hashOf(r, q, text.begin(), text.begin() + n);
+      if (hash == patternHash && check(text, pattern, 0))
+         return 0;
+
+      for (size_t i = n; i < text.size(); ++i)
+      {
+         size_t s = i - n + 1;
+         size_t toRemove = (f * charAt(text, s - 1)) % q;
+         hash = (hash + q - toRemove) % q;
+         hash = (hash * r + charAt(text, i) % q) % q;
+         if (hash == patternHash && check(text, pattern, s))
+            return s;
+      }
+
       return std::string::npos;
    }
 }

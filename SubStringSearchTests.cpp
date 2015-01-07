@@ -46,10 +46,12 @@ namespace algorithm
    {
       basicTests(BruteForceSearch::search);
       basicTests(BoyerMooreSearch::search);
+      basicTests(RabinKarpSearch::search);
 
       std::cout << std::endl << "[String search timings] (in milliseconds)" << std::endl;
       performanceTests(BruteForceSearch::search, "Brute Force");
       performanceTests(BoyerMooreSearch::search, "Boyer Moore");
+      performanceTests(RabinKarpSearch::search, "Rabin Karp");
    }
 }
 
