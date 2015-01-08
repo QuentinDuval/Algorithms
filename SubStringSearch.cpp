@@ -115,29 +115,26 @@ namespace algorithm
       std::vector<size_t> borders(n + 1, 0);
       borders[0] = std::string::npos;
 
-      size_t i = 0;
       size_t j = std::string::npos;
-      while (i < n)
+      for (size_t i = 0; i < n; ++i)
       {
          while (j != std::string::npos && pattern[i] != pattern[j])
             j = borders[j];
 
          j = j == std::string::npos ? 0 : j + 1;
-         i++;
-         borders[i] = j;
+         borders[i+1] = j;
       }
 
       //Search
-      i = 0, j = 0;
-      while (i < text.size())
+      size_t s = 0;
+      for (size_t i = 0; i < text.size(); ++i)
       {
-         while (j != std::string::npos && text[i] != pattern[j])
-            j = borders[j];
+         while (s != std::string::npos && text[i] != pattern[s])
+            s = borders[s];
 
-         j = j == std::string::npos ? 0 : j + 1;
-         i++;
-         if (j == n)
-            return i - j;
+         s = s == std::string::npos ? 0 : s + 1;
+         if (s == n)
+            return i + 1 - s;
       }
       return std::string::npos;
    }
