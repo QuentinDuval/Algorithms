@@ -26,7 +26,7 @@ namespace algorithm
    void performanceTests(SearchImpl search, std::string const& algorithmName)
    {
       std::cout << " * " << algorithmName << std::endl;
-      const size_t N = 1000000;
+      const size_t N = 10000000;
       const std::string aText(N, 'a');
 
       for (size_t M : { 10, 100 })
@@ -47,11 +47,13 @@ namespace algorithm
       basicTests(BruteForceSearch::search);
       basicTests(BoyerMooreSearch::search);
       basicTests(RabinKarpSearch::search);
+      basicTests(KMPSearch::search);
 
       std::cout << std::endl << "[String search timings] (in milliseconds)" << std::endl;
       performanceTests(BruteForceSearch::search, "Brute Force");
       performanceTests(BoyerMooreSearch::search, "Boyer Moore");
       performanceTests(RabinKarpSearch::search, "Rabin Karp");
+      performanceTests(KMPSearch::search, "KMP search");
    }
 }
 

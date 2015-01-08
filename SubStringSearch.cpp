@@ -102,4 +102,43 @@ namespace algorithm
 
       return std::string::npos;
    }
+
+   //--------------------------------------------------------------------------
+
+   size_t KMPSearch::search(std::string const& text, std::string const& pattern)
+   {
+      if (pattern.empty() || text.empty())
+         return std::string::npos;
+
+      //Computation of the pattern widest borders
+      const size_t n = pattern.size();
+      std::vector<size_t> borders(n + 1, 0);
+      borders[0] = std::string::npos;
+
+      size_t i = 0;
+      size_t j = std::string::npos;
+      while (i < n)
+      {
+         while (j != std::string::npos && pattern[i] != pattern[j])
+            j = borders[j];
+
+         j = j == std::string::npos ? 0 : j + 1;
+         i++;
+         borders[i] = j;
+      }
+
+      //Search
+      i = 0, j = 0;
+      while (i < text.size())
+      {
+         while (j != std::string::npos && text[i] != pattern[j])
+            j = borders[j];
+
+         j = j == std::string::npos ? 0 : j + 1;
+         i++;
+         if (j == n)
+            return i - j;
+      }
+      return std::string::npos;
+   }
 }
