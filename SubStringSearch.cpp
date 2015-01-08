@@ -134,7 +134,7 @@ namespace algorithm
 
          s = s == std::string::npos ? 0 : s + 1;
          if (s == n)
-            return i + 1 - s;
+            return i + 1 - n;
       }
       return std::string::npos;
    }
