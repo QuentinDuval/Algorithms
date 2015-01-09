@@ -48,12 +48,14 @@ namespace algorithm
       basicTests(BoyerMooreSearch::search);
       basicTests(RabinKarpSearch::search);
       basicTests(KMPSearch::search);
+      basicTests(KMPSearch2::search);
 
       std::cout << std::endl << "[String search timings] (in milliseconds)" << std::endl;
       performanceTests(BruteForceSearch::search, "Brute Force");
       performanceTests(BoyerMooreSearch::search, "Boyer Moore");
       performanceTests(RabinKarpSearch::search, "Rabin Karp");
       performanceTests(KMPSearch::search, "KMP search");
+      performanceTests(KMPSearch2::search, "KMP search (2)");
    }
 }
 

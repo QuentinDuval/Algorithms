@@ -22,4 +22,9 @@ namespace algorithm
    {
       static size_t search(std::string const& text, std::string const& pattern);
    };
+
+   struct KMPSearch2
+   {
+      static size_t search(std::string const& text, std::string const& pattern);
+   };
 }

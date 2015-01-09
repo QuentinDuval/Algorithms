@@ -1,4 +1,5 @@
 #include "SubStringSearch.h"
+#include "Utils.h"
 #include <numeric>
 #include <vector>
 
@@ -112,8 +113,7 @@ namespace algorithm
 
       //Computation of the pattern widest borders
       const size_t n = pattern.size();
-      std::vector<size_t> borders(n + 1, 0);
-      borders[0] = std::string::npos;
+      std::vector<size_t> borders(n + 1, std::string::npos);
 
       size_t j = std::string::npos;
       for (size_t i = 0; i < n; ++i)
@@ -122,7 +122,7 @@ namespace algorithm
             j = borders[j];
 
          j = j == std::string::npos ? 0 : j + 1;
-         borders[i+1] = j;
+         borders[i + 1] = j;
       }
 
       //Search
@@ -133,6 +133,32 @@ namespace algorithm
             s = borders[s];
 
          s = s == std::string::npos ? 0 : s + 1;
+         if (s == n)
+            return i + 1 - n;
+      }
+      return std::string::npos;
+   }
+
+   size_t KMPSearch2::search(std::string const& text, std::string const& pattern)
+   {
+      if (pattern.empty() || text.empty())
+         return std::string::npos;
+
+      const size_t n = pattern.size();
+      const size_t r = CHAR_MAX - CHAR_MIN;
+      Matrix<size_t> dfa(r, n, 0);
+      for (size_t j = 0, i = 0; i < n; ++i)
+      {
+         for (size_t c = 0; c < r; ++c)
+            dfa.at(c, i) = dfa.at(c, j);
+
+         dfa.at(pattern[i] - CHAR_MIN, i) = i + 1;
+         j = dfa.at(pattern[i] - CHAR_MIN, j);
+      }
+
+      for (size_t s = 0, i = 0; i < text.size(); ++i)
+      {
+         s = dfa.at(text[i] - CHAR_MIN, s);
          if (s == n)
             return i + 1 - n;
       }
