@@ -175,7 +175,7 @@ namespace algorithm
       }
 
    private:
-      std::string m_pattern;
+      const std::string m_pattern;
       std::vector<size_t> m_borders;
    };
 
