@@ -107,28 +107,19 @@ namespace algorithm
    //--------------------------------------------------------------------------
 
    template<typename StateMachine>
-   class KMPAlgo
+   struct KMPAlgo
    {
-   public:
-      KMPAlgo(std::string const& pattern)
-         : m_patternLength(pattern.size())
-         , m_stateMachine(pattern)
-      {}
-
-      size_t search(std::string const& text)
+      static size_t search(std::string const& text, std::string const& pattern)
       {
+         StateMachine stateMachine(pattern);
          for (size_t matchNb = 0, i = 0; i < text.size(); ++i)
          {
-            matchNb = m_stateMachine.nextLongestMatch(matchNb, text[i]);
-            if (matchNb == m_patternLength)
-               return i + 1 - m_patternLength;
+            matchNb = stateMachine.nextLongestMatch(matchNb, text[i]);
+            if (matchNb == pattern.size())
+               return i + 1 - pattern.size();
          }
          return std::string::npos;
       }
-
-   private:
-      size_t m_patternLength;
-      StateMachine m_stateMachine;
    };
 
    class FullDfa
@@ -193,17 +184,13 @@ namespace algorithm
    {
       if (pattern.empty() || text.empty())
          return std::string::npos;
-
-      KMPAlgo<NextWidestBorderDfa> searcher(pattern);
-      return searcher.search(text);
+      return KMPAlgo<NextWidestBorderDfa>::search(text, pattern);
    }
 
    size_t KMPSearch2::search(std::string const& text, std::string const& pattern)
    {
       if (pattern.empty() || text.empty())
          return std::string::npos;
-
-      KMPAlgo<FullDfa> searcher(pattern);
-      return searcher.search(text);
+      return KMPAlgo<FullDfa>::search(text, pattern);
    }
 }
