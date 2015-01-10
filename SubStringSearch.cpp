@@ -106,37 +106,96 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
+   template<typename StateMachine>
+   class KMPAlgo
+   {
+   public:
+      KMPAlgo(std::string const& pattern)
+         : m_patternLength(pattern.size())
+         , m_stateMachine(pattern)
+      {}
+
+      size_t search(std::string const& text)
+      {
+         for (size_t matchNb = 0, i = 0; i < text.size(); ++i)
+         {
+            matchNb = m_stateMachine.nextLongestMatch(matchNb, text[i]);
+            if (matchNb == m_patternLength)
+               return i + 1 - m_patternLength;
+         }
+         return std::string::npos;
+      }
+
+   private:
+      size_t m_patternLength;
+      StateMachine m_stateMachine;
+   };
+
+   class FullDfa
+   {
+   public:
+      FullDfa(std::string const& pattern)
+         : m_dfa(radix, pattern.size(), 0)
+      {
+         for (size_t j = 0, i = 0; i < pattern.size(); ++i)
+         {
+            for (size_t c = 0; c < radix; ++c)
+               m_dfa.at(c, i) = m_dfa.at(c, j);
+
+            m_dfa.at(pattern[i] - CHAR_MIN, i) = i + 1;
+            j = m_dfa.at(pattern[i] - CHAR_MIN, j);
+         }
+      }
+
+      size_t nextLongestMatch(size_t matchingNb, char c) const
+      {
+         return m_dfa.at(c - CHAR_MIN, matchingNb);
+      }
+
+   private:
+      Matrix<size_t> m_dfa;
+      static const size_t radix = CHAR_MAX - CHAR_MIN;
+   };
+
+   class NextWidestBorderDfa
+   {
+   public:
+      NextWidestBorderDfa(std::string const& pattern)
+         : m_pattern(pattern)
+         , m_borders(pattern.size() + 1, std::string::npos)
+      {
+         size_t j = std::string::npos;
+         for (size_t i = 0; i < pattern.size(); ++i)
+         {
+            while (j != std::string::npos && pattern[i] != pattern[j])
+               j = m_borders[j];
+
+            j = j == std::string::npos ? 0 : j + 1;
+            m_borders[i + 1] = j;
+         }
+      }
+
+      size_t nextLongestMatch(size_t matchingNb, char c) const
+      {
+         while (matchingNb != std::string::npos && c != m_pattern[matchingNb])
+            matchingNb = m_borders[matchingNb];
+
+         return matchingNb == std::string::npos ? 0 : matchingNb + 1;
+      }
+
+   private:
+      std::string m_pattern;
+      std::vector<size_t> m_borders;
+   };
+
+
    size_t KMPSearch::search(std::string const& text, std::string const& pattern)
    {
       if (pattern.empty() || text.empty())
          return std::string::npos;
 
-      //Computation of the pattern widest borders
-      const size_t n = pattern.size();
-      std::vector<size_t> borders(n + 1, std::string::npos);
-
-      size_t j = std::string::npos;
-      for (size_t i = 0; i < n; ++i)
-      {
-         while (j != std::string::npos && pattern[i] != pattern[j])
-            j = borders[j];
-
-         j = j == std::string::npos ? 0 : j + 1;
-         borders[i + 1] = j;
-      }
-
-      //Search
-      size_t s = 0;
-      for (size_t i = 0; i < text.size(); ++i)
-      {
-         while (s != std::string::npos && text[i] != pattern[s])
-            s = borders[s];
-
-         s = s == std::string::npos ? 0 : s + 1;
-         if (s == n)
-            return i + 1 - n;
-      }
-      return std::string::npos;
+      KMPAlgo<NextWidestBorderDfa> searcher(pattern);
+      return searcher.search(text);
    }
 
    size_t KMPSearch2::search(std::string const& text, std::string const& pattern)
@@ -144,24 +203,7 @@ namespace algorithm
       if (pattern.empty() || text.empty())
          return std::string::npos;
 
-      const size_t n = pattern.size();
-      const size_t r = CHAR_MAX - CHAR_MIN;
-      Matrix<size_t> dfa(r, n, 0);
-      for (size_t j = 0, i = 0; i < n; ++i)
-      {
-         for (size_t c = 0; c < r; ++c)
-            dfa.at(c, i) = dfa.at(c, j);
-
-         dfa.at(pattern[i] - CHAR_MIN, i) = i + 1;
-         j = dfa.at(pattern[i] - CHAR_MIN, j);
-      }
-
-      for (size_t s = 0, i = 0; i < text.size(); ++i)
-      {
-         s = dfa.at(text[i] - CHAR_MIN, s);
-         if (s == n)
-            return i + 1 - n;
-      }
-      return std::string::npos;
+      KMPAlgo<FullDfa> searcher(pattern);
+      return searcher.search(text);
    }
 }
