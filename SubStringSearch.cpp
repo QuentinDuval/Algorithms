@@ -30,21 +30,21 @@ namespace algorithm
          return std::string::npos;
 
       const size_t n = pattern.size();
-      std::vector<size_t> alphabet(CHAR_MAX - CHAR_MIN, std::string::npos);
+      std::vector<size_t> rightmostOccur(CHAR_MAX - CHAR_MIN, std::string::npos);
       for (size_t k = 0; k < n; ++k)
-         alphabet[pattern[k] - CHAR_MIN] = k;
+         rightmostOccur[pattern[k] - CHAR_MIN] = k;
 
       for (size_t i = n - 1; i < text.size();)
       {
-         size_t s = i - n + 1;
+         size_t start = i - n + 1;
          size_t j = i;
-         while (pattern[j - s] == text[j])
+         while (pattern[j - start] == text[j])
          {
-            if (j == s) return s;
+            if (j == start) return start;
             --j;
          }
 
-         size_t skip = alphabet[pattern[j - s]];
+         size_t skip = rightmostOccur[pattern[j - start]];
          if (skip == std::string::npos)
             i = i + n;
          else if (skip < j)

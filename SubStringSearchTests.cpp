@@ -26,17 +26,20 @@ namespace algorithm
    void performanceTests(SearchImpl search, std::string const& algorithmName)
    {
       std::cout << " * " << algorithmName << std::endl;
-      const size_t N = 10000000;
-      const std::string aText(N, 'a');
+      const size_t N = 20000000;
+      const std::string text(N, 'a');
 
       for (size_t M : { 10, 100 })
       {
-         showTime(std::cout, [&]{ search(aText, "b" + std::string(M - 1, 'a')); });
-         showTime(std::cout, [&]{ search(aText, std::string(M - 1, 'a') + "b"); });
+         showTime(std::cout, [&]{
+            search(text, "b" + std::string(M - 1, 'a'));
+            search(text, "a" + std::string(M - 1, 'b'));
+         });
 
-         std::string incrPattern(M, ' ');
-         generate(incrPattern, 'a', [](char i) { return 'a' + (i - 'a' + 1) % 26; });
-         showTime(std::cout, [&]{ search(aText, incrPattern); });
+         showTime(std::cout, [&]{
+            search(text, std::string(M - 1, 'a') + "b");
+            search(text, std::string(M - 1, 'b') + "a");
+         });
       }
    }
 
