@@ -14,10 +14,7 @@ namespace algorithm
       using const_iterator = AdjacencyList::const_iterator;
 
    public:
-      Graph(size_t vertexCount)
-         : m_adjacencyLists(vertexCount)
-      {}
-
+      Graph(size_t vertexCount) : m_adjacencyLists(vertexCount) {}
       ~Graph() = default;
 
       size_t vertexCount() const
@@ -62,4 +59,10 @@ namespace algorithm
    private:
       std::vector<AdjacencyList> m_adjacencyLists;
    };
+
+
+   inline size_t adjacentCount(Graph const& g, size_t v)
+   {
+      return std::distance(g.beginAdj(v), g.endAdj(v));
+   }
 }
