@@ -1,8 +1,8 @@
 #include "SortTests.h"
 
-#include "Algorithms.h"
 #include "Sort.h"
-#include "Timer.h"
+#include "utils/Algorithms.h"
+#include "utils/Timer.h"
 
 #include <assert.h>
 #include <functional>

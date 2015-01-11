@@ -1,7 +1,7 @@
 #pragma once
 
 #include "PriorityQueue.h"
-#include "Utils.h"
+#include "utils/Utils.h"
 
 #include <functional>
 using namespace std::placeholders;

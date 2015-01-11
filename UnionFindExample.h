@@ -1,7 +1,8 @@
 #pragma once
 
-#include "NonCopyable.h"
 #include "UnionFind.h"
+#include "utils/NonCopyable.h"
+
 #include <exception>
 #include <memory>
 #include <string>

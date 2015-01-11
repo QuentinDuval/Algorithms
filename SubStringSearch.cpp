@@ -1,5 +1,5 @@
-#include "Matrix.h"
 #include "SubStringSearch.h"
+#include "utils/Matrix.h"
 
 #include <numeric>
 #include <vector>

@@ -1,7 +1,7 @@
 #include "SubStringSearchTests.h"
 #include "SubStringSearch.h"
-#include "Timer.h"
-#include "Utils.h"
+#include "utils/Timer.h"
+#include "utils/Utils.h"
 
 #include <assert.h>
 #include <iostream>

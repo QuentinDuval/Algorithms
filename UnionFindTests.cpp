@@ -1,10 +1,10 @@
 #include "UnionFindTests.h"
 
-#include "Algorithms.h"
-#include "TestUtils.h"
-#include "Timer.h"
 #include "UnionFind.h"
 #include "UnionFindExample.h"
+#include "utils/Algorithms.h"
+#include "utils/TestUtils.h"
+#include "utils/Timer.h"
 
 #include <assert.h>
 #include <iostream>
