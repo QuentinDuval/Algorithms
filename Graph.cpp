@@ -1,5 +1,6 @@
 #include "Graph.h"
 #include "utils/Utils.h"
+#include <cctype>
 
 
 namespace algorithm
@@ -55,5 +56,31 @@ namespace algorithm
    size_t adjacentCount(Graph const& g, size_t v)
    {
       return std::distance(g.beginAdj(v), g.endAdj(v));
+   }
+
+   Graph createFrom(std::istream& is)
+   {
+      size_t vertexCount = 0;
+      is >> vertexCount;
+      
+      Graph g(vertexCount);
+      while (is)
+      {
+         int next = is.peek();
+         if (next == ';')
+            break;
+         
+         if (!std::isdigit(next))
+         {
+            is.get();
+         }
+         else
+         {
+            int v = 0, w = 0;
+            is >> v >> w;
+            g.addEdge(v, w);
+         }
+      }
+      return g;
    }
 }

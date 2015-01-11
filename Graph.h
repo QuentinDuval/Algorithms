@@ -2,6 +2,8 @@
 
 #include "GraphExceptions.h"
 #include "utils/Algorithms.h"
+
+#include <istream>
 #include <vector>
 
 
@@ -41,5 +43,6 @@ namespace algorithm
    // Helpers
    //--------------------------------------------------------------------------
 
-   size_t adjacentCount(Graph const& g, size_t v);
+   size_t adjacentCount (Graph const& g, size_t v);
+   Graph  createFrom    (std::istream&);
 }
