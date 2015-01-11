@@ -1,5 +1,6 @@
 #pragma once
 #include <algorithm>
+#include <numeric>
 #include <random>
 
 
@@ -25,6 +26,12 @@ namespace algorithm
    typename Container::const_iterator findIf(Container const& cont, Predicate pred)
    {
       return std::find_if(begin(cont), end(cont), pred);
+   }
+
+   template<typename Container, typename Value, typename Accumulator>
+   Value accumulate(Container const& cont, Value const& val, Accumulator acc)
+   {
+      return std::accumulate(begin(cont), end(cont), val, acc);
    }
 
    template<typename Container, typename Lesser>
