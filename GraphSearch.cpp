@@ -24,7 +24,7 @@ namespace algorithm
       m_marked[v] = true;
       ++m_count;
 
-      for (auto w : m_graph.adjacents(v))
+      for (auto const& w : m_graph.adjacents(v))
          if (!isMarked(w))
             searchImpl(w);
    }
