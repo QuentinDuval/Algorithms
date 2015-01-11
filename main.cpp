@@ -15,5 +15,14 @@ int main()
    sortingTests();
    subStringSearchTests();
 
-   system("PAUSE");
+   std::cout << std::endl << "Run performance test?" << std::endl;
+   char res;
+   std::cin >> res;
+   if (res == 'y')
+   {
+      unionFindPerfTests();
+      sortingPerfTests();
+      subStringSearchPerfTests();
+      system("PAUSE");
+   }
 }

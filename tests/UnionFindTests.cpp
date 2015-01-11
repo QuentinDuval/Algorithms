@@ -50,7 +50,15 @@ namespace algorithm
       assert(10 == uf.count());
    }
 
-   static void performanceTest()
+   void unionFindTests()
+   {
+      basicTest();
+      boundaryCheckTest();
+   }
+
+   //--------------------------------------------------------------------------
+
+   void unionFindPerfTests()
    {
       const size_t size = 50000;
       std::cout << "[Union-Find] Performance test" << std::endl;
@@ -70,13 +78,6 @@ namespace algorithm
          for (size_t i = 0; i < size; ++i)
             assert(true == uf.connected(sources[i], destinations[i]));
       });
-   }
-
-   void unionFindTests()
-   {
-      basicTest();
-      boundaryCheckTest();
-      performanceTest();
    }
 
    //--------------------------------------------------------------------------

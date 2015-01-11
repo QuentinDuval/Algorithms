@@ -3,4 +3,5 @@
 namespace algorithm
 {
    void sortingTests();
+   void sortingPerfTests();
 }

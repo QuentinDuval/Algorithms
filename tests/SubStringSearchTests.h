@@ -4,5 +4,5 @@
 namespace algorithm
 {
    void subStringSearchTests();
+   void subStringSearchPerfTests();
 }
-

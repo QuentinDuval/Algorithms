@@ -53,7 +53,10 @@ namespace algorithm
       basicTests(RabinKarpSearch::search);
       basicTests(KMPSearch::search);
       basicTests(KMPSearch2::search);
+   }
 
+   void subStringSearchPerfTests()
+   {
       std::cout << std::endl << "[String search timings] (in milliseconds)" << std::endl;
       performanceTests(BruteForceSearch::search, "Brute Force");
       performanceTests(BoyerMooreSearch::search, "Boyer Moore");

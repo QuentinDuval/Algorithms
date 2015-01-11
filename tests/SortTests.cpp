@@ -15,12 +15,13 @@ namespace algorithm
 {
    struct SortTester
    {
-      SortTester(size_t size)
-         : m_uniformSet(size, 1)
+      SortTester(std::ostream& stream, size_t size)
+         : m_stream(stream)
+         , m_uniformSet(size, 1)
          , m_orderedSet(size, 0)
          , m_randomSet(size, 0)
       {
-         std::cout << std::endl << "[Sort timings]" << "(" << size << " entries - in milliseconds)" << std::endl;
+         stream << std::endl << "[Sort timings]" << "(" << size << " entries - in milliseconds)" << std::endl;
          generate(m_orderedSet, 0, [](int i) { return i + 1; });
          generate(m_randomSet, 0, [](int i) { return i + 1; });
          shuffle(m_randomSet);
@@ -29,21 +30,22 @@ namespace algorithm
       template<typename Algorithm>
       void runTest(std::string const& algorithmName)
       {
-         std::cout << algorithmName << std::endl;
+         m_stream << algorithmName << std::endl;
 
          std::vector<int> v1 = m_uniformSet;
-         showTime(std::cout, [&](){ Algorithm::sort(v1, std::less<int>()); });
+         showTime(m_stream, [&](){ Algorithm::sort(v1, std::less<int>()); });
 
          std::vector<int> v2 = m_orderedSet;
-         showTime(std::cout, [&](){ Algorithm::sort(v2, std::less<int>()); });
-         showTime(std::cout, [&](){ Algorithm::sort(v2, std::greater<int>()); });
+         showTime(m_stream, [&](){ Algorithm::sort(v2, std::less<int>()); });
+         showTime(m_stream, [&](){ Algorithm::sort(v2, std::greater<int>()); });
          assert(isSorted(v2, std::greater<int>()));
 
          std::vector<int> v3 = m_randomSet;
-         showTime(std::cout, [&](){ Algorithm::sort(v3, std::less<int>()); });
+         showTime(m_stream, [&](){ Algorithm::sort(v3, std::less<int>()); });
          assert(isSorted(v3, std::less<int>()));
       }
 
+      std::ostream& m_stream;
       std::vector<int> m_uniformSet;
       std::vector<int> m_orderedSet;
       std::vector<int> m_randomSet;
@@ -51,9 +53,9 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   void sortingTests()
+   static void runTests(std::ostream& stream, size_t size)
    {
-      SortTester tester(50000);
+      SortTester tester(stream, size);
       tester.runTest<SelectionSort>       ("* Selection sort");
       tester.runTest<BubbleSort>          ("* Bubble sort");
       tester.runTest<InsertionSort>       ("* Insertion sort");
@@ -62,5 +64,16 @@ namespace algorithm
       tester.runTest<ThreeWayQuickSort>   ("* Quick sort");
       tester.runTest<MergeSort>           ("* Merge sort");
       tester.runTest<SystemSort>          ("* System sort");
+   }
+
+   void sortingTests()
+   {
+      std::ostringstream temp;
+      runTests(temp, 10);
+   }
+
+   void sortingPerfTests()
+   {
+      runTests(std::cout, 50000);
    }
 }
