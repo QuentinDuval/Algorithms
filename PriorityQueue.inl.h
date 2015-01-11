@@ -5,6 +5,11 @@
 namespace algorithm
 {
    template<typename Key, typename Less>
+   MaxPriorityQueue<Key, Less>::MaxPriorityQueue()
+      : m_less(), m_keys()
+   {}
+
+   template<typename Key, typename Less>
    MaxPriorityQueue<Key, Less>::MaxPriorityQueue(Less less)
       : m_less(less), m_keys()
    {}

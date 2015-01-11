@@ -20,6 +20,7 @@ namespace algorithm
       template<typename Iter>
       MaxPriorityQueue(Less less, Iter first, Iter last);
       explicit MaxPriorityQueue(Less less);
+      MaxPriorityQueue();
 
       void add(Key k)
       {

@@ -23,7 +23,22 @@ namespace algorithm
       checker.assertE([&queue]{ queue.top(); });
    }
 
-   static void basicTests()
+   static void queueTests()
+   {
+      MaxPriorityQueue<std::string> maxQueue;
+      MinPriorityQueue<std::string> minQueue;
+
+      for (auto& i : { "A", "C", "B" })
+      {
+         maxQueue.add(i);
+         minQueue.add(i);
+      }
+
+      checkResults(maxQueue, std::vector<std::string>{ "C", "B", "A" });
+      checkResults(minQueue, std::vector<std::string>{ "A", "B", "C" });
+   }
+
+   static void indexedQueueTests()
    {
       MaxPriorityIndexedQueue<std::string, int> maxQueue;
       MinPriorityIndexedQueue<std::string, int> minQueue;
@@ -43,6 +58,7 @@ namespace algorithm
 
    void priorityQueueTests()
    {
-      basicTests();
+      queueTests();
+      indexedQueueTests();
    }
 }
