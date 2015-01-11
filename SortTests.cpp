@@ -1,12 +1,13 @@
 #include "SortTests.h"
 
+#include "Algorithms.h"
 #include "Sort.h"
 #include "Timer.h"
-#include "Utils.h"
 
 #include <assert.h>
 #include <functional>
 #include <iostream>
+#include <string>
 #include <vector>
 
 

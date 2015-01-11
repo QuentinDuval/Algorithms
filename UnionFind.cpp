@@ -1,7 +1,8 @@
 #include "UnionFind.h"
+
+#include "Algorithms.h"
 #include "Utils.h"
 
-#include <algorithm>
 
 namespace algorithm
 {
