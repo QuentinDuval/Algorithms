@@ -34,7 +34,6 @@ namespace algorithm
       g.addVertex();
       assert(0 == adjacentCount(g, 5));
 
-
       std::istringstream stream("5 \n 0 1 \n 1 2 \n 1 3 \n 1 4; 1 5 ");
       Graph g2 = createFrom(stream);
       assert(5 == g2.vertexCount());
