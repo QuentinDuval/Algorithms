@@ -66,7 +66,7 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   template<typename Key, typename Less>
+   template<typename Key, typename Less = std::less<Key>>
    using MinPriorityQueue = MaxPriorityQueue<Key, ReverseCompare<Less>>;
 
    //--------------------------------------------------------------------------
@@ -92,7 +92,7 @@ namespace algorithm
       MaxPriorityQueue<std::pair<T, Priority>, ComparingWith<GetSecond, Less>> m_impl;
    };
 
-   template<typename T, typename Priority, typename Less>
+   template<typename T, typename Priority, typename Less = std::less<Priority>>
    using MinPriorityIndexedQueue = MaxPriorityIndexedQueue<T, Priority, ReverseCompare<Less>>;
 }
 

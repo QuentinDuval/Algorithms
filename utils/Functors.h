@@ -39,6 +39,7 @@ namespace algorithm
    template<typename Less>
    struct ReverseCompare
    {
+      ReverseCompare() : m_less() {}
       ReverseCompare(Less less) : m_less(less) {}
       Less m_less;
 

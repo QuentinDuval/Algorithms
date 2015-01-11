@@ -8,23 +8,41 @@
 
 namespace algorithm
 {
-   void priorityQueueTests()
+   template <typename Queue, typename Result>
+   static void checkResults(Queue& queue, std::vector<Result> const& expected)
    {
-      MaxPriorityIndexedQueue<std::string, int> queue;
-      queue.add("A", 1);
-      queue.add("B", 3);
-      queue.add("C", 2);
-
-      assert("B" == queue.top());
-      assert("B" == queue.top());
-      queue.pop();
-      assert("C" == queue.top());
-      queue.pop();
-      assert("A" == queue.top());
-      queue.pop();
+      for (auto& e : expected)
+      {
+         assert(e == queue.top());
+         assert(e == queue.top());
+         queue.pop();
+      }
 
       ExceptionChecker<EmptyQueueException> checker;
       checker.assertE([&queue]{ queue.pop(); });
       checker.assertE([&queue]{ queue.top(); });
+   }
+
+   static void basicTests()
+   {
+      MaxPriorityIndexedQueue<std::string, int> maxQueue;
+      MinPriorityIndexedQueue<std::string, int> minQueue;
+
+      auto inputs = { std::make_pair("A", 1), std::make_pair("B", 3), std::make_pair("C", 2) };
+      for (auto& i : inputs)
+      {
+         maxQueue.add(i.first, i.second);
+         minQueue.add(i.first, i.second);
+      }
+
+      checkResults(maxQueue, std::vector<std::string>{ "B", "C", "A" });
+      checkResults(minQueue, std::vector<std::string>{ "A", "C", "B" });
+   }
+
+   //--------------------------------------------------------------------------
+
+   void priorityQueueTests()
+   {
+      basicTests();
    }
 }
