@@ -35,16 +35,12 @@ namespace algorithm
       return m_adjacencyLists.size() - 1;
    }
 
-   Graph::edge_iterator Graph::beginAdj(size_t v) const
+   Range<Graph::edge_it> Graph::adjacents(size_t v) const
    {
       checkVertexId(v);
-      return begin(m_adjacencyLists[v]);
-   }
-
-   Graph::edge_iterator Graph::endAdj(size_t v) const
-   {
-      checkVertexId(v);
-      return end(m_adjacencyLists[v]);
+      auto b = begin(m_adjacencyLists[v]);
+      auto e = end(m_adjacencyLists[v]);
+      return Range<Graph::edge_it>(b, e);
    }
 
    void Graph::checkVertexId(size_t id) const
@@ -55,7 +51,7 @@ namespace algorithm
 
    size_t adjacentCount(Graph const& g, size_t v)
    {
-      return std::distance(g.beginAdj(v), g.endAdj(v));
+      return g.adjacents(v).size();
    }
 
    Graph createFrom(std::istream& is)

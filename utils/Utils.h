@@ -8,6 +8,24 @@
 namespace algorithm
 {
    template<typename Iterator>
+   class Range
+   {
+   public:
+      Range(Iterator first, Iterator last)
+         : m_first(first), m_last(last) {}
+
+      Iterator begin()  const { return m_first; }
+      Iterator end()    const { return m_last; }
+      size_t   size()   const { return std::distance(m_first, m_last); }
+
+   private:
+      Iterator m_first;
+      Iterator m_last;
+   };
+
+   //--------------------------------------------------------------------------
+
+   template<typename Iterator>
    void advance(Iterator& current, Iterator end,
       typename std::iterator_traits<Iterator>::difference_type n = 1)
    {

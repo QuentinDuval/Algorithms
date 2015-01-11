@@ -28,8 +28,7 @@ namespace algorithm
       ExceptionChecker<InvalidVertex> tester;
       tester.assertE([&]{ g.addEdge(1, 5); });
       tester.assertE([&]{ g.addEdge(5, 1); });
-      tester.assertE([&]{ g.beginAdj(5); });
-      tester.assertE([&]{ g.endAdj(5); });
+      tester.assertE([&]{ g.adjacents(5); });
 
       g.addVertex();
       assert(0 == adjacentCount(g, 5));

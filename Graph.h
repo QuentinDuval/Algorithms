@@ -2,6 +2,7 @@
 
 #include "GraphExceptions.h"
 #include "utils/Algorithms.h"
+#include "utils/Utils.h"
 
 #include <istream>
 #include <vector>
@@ -16,20 +17,18 @@ namespace algorithm
    class Graph
    {
    public:
-      using AdjList  = std::vector<size_t>;
-      using edge_iterator = AdjList::const_iterator;
+      using AdjList = std::vector<size_t>;
+      using edge_it = AdjList::const_iterator;
 
    public:
       explicit Graph(size_t vertexCount);
       ~Graph() = default;
 
-      size_t vertexCount () const;
-      size_t edgeCount   () const;
-      void   addEdge     (size_t x, size_t y);
-      size_t addVertex   ();
-      
-      edge_iterator beginAdj (size_t v) const;
-      edge_iterator endAdj   (size_t v) const;
+      size_t         vertexCount () const;
+      size_t         edgeCount   () const;
+      void           addEdge     (size_t x, size_t y);
+      size_t         addVertex   ();
+      Range<edge_it> adjacents   (size_t v) const;
 
    private:
       void checkVertexId(size_t id) const;
