@@ -28,5 +28,8 @@ namespace algorithm
       tester.assertE([&]{ g.addEdge(5, 1); });
       tester.assertE([&]{ g.beginAdj(5); });
       tester.assertE([&]{ g.endAdj(5); });
+
+      g.addVertex();
+      assert(0 == adjacentCount(g, 5));
    }
 }

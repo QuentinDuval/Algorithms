@@ -37,6 +37,12 @@ namespace algorithm
          m_adjacencyLists[y].push_back(x);
       }
 
+      size_t addVertex()
+      {
+         m_adjacencyLists.emplace_back(AdjacencyList());
+         return m_adjacencyLists.size() - 1;
+      }
+
       const_iterator beginAdj(size_t v) const
       {
          checkVertexId(v);
