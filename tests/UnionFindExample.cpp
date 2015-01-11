@@ -1,4 +1,4 @@
-#include "UnionFindExample.h"
+#include "tests/UnionFindExample.h"
 
 
 namespace algorithm

@@ -1,4 +1,4 @@
-#include "UnionFindTests.h"
+#include "tests/UnionFindTests.h"
 
 #include "UnionFind.h"
 #include "UnionFindExample.h"

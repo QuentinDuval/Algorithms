@@ -1,7 +1,7 @@
-#include "PriorityQueueTests.h"
-#include "SortTests.h"
-#include "SubStringSearchTests.h"
-#include "UnionFindTests.h"
+#include "tests/PriorityQueueTests.h"
+#include "tests/SortTests.h"
+#include "tests/SubStringSearchTests.h"
+#include "tests/UnionFindTests.h"
 #include <iostream>
 
 using namespace algorithm;

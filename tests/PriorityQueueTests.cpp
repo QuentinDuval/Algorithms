@@ -1,4 +1,5 @@
-#include "PriorityQueueTests.h"
+#include "tests/PriorityQueueTests.h"
+
 #include "PriorityQueue.h"
 #include "utils/TestUtils.h"
 

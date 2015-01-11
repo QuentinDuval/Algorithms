@@ -1,4 +1,5 @@
-#include "SubStringSearchTests.h"
+#include "tests/SubStringSearchTests.h"
+
 #include "SubStringSearch.h"
 #include "utils/Timer.h"
 #include "utils/Utils.h"
