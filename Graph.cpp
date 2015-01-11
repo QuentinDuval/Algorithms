@@ -17,7 +17,7 @@ namespace algorithm
    size_t Graph::edgeCount() const
    {
       size_t count = accumulate(m_adjacencyLists, 0,
-         [](size_t s, AdjacencyList const& adj){ return s + adj.size(); });
+         [](size_t s, AdjList const& adj){ return s + adj.size(); });
       return count / 2;
    }
 
@@ -31,7 +31,7 @@ namespace algorithm
 
    size_t Graph::addVertex()
    {
-      m_adjacencyLists.emplace_back(AdjacencyList());
+      m_adjacencyLists.emplace_back(AdjList());
       return m_adjacencyLists.size() - 1;
    }
 
@@ -82,5 +82,10 @@ namespace algorithm
          }
       }
       return g;
+   }
+
+   void serializeTo(std::ostream& os, Graph const& g)
+   {
+      //TODO
    }
 }
