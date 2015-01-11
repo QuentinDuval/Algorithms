@@ -7,6 +7,15 @@
 using namespace algorithm;
 
 
+static bool runPerformanceTests()
+{
+   std::cout << std::endl << "Run performance test? ";
+   char res;
+   std::cin >> res;
+   return res == 'y';
+}
+
+
 int main()
 {
    unionFindTests();
@@ -15,10 +24,7 @@ int main()
    sortingTests();
    subStringSearchTests();
 
-   std::cout << std::endl << "Run performance test?" << std::endl;
-   char res;
-   std::cin >> res;
-   if (res == 'y')
+   if (runPerformanceTests())
    {
       unionFindPerfTests();
       sortingPerfTests();
