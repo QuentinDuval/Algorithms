@@ -3,6 +3,8 @@
 #include "Sort.h"
 #include "Timer.h"
 #include "Utils.h"
+
+#include <assert.h>
 #include <functional>
 #include <iostream>
 #include <vector>
