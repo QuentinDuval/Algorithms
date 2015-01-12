@@ -16,17 +16,27 @@ namespace algorithm
       if (v >= m_marked.size())
          throw InvalidVertex(v);
 
-      searchImpl(v);
+      static auto nullListener = [](size_t){};
+      searchImpl(v, nullListener);
    }
 
-   void DepthFirstSearch::searchImpl(size_t v)
+   void DepthFirstSearch::searchFrom(size_t v, OnMarked listener)
    {
+      if (v >= m_marked.size())
+         throw InvalidVertex(v);
+
+      searchImpl(v, listener);
+   }
+
+   void DepthFirstSearch::searchImpl(size_t v, OnMarked listener)
+   {
+      listener(v);
       m_marked[v] = true;
       ++m_count;
 
       for (auto const& w : m_graph.adjacents(v))
          if (!isMarked(w))
-            searchImpl(w);
+            searchImpl(w, listener);
    }
 
    bool DepthFirstSearch::isMarked(size_t v) const
