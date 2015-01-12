@@ -71,8 +71,9 @@ namespace algorithm
          if (isMarked(current))
             continue;
          
-         m_marked[current] = true;
          listener(current);
+         m_marked[current] = true;
+         ++m_count;
 
          for (auto neighbor : m_graph.adjacents(current))
             if (!isMarked(neighbor))
