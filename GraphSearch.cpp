@@ -19,17 +19,13 @@ namespace algorithm
 
    void GraphSearch::searchFrom(size_t v, OnMarked listener)
    {
-      if (v >= m_marked.size())
-         throw InvalidVertex(v);
-
+      if (v >= m_marked.size()) throw InvalidVertex(v);
       searchImpl(v, listener);
    }
 
    bool GraphSearch::isMarked(size_t v) const
    {
-      if (v >= m_marked.size())
-         throw InvalidVertex(v);
-
+      if (v >= m_marked.size()) throw InvalidVertex(v);
       return m_marked[v];
    }
 
@@ -46,13 +42,16 @@ namespace algorithm
 
    void DepthFirstSearch::searchImpl(size_t v, OnMarked listener)
    {
+      if (isMarked(v))
+         return;
+
       listener(v);
       m_marked[v] = true;
       ++m_count;
 
-      for (auto const& w : m_graph.adjacents(v))
-         if (!isMarked(w))
-            searchImpl(w, listener);
+      for (auto const& neighbor : m_graph.adjacents(v))
+         if (!isMarked(neighbor))
+            searchImpl(neighbor, listener);
    }
 
    //--------------------------------------------------------------------------

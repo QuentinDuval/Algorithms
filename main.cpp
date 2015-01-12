@@ -1,3 +1,4 @@
+#include "tests/GraphSearchTests.h"
 #include "tests/GraphTests.h"
 #include "tests/PriorityQueueTests.h"
 #include "tests/SortTests.h"
@@ -20,6 +21,7 @@ static bool runPerformanceTests()
 int main()
 {
    graphTests();
+   graphSearchTests();
    unionFindTests();
    unionFindExample();
    priorityQueueTests();
