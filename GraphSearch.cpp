@@ -50,8 +50,7 @@ namespace algorithm
       ++m_count;
 
       for (auto const& neighbor : m_graph.adjacents(v))
-         if (!isMarked(neighbor))
-            searchImpl(neighbor, listener);
+         searchImpl(neighbor, listener);
    }
 
    //--------------------------------------------------------------------------
@@ -69,16 +68,15 @@ namespace algorithm
       {
          auto current = toScan.front();
          toScan.pop_front();
+         if (isMarked(current))
+            continue;
+         
+         m_marked[current] = true;
+         listener(current);
 
-         if (!isMarked(current))
-         {
-            m_marked[current] = true;
-            listener(current);
-
-            for (auto neighbor : m_graph.adjacents(current))
-               if (!isMarked(neighbor))
-                  toScan.push_back(neighbor);
-         }
+         for (auto neighbor : m_graph.adjacents(current))
+            if (!isMarked(neighbor))
+               toScan.push_back(neighbor);
       }
    }
 }
