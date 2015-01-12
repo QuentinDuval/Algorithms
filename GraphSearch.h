@@ -6,14 +6,14 @@
 
 namespace algorithm
 {
-   class DepthFirstSearch
+   class GraphSearch
    {
    public:
       using OnMarked = std::function<void(size_t)>;
 
    public:
-      explicit DepthFirstSearch(Graph const& g);
-      ~DepthFirstSearch() = default;
+      explicit GraphSearch(Graph const& g);
+      virtual ~GraphSearch() = default;
 
       void searchFrom   (size_t v);
       void searchFrom   (size_t v, OnMarked listener);
@@ -21,9 +21,9 @@ namespace algorithm
       bool allMarked    () const;
 
    private:
-      void searchImpl   (size_t v, OnMarked listener);
+      virtual void searchImpl   (size_t v, OnMarked listener) = 0;
 
-   private:
+   protected:
       size_t m_count;
       std::vector<bool> m_marked;
       Graph const& m_graph;
@@ -31,26 +31,25 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   class BreathFirstSearch
+   class DepthFirstSearch : public GraphSearch
    {
    public:
-      using OnMarked = std::function<void(size_t)>;
+      explicit DepthFirstSearch(Graph const& g);
+      virtual ~DepthFirstSearch() = default;
 
+   private:
+      void searchImpl(size_t v, OnMarked listener) override;
+   };
+
+   //--------------------------------------------------------------------------
+
+   class BreathFirstSearch : public GraphSearch
+   {
    public:
       explicit BreathFirstSearch(Graph const& g);
-      ~BreathFirstSearch() = default;
-
-      void searchFrom(size_t v);
-      void searchFrom(size_t v, OnMarked listener);
-      bool isMarked(size_t v) const;
-      bool allMarked() const;
+      virtual ~BreathFirstSearch() = default;
 
    private:
-      void searchImpl(size_t v, OnMarked listener);
-
-   private:
-      size_t m_count;
-      std::vector<bool> m_marked;
-      Graph const& m_graph;
+      void searchImpl(size_t v, OnMarked listener) override;
    };
 }

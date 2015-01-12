@@ -5,25 +5,44 @@
 
 namespace algorithm
 {
-   DepthFirstSearch::DepthFirstSearch(Graph const& g)
+   GraphSearch::GraphSearch(Graph const& g)
       : m_count(0)
       , m_marked(g.vertexCount(), false)
       , m_graph(g)
    {}
 
-   void DepthFirstSearch::searchFrom(size_t v)
+   void GraphSearch::searchFrom(size_t v)
    {
       static auto nullListener = [](size_t){};
       searchFrom(v, nullListener);
    }
 
-   void DepthFirstSearch::searchFrom(size_t v, OnMarked listener)
+   void GraphSearch::searchFrom(size_t v, OnMarked listener)
    {
       if (v >= m_marked.size())
          throw InvalidVertex(v);
 
       searchImpl(v, listener);
    }
+
+   bool GraphSearch::isMarked(size_t v) const
+   {
+      if (v >= m_marked.size())
+         throw InvalidVertex(v);
+
+      return m_marked[v];
+   }
+
+   bool GraphSearch::allMarked() const
+   {
+      return m_count == m_graph.vertexCount();
+   }
+
+   //--------------------------------------------------------------------------
+
+   DepthFirstSearch::DepthFirstSearch(Graph const& g)
+      : GraphSearch(g)
+   {}
 
    void DepthFirstSearch::searchImpl(size_t v, OnMarked listener)
    {
@@ -36,53 +55,11 @@ namespace algorithm
             searchImpl(w, listener);
    }
 
-   bool DepthFirstSearch::isMarked(size_t v) const
-   {
-      if (v >= m_marked.size())
-         throw InvalidVertex(v);
-
-      return m_marked[v];
-   }
-
-   bool DepthFirstSearch::allMarked() const
-   {
-      return m_count == m_graph.vertexCount();
-   }
-
    //--------------------------------------------------------------------------
 
    BreathFirstSearch::BreathFirstSearch(Graph const& g)
-      : m_count(0)
-      , m_marked(g.vertexCount(), false)
-      , m_graph(g)
+      : GraphSearch(g)
    {}
-
-   void BreathFirstSearch::searchFrom(size_t v)
-   {
-      static OnMarked nullListener = [](size_t){};
-      searchFrom(v, nullListener);
-   }
-
-   void BreathFirstSearch::searchFrom(size_t v, OnMarked listener)
-   {
-      if (v >= m_marked.size())
-         throw InvalidVertex(v);
-
-      searchImpl(v, listener);
-   }
-
-   bool BreathFirstSearch::isMarked(size_t v) const
-   {
-      if (v >= m_marked.size())
-         throw InvalidVertex(v);
-
-      return m_marked[v];
-   }
-
-   bool BreathFirstSearch::allMarked() const
-   {
-      return m_count == m_graph.vertexCount();
-   }
 
    void BreathFirstSearch::searchImpl(size_t v, OnMarked listener)
    {
