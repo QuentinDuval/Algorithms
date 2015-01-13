@@ -82,6 +82,6 @@ namespace algorithm
 
    void serializeTo(std::ostream& os, Graph const& g)
    {
-      //TODO - Pre-requisite: algorithm to look for each edge exactly once
+      //TODO - Remove duplicated edges
    }
 }
