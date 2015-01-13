@@ -9,6 +9,7 @@ namespace algorithm
    class GraphSearch
    {
    public:
+      //TODO - Replace by strategy for pre-order & post-order
       using OnMarked = std::function<void(size_t)>;
 
    public:
