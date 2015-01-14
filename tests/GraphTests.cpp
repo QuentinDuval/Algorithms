@@ -1,6 +1,7 @@
 #include "tests/GraphTests.h"
 
 #include "Graph.h"
+#include "SymbolGraph.h"
 #include "utils/TestUtils.h"
 
 #include <assert.h>
@@ -37,5 +38,14 @@ namespace algorithm
       Graph g2 = createFrom(stream);
       assert(5 == g2.vertexCount());
       assert(4 == g2.edgeCount());
+   }
+
+   void symbolGraphTests()
+   {
+      auto inputs = { "a", "b", "c", "d", "e" };
+      SymbolGraph<std::string> g(begin(inputs), end(inputs));
+      g.addEdge("a", "b");
+      g.addEdge("a", "c");
+      g.addEdge("d", "e");
    }
 }

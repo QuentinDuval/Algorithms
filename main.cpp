@@ -21,6 +21,7 @@ static bool runPerformanceTests()
 int main()
 {
    graphTests();
+   symbolGraphTests();
    graphSearchTests();
    unionFindTests();
    unionFindExample();
