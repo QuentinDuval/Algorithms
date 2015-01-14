@@ -1,5 +1,6 @@
 #include "tests/GraphTests.h"
 
+#include "ConnectedComponents.h"
 #include "Graph.h"
 #include "GraphSearch.h"
 #include "utils/TestUtils.h"
@@ -44,6 +45,23 @@ namespace algorithm
       assert(false == bfs.allMarked());
       runTest(bfs, 9, "9");
       assert(true == bfs.allMarked());
+   }
+
+   void connectedComponentsTests()
+   {
+      Graph g(6);
+      std::vector<std::pair<size_t, size_t>> inputs{ { 0, 1 }, { 0, 2 }, { 1, 2 }, { 3, 4 } };
+
+      for (auto p : inputs)
+         g.addEdge(p.first, p.second);
+
+      ConnectedComponents cc(g);
+      assert(3 == cc.componentCount());
+      assert(true == cc.connected(0, 0));
+      assert(true == cc.connected(0, 2));
+      assert(true == cc.connected(3, 4));
+      assert(false == cc.connected(0, 3));
+      assert(false == cc.connected(3, 5));
    }
 
    void symbolGraphSearchTests()

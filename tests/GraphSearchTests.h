@@ -5,4 +5,5 @@ namespace algorithm
 {
    void graphSearchTests();
    void symbolGraphSearchTests();
+   void connectedComponentsTests();
 }

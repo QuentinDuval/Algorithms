@@ -24,6 +24,7 @@ int main()
    symbolGraphTests();
    graphSearchTests();
    symbolGraphSearchTests();
+   connectedComponentsTests();
 
    unionFindTests();
    unionFindExample();
