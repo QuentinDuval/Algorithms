@@ -47,5 +47,8 @@ namespace algorithm
       g.addEdge("a", "b");
       g.addEdge("a", "c");
       g.addEdge("d", "e");
+
+      assert(5 == g.vertexCount());
+      assert(3 == g.edgeCount());
    }
 }

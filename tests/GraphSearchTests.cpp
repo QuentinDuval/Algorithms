@@ -45,4 +45,20 @@ namespace algorithm
       runTest(bfs, 9, "9");
       assert(true == bfs.allMarked());
    }
+
+   void symbolGraphSearchTests()
+   {
+      auto inputs = { "a", "b", "c", "d", "e" };
+      SymbolGraph<std::string> g(begin(inputs), end(inputs));
+      g.addEdge("a", "b");
+      g.addEdge("a", "c");
+      g.addEdge("d", "e");
+
+      std::ostringstream str;
+      auto out = [&str](std::string const& v) { str << v; };
+      SymbolDepthFirstSearch<std::string> dfs(g);
+      dfs.searchFrom("a", out);
+      dfs.searchFrom("d", out);
+      assert("abcde" == str.str());
+   }
 }

@@ -23,6 +23,8 @@ int main()
    graphTests();
    symbolGraphTests();
    graphSearchTests();
+   symbolGraphSearchTests();
+
    unionFindTests();
    unionFindExample();
    priorityQueueTests();

@@ -45,7 +45,8 @@ namespace algorithm
       {
          std::vector<T> out;
          auto range = m_graph.adjacents(idFromSymbol(v));
-      std:transform(begin(range), end(range), std::back_inserter(out), [this](size_t v) { return symbolFromId(v); });
+         std:transform(begin(range), end(range), std::back_inserter(out),
+            [this](size_t v) { return symbolFromId(v); });
          return out;
       }
 
