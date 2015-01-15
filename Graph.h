@@ -30,6 +30,9 @@ namespace algorithm
       size_t         addVertex   ();
       Range<edge_it> adjacents   (size_t v) const;
 
+   public:
+      static Graph createFrom(std::istream&);
+
    private:
       DiGraph m_impl;
    };
@@ -40,6 +43,5 @@ namespace algorithm
    //--------------------------------------------------------------------------
 
    size_t adjacentCount (Graph const& g, size_t v);
-   Graph  createFrom    (std::istream&);
    void   serializeTo   (std::ostream&, Graph const&);
 }

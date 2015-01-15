@@ -35,23 +35,18 @@ namespace algorithm
       return m_impl.adjacents(v);
    }
 
-   size_t adjacentCount(Graph const& g, size_t v)
-   {
-      return g.adjacents(v).size();
-   }
-
-   Graph createFrom(std::istream& is)
+   Graph Graph::createFrom(std::istream& is)
    {
       size_t vertexCount = 0;
       is >> vertexCount;
-      
+
       Graph g(vertexCount);
       while (is)
       {
          int next = is.peek();
          if (next == ';')
             break;
-         
+
          if (!std::isdigit(next))
          {
             is.get();
@@ -64,6 +59,11 @@ namespace algorithm
          }
       }
       return g;
+   }
+
+   size_t adjacentCount(Graph const& g, size_t v)
+   {
+      return g.adjacents(v).size();
    }
 
    void serializeTo(std::ostream& os, Graph const& g)
