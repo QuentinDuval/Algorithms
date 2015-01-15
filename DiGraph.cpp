@@ -89,6 +89,10 @@ namespace algorithm
 
    void serializeTo(std::ostream& os, DiGraph const& g)
    {
-      //TODO
+      os << std::endl << g.vertexCount() << std::endl;
+      for (size_t v = 0; v < g.vertexCount(); ++v)
+         for (auto w : g.adjacents(v))
+            os << v << " " << w << std::endl;
+      os << ";";
    }
 }
