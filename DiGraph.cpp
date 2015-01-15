@@ -51,4 +51,13 @@ namespace algorithm
    {
       return g.adjacents(v).size();
    }
+
+   DiGraph makeReversed(DiGraph const& g)
+   {
+      DiGraph rg(g.vertexCount());
+      for (size_t v = 0; v < g.vertexCount(); ++v)
+         for (auto w : g.adjacents(v))
+            rg.addEdge(w, v);
+      return rg;
+   }
 }

@@ -44,5 +44,6 @@ namespace algorithm
    //--------------------------------------------------------------------------
 
    size_t   adjacentCount(DiGraph const& g, size_t v);
+   DiGraph  makeReversed (DiGraph const& g);
 }
 
