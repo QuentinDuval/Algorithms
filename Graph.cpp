@@ -37,27 +37,11 @@ namespace algorithm
 
    Graph Graph::createFrom(std::istream& is)
    {
-      size_t vertexCount = 0;
-      is >> vertexCount;
-
-      Graph g(vertexCount);
-      while (is)
-      {
-         int next = is.peek();
-         if (next == ';')
-            break;
-
-         if (!std::isdigit(next))
-         {
-            is.get();
-         }
-         else
-         {
-            int v = 0, w = 0;
-            is >> v >> w;
-            g.addEdge(v, w);
-         }
-      }
+      DiGraph dg = DiGraph::createFrom(is);
+      Graph g(dg.vertexCount());
+      for (size_t v = 0; v < dg.vertexCount(); ++v)
+         for (auto w : dg.adjacents(v))
+            g.addEdge(w, v);
       return g;
    }
 

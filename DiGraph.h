@@ -30,6 +30,9 @@ namespace algorithm
       size_t         addVertex();
       Range<edge_it> adjacents(size_t v) const;
 
+   public:
+      static DiGraph createFrom(std::istream&);
+
    private:
       void checkVertexId(size_t id) const;
 
