@@ -44,7 +44,5 @@ namespace algorithm
    //--------------------------------------------------------------------------
 
    size_t   adjacentCount(DiGraph const& g, size_t v);
-   DiGraph  createFrom(std::istream&);
-   void     serializeTo(std::ostream&, DiGraph const&);
 }
 

@@ -51,35 +51,4 @@ namespace algorithm
    {
       return g.adjacents(v).size();
    }
-
-   DiGraph createFrom(std::istream& is)
-   {
-      size_t vertexCount = 0;
-      is >> vertexCount;
-
-      DiGraph g(vertexCount);
-      while (is)
-      {
-         int next = is.peek();
-         if (next == ';')
-            break;
-
-         if (!std::isdigit(next))
-         {
-            is.get();
-         }
-         else
-         {
-            int v = 0, w = 0;
-            is >> v >> w;
-            g.addEdge(v, w);
-         }
-      }
-      return g;
-   }
-
-   void serializeTo(std::ostream& os, DiGraph const& g)
-   {
-      //TODO
-   }
 }

@@ -6,47 +6,33 @@
 namespace algorithm
 {
    Graph::Graph(size_t vertexCount)
-      : m_adjacencyLists(vertexCount)
+      : m_impl(vertexCount)
    {}
 
    size_t Graph::vertexCount() const
    {
-      return m_adjacencyLists.size();
+      return m_impl.vertexCount();
    }
 
    size_t Graph::edgeCount() const
    {
-      size_t count = accumulate(m_adjacencyLists, 0,
-         [](size_t s, AdjList const& adj){ return s + adj.size(); });
-      return count / 2;
+      return m_impl.edgeCount() / 2;
    }
 
    void Graph::addEdge(size_t x, size_t y)
    {
-      checkVertexId(x);
-      checkVertexId(y);
-      m_adjacencyLists[x].push_back(y);
-      m_adjacencyLists[y].push_back(x);
+      m_impl.addEdge(x, y);
+      m_impl.addEdge(y, x);
    }
 
    size_t Graph::addVertex()
    {
-      m_adjacencyLists.emplace_back(AdjList());
-      return m_adjacencyLists.size() - 1;
+      return m_impl.addVertex();
    }
 
    Range<Graph::edge_it> Graph::adjacents(size_t v) const
    {
-      checkVertexId(v);
-      auto b = begin(m_adjacencyLists[v]);
-      auto e = end(m_adjacencyLists[v]);
-      return Range<Graph::edge_it>(b, e);
-   }
-
-   void Graph::checkVertexId(size_t id) const
-   {
-      if (id >= m_adjacencyLists.size())
-         throw InvalidVertex(id);
+      return m_impl.adjacents(v);
    }
 
    size_t adjacentCount(Graph const& g, size_t v)

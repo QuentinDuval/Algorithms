@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GraphExceptions.h"
+#include "DiGraph.h"
 #include "utils/Algorithms.h"
 #include "utils/Utils.h"
 
@@ -17,8 +18,7 @@ namespace algorithm
    class Graph
    {
    public:
-      using AdjList = std::vector<size_t>;
-      using edge_it = AdjList::const_iterator;
+      using edge_it = DiGraph::edge_it;
 
    public:
       explicit Graph(size_t vertexCount);
@@ -31,10 +31,7 @@ namespace algorithm
       Range<edge_it> adjacents   (size_t v) const;
 
    private:
-      void checkVertexId(size_t id) const;
-
-   private:
-      std::vector<AdjList> m_adjacencyLists;
+      DiGraph m_impl;
    };
 
 
