@@ -11,7 +11,7 @@
 namespace algorithm
 {
    //--------------------------------------------------------------------------
-   // Unweighted and undirected Graph
+   // Unweighted and directed Graph
    //--------------------------------------------------------------------------
 
    class DiGraph
