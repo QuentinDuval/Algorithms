@@ -24,14 +24,14 @@ namespace algorithm
       explicit DiGraph(size_t vertexCount);
       ~DiGraph() = default;
 
-      size_t         vertexCount() const;
-      size_t         edgeCount() const;
-      void           addEdge(size_t x, size_t y);
-      size_t         addVertex();
-      Range<edge_it> adjacents(size_t v) const;
+      size_t         vertexCount () const;
+      size_t         edgeCount   () const;
+      void           addEdge     (size_t x, size_t y);
+      size_t         addVertex   ();
+      Range<edge_it> adjacents   (size_t v) const;
 
    public:
-      static DiGraph createFrom(std::istream&);
+      static DiGraph createFrom  (std::istream&);
 
    private:
       void checkVertexId(size_t id) const;

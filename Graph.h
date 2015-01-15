@@ -31,7 +31,7 @@ namespace algorithm
       Range<edge_it> adjacents   (size_t v) const;
 
    public:
-      static Graph createFrom(std::istream&);
+      static Graph   createFrom  (std::istream&);
 
    private:
       DiGraph m_impl;
