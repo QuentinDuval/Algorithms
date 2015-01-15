@@ -52,6 +52,6 @@ namespace algorithm
 
    void serializeTo(std::ostream& os, Graph const& g)
    {
-      //TODO - Remove duplicated edges
+      //TODO - Remove duplicated edges (unordered_map with a count?)
    }
 }
