@@ -41,7 +41,7 @@ namespace algorithm
       Graph g(dg.vertexCount());
       for (size_t v = 0; v < dg.vertexCount(); ++v)
          for (auto w : dg.adjacents(v))
-            g.addEdge(w, v);
+            g.addEdge(v, w);
       return g;
    }
 

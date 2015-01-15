@@ -86,4 +86,9 @@ namespace algorithm
             rg.addEdge(w, v);
       return rg;
    }
+
+   void serializeTo(std::ostream& os, DiGraph const& g)
+   {
+      //TODO
+   }
 }
