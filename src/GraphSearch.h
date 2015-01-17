@@ -40,7 +40,7 @@ namespace algorithm
       void markFrom(size_t v)
       {
          static auto nullListener = [](Edge const&){};
-         searchFrom(v, nullListener);
+         searchImpl(v, nullListener);
       }
 
       void markFrom(size_t v, std::function<void(size_t)> onVertexMarked)
@@ -49,10 +49,16 @@ namespace algorithm
             onVertexMarked(v);
 
          auto listener = [onVertexMarked](Edge const& e){ onVertexMarked(e.to()); };
-         searchFrom(v, listener);
+         searchImpl(v, listener);
       }
 
-      virtual void searchFrom(size_t v, OnMarked listener) = 0;
+      void searchFrom(size_t v, OnMarked listener)
+      {
+         searchImpl(v, listener);
+      }
+
+   private:
+      virtual void searchImpl(size_t v, OnMarked listener) = 0;
 
    private:
       size_t m_count;

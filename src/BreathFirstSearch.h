@@ -28,7 +28,8 @@ namespace algorithm
 
       virtual ~BFS() = default;
 
-      void searchFrom(size_t v, OnMarked listener)
+   private:
+      void searchImpl(size_t v, OnMarked listener)
       {
          if (isMarked(v))
             return;

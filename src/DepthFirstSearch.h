@@ -29,17 +29,17 @@ namespace algorithm
 
       virtual ~DFS() = default;
 
-      void searchFrom(size_t v, OnMarked listener)
+   private:
+      void searchImpl(size_t v, OnMarked listener)
       {
          if (isMarked(v))
             return;
 
          mark(v);
-         searchImpl(v, listener);
+         searchImplRec(v, listener);
       }
 
-   private:
-      void searchImpl(size_t v, OnMarked listener)
+      void searchImplRec(size_t v, OnMarked listener)
       {
          for (auto e : m_graph.edgesFrom(v))
          {
@@ -49,7 +49,7 @@ namespace algorithm
 
             listener(e);
             mark(a);
-            searchImpl(a, listener);
+            searchImplRec(a, listener);
          }
       }
 
