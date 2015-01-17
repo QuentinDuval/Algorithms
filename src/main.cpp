@@ -22,8 +22,9 @@ static bool runPerformanceTests()
 int main()
 {
    graphTests();
-   symbolGraphTests();
    graphSearchTests();
+   symbolGraphTests();
+   weightedGraphSearchTests();
    symbolGraphSearchTests();
    connectedComponentsTests();
 

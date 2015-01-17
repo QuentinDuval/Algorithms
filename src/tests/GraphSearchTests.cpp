@@ -1,10 +1,9 @@
 #include "tests/GraphTests.h"
 
-#include "ConnectedComponents.h"
 #include "BreathFirstSearch.h"
 #include "DepthFirstSearch.h"
 #include "Graph.h"
-#include "GraphSearch.h"
+#include "WeightedGraph.h"
 #include "utils/TestUtils.h"
 
 #include <assert.h>
@@ -47,6 +46,26 @@ namespace algorithm
       assert(false == bfs.allMarked());
       runTest(bfs, 9, "9");
       assert(true == bfs.allMarked());
+   }
+
+   void weightedGraphSearchTests()
+   {
+      WeightedGraph g(10);
+      std::vector<WeightedEdge> inputs{
+         { 0, 1, 1. }, { 0, 2, 1. }, { 0, 3, 1. },
+         { 1, 2, 1. }, { 1, 4, 1. }, { 1, 5, 1. },
+         { 2, 2, 1. }, { 2, 3, 1. }, { 2, 7, 1. },
+         { 3, 6, 1. }, { 3, 7, 1. }, { 3, 8, 1. },
+      };
+
+      for (auto e : inputs)
+         g.addEdge(e);
+
+      DFS<WeightedEdge> dfs(g);
+      runTest(dfs, 0, "012367845");
+
+      BFS<WeightedEdge> bfs(g);
+      runTest(bfs, 0, "012345768");
    }
 
    void symbolGraphSearchTests()
