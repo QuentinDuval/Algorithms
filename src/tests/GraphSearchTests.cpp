@@ -1,6 +1,8 @@
 #include "tests/GraphTests.h"
 
 #include "ConnectedComponents.h"
+#include "BreathFirstSearch.h"
+#include "DepthFirstSearch.h"
 #include "Graph.h"
 #include "GraphSearch.h"
 #include "utils/TestUtils.h"
@@ -32,14 +34,14 @@ namespace algorithm
       for (auto e : inputs)
          g.addEdge(e);
 
-      DepthFirstSearch dfs(g);
+      DFS<Edge> dfs(g);
       runTest(dfs, 0, "012367845");
       runTest(dfs, 0, "");
       assert(false == dfs.allMarked());
       runTest(dfs, 9, "9");
       assert(true == dfs.allMarked());
 
-      BreathFirstSearch bfs(g);
+      BFS<Edge> bfs(g);
       runTest(bfs, 0, "012345768");
       runTest(bfs, 0, "");
       assert(false == bfs.allMarked());

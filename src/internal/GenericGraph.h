@@ -54,6 +54,11 @@ namespace algorithm
          return m_impl.adjacents(v);
       }
 
+      DiGraphImpl const& toDiGraph() const
+      {
+         return m_impl;
+      }
+
       template<typename ReadEdge>
       static GenericGraph<Edge> createFrom(std::istream&, ReadEdge);
 

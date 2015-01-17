@@ -1,5 +1,5 @@
 #include "ConnectedComponents.h"
-#include "GraphSearch.h"
+#include "DepthFirstSearch.h"
 
 
 namespace algorithm
@@ -8,7 +8,7 @@ namespace algorithm
       : m_componentCount(0)
       , m_componentIds(g.vertexCount(), 0)
    {
-      DepthFirstSearch dfs(g);
+      DFS<Edge> dfs(g);
       for (size_t i = 0; i < g.vertexCount(); ++i)
       {
          if (dfs.isMarked(i))
