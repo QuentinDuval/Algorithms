@@ -1,13 +1,7 @@
 #pragma once
 
-#include "GraphExceptions.h"
-#include "DiGraph.h"
+#include "Edge.h"
 #include "internal/GenericGraph.h"
-#include "utils/Algorithms.h"
-#include "utils/Utils.h"
-
-#include <istream>
-#include <vector>
 
 
 namespace algorithm
@@ -17,11 +11,6 @@ namespace algorithm
    //--------------------------------------------------------------------------
 
    using Graph = GenericGraph<Edge>;
-
-
-   //--------------------------------------------------------------------------
-   // Helpers
-   //--------------------------------------------------------------------------
 
    Graph graphFrom(std::istream&);
    void  graphTo  (std::ostream&, Graph const&);
