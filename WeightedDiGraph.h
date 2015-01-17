@@ -1,37 +1,40 @@
 #pragma once
-
 #include "GenericDiGraph.h"
 #include "GraphExceptions.h"
 #include "utils/Algorithms.h"
 #include "utils/Utils.h"
 
-#include <istream>
+#include <functional>
 #include <vector>
 
 
 namespace algorithm
 {
    //--------------------------------------------------------------------------
-   // Unweighted and directed Graph
+   // Weighted and directed Graph
    //--------------------------------------------------------------------------
 
-   class Edge
+   class WeightedEdge
    {
    public:
-      Edge(size_t to);
+      WeightedEdge(size_t to, double weight);
+      ~WeightedEdge() = default;
+
       size_t to() const;
+      double weight() const;
 
    private:
       size_t m_to;
+      double m_weight;
    };
 
-   using DiGraph = GenericDiGraph<Edge>;
+   using WeightedDiGraph = GenericDiGraph<WeightedEdge>;
+
 
    //--------------------------------------------------------------------------
    // Helpers
    //--------------------------------------------------------------------------
 
-   DiGraph  diGraphFrom (std::istream&);
-   void     diGraphTo   (std::ostream&, DiGraph const&);
+   WeightedDiGraph weightedDiGraphFrom(std::istream&);
+   void serializeTo(std::ostream&, WeightedDiGraph const&);
 }
-

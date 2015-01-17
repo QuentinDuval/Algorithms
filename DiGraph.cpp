@@ -5,94 +5,30 @@
 
 namespace algorithm
 {
-   DiGraph::DiGraph(size_t vertexCount)
-      : m_adjacencyLists(vertexCount)
+   Edge::Edge(size_t to)
+      : m_to(to)
    {}
 
-   size_t DiGraph::vertexCount() const
+   size_t Edge::to() const
    {
-      return m_adjacencyLists.size();
+      return m_to;
    }
 
-   size_t DiGraph::edgeCount() const
+   //--------------------------------------------------------------------------
+
+   DiGraph diGraphFrom(std::istream& is)
    {
-      return m_count;
+      return DiGraph::createFrom(is, [](std::istream& is) {
+         size_t w = 0;
+         is >> w;
+         return Edge(w);
+      });
    }
 
-   void DiGraph::addEdge(size_t x, size_t y)
+   void diGraphTo(std::ostream& os, DiGraph const& g)
    {
-      checkVertexId(x);
-      checkVertexId(y);
-      m_adjacencyLists[x].push_back(y);
-      ++m_count;
-   }
-
-   size_t DiGraph::addVertex()
-   {
-      m_adjacencyLists.emplace_back(AdjList());
-      return m_adjacencyLists.size() - 1;
-   }
-
-   Range<DiGraph::edge_it> DiGraph::adjacents(size_t v) const
-   {
-      checkVertexId(v);
-      auto b = begin(m_adjacencyLists[v]);
-      auto e = end(m_adjacencyLists[v]);
-      return Range<DiGraph::edge_it>(b, e);
-   }
-
-   void DiGraph::checkVertexId(size_t id) const
-   {
-      if (id >= m_adjacencyLists.size())
-         throw InvalidVertex(id);
-   }
-
-   DiGraph DiGraph::createFrom(std::istream& is)
-   {
-      size_t vertexCount = 0;
-      is >> vertexCount;
-
-      DiGraph g(vertexCount);
-      while (is)
-      {
-         int next = is.peek();
-         if (next == ';')
-            break;
-
-         if (!std::isdigit(next))
-         {
-            is.get();
-         }
-         else
-         {
-            int v = 0, w = 0;
-            is >> v >> w;
-            g.addEdge(v, w);
-         }
-      }
-      return g;
-   }
-
-   size_t adjacentCount(DiGraph const& g, size_t v)
-   {
-      return g.adjacents(v).size();
-   }
-
-   DiGraph makeReversed(DiGraph const& g)
-   {
-      DiGraph rg(g.vertexCount());
-      for (size_t v = 0; v < g.vertexCount(); ++v)
-         for (auto w : g.adjacents(v))
-            rg.addEdge(w, v);
-      return rg;
-   }
-
-   void serializeTo(std::ostream& os, DiGraph const& g)
-   {
-      os << std::endl << g.vertexCount() << std::endl;
-      for (size_t v = 0; v < g.vertexCount(); ++v)
-         for (auto w : g.adjacents(v))
-            os << v << " " << w << std::endl;
-      os << ";";
+      DiGraph::serializeTo(g, os, [](std::ostream& os, Edge const& e) {
+         os << e.to();
+      });
    }
 }

@@ -2,9 +2,11 @@
 
 #include "Graph.h"
 #include "SymbolGraph.h"
+#include "WeightedDiGraph.h"
 #include "utils/TestUtils.h"
 
 #include <assert.h>
+#include <iostream>
 #include <sstream>
 
 
@@ -38,6 +40,20 @@ namespace algorithm
       Graph g2 = Graph::createFrom(stream);
       assert(5 == g2.vertexCount());
       assert(4 == g2.edgeCount());
+
+      WeightedDiGraph wg(5);
+      wg.addEdge(0, { 1, 1. });
+      wg.addEdge(0, { 2, 1. });
+      wg.addEdge(3, { 4, 2. });
+
+      assert(5 == wg.vertexCount());
+      assert(3 == wg.edgeCount());
+
+      for (auto e : wg.edgesFrom(0))
+         std::cout << e.to() << std::endl;
+
+      for (auto w : wg.adjacents(3))
+         std::cout << w << std::endl;
    }
 
    void symbolGraphTests()

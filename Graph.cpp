@@ -30,14 +30,19 @@ namespace algorithm
       return m_impl.addVertex();
    }
 
-   Range<Graph::edge_it> Graph::adjacents(size_t v) const
+   Range<Graph::edge_it> Graph::edgesFrom(size_t v) const
+   {
+      return m_impl.edgesFrom(v);
+   }
+
+   Range<Graph::vertex_it> Graph::adjacents(size_t v) const
    {
       return m_impl.adjacents(v);
    }
 
    Graph Graph::createFrom(std::istream& is)
    {
-      DiGraph dg = DiGraph::createFrom(is);
+      DiGraph dg = diGraphFrom(is);
       Graph g(dg.vertexCount());
       for (size_t v = 0; v < dg.vertexCount(); ++v)
          for (auto w : dg.adjacents(v))
