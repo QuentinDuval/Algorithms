@@ -36,12 +36,24 @@ namespace algorithm
 
          listener(v);
          mark(v);
-
-         for (auto a : m_graph.adjacents(v))
-            searchFrom(a, listener);
+         searchImpl(v, listener);
       }
 
-   protected:
+   private:
+      void searchImpl(size_t v, OnMarked listener)
+      {
+         for (auto a : m_graph.adjacents(v))
+         {
+            if (isMarked(a))
+               continue;
+
+            listener(a);
+            mark(a);
+            searchImpl(a, listener);
+         }
+      }
+
+   private:
       DiGraph const& m_graph;
    };
 

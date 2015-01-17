@@ -45,17 +45,17 @@ namespace algorithm
 
             for (auto a : m_graph.adjacents(current))
             {
-               if (!isMarked(a))
-               {
-                  listener(a);
-                  mark(a);
-                  toScan.push_back(a);
-               }
+               if (isMarked(a))
+                  continue;
+               
+               listener(a);
+               mark(a);
+               toScan.push_back(a);
             }
          }
       }
 
-   protected:
+   private:
       DiGraph const& m_graph;
    };
 }
