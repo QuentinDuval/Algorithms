@@ -14,6 +14,7 @@ namespace algorithm
    {
    public:
       using DiGraph = GenericDiGraph<Edge>;
+      using OnMarked = GraphSearch<Edge>::OnMarked;
       using OnPathTaken = GraphSearch<Edge>::OnPathTaken;
 
    public:
@@ -29,17 +30,29 @@ namespace algorithm
 
       virtual ~DFS() = default;
 
+      void postOrderFrom(size_t v, OnMarked onAdjVisited)
+      {
+         static OnPathTaken nullListener = [](Edge const&){};
+         searchImpl(v, onAdjVisited, nullListener);
+      }
+
    private:
-      void searchImpl(size_t v, OnPathTaken listener)
+      void searchImpl(size_t v, OnPathTaken listener) override
+      {
+         static OnMarked nullListener = [](size_t){};
+         searchImpl(v, nullListener, listener);
+      }
+
+      void searchImpl(size_t v, OnMarked onAdjVisited, OnPathTaken listener)
       {
          if (isMarked(v))
             return;
 
          mark(v);
-         searchImplRec(v, listener);
+         searchImplRec(v, onAdjVisited, listener);
       }
 
-      void searchImplRec(size_t v, OnPathTaken listener)
+      void searchImplRec(size_t v, OnMarked onAdjVisited, OnPathTaken listener)
       {
          for (auto e : m_graph.edgesFrom(v))
          {
@@ -49,8 +62,9 @@ namespace algorithm
 
             listener(e);
             mark(a);
-            searchImplRec(a, listener);
+            searchImplRec(a, onAdjVisited, listener);
          }
+         onAdjVisited(v);
       }
 
    private:

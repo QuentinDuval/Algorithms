@@ -29,7 +29,7 @@ namespace algorithm
       virtual ~BFS() = default;
 
    private:
-      void searchImpl(size_t v, OnPathTaken listener)
+      void searchImpl(size_t v, OnPathTaken listener) override
       {
          if (isMarked(v))
             return;
