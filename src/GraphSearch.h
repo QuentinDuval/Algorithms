@@ -10,7 +10,6 @@ namespace algorithm
    {
    public:
       using OnMarked = std::function<void(size_t)>;
-      using OnNewPath = std::function<void(Edge const&)>;
 
    public:
       GraphSearch::GraphSearch(size_t vertexCount)

@@ -14,7 +14,6 @@ namespace algorithm
    public:
       using DiGraph = GenericDiGraph<Edge>;
       using OnMarked = GraphSearch<Edge>::OnMarked;
-      using OnNewPath = GraphSearch<Edge>::OnNewPath;
 
    public:
       explicit BFS(DiGraph const& g)
