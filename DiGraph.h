@@ -1,7 +1,7 @@
 #pragma once
 
-#include "GenericDiGraph.h"
 #include "GraphExceptions.h"
+#include "internal/GenericDiGraph.h"
 #include "utils/Algorithms.h"
 #include "utils/Utils.h"
 
