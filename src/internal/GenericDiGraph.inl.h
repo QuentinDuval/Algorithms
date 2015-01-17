@@ -64,9 +64,7 @@ namespace algorithm
          }
          else
          {
-            size_t v = 0;
-            is >> v;
-            g.addEdge(v, readEdge(is));
+            g.addEdge(readEdge(is));
          }
       }
       return g;
@@ -80,7 +78,6 @@ namespace algorithm
       for (size_t v = 0; v < g.vertexCount(); ++v)
       for (auto e : g.edgesFrom(v))
       {
-         os << v << " ";
          writeEdge(os, e);
          os << std::endl;
       }

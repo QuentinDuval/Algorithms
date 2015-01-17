@@ -22,15 +22,15 @@ namespace algorithm
    void graphSearchTests()
    {
       Graph g(10);
-      std::vector<std::pair<size_t, size_t>> inputs {
+      std::vector<Edge> inputs {
          { 0, 1 }, { 0, 2 }, { 0, 3 },
          { 1, 2 }, { 1, 4 }, { 1, 5 },
          { 2, 2 }, { 2, 3 }, { 2, 7 },
          { 3, 6 }, { 3, 7 }, { 3, 8 },
       };
 
-      for (auto p : inputs)
-         g.addEdge(p.first, p.second);
+      for (auto e : inputs)
+         g.addEdge(e);
 
       DepthFirstSearch dfs(g);
       runTest(dfs, 0, "012367845");
@@ -50,10 +50,10 @@ namespace algorithm
    void connectedComponentsTests()
    {
       Graph g(6);
-      std::vector<std::pair<size_t, size_t>> inputs{ { 0, 1 }, { 0, 2 }, { 1, 2 }, { 3, 4 } };
+      std::vector<Edge> inputs{ { 0, 1 }, { 0, 2 }, { 1, 2 }, { 3, 4 } };
 
-      for (auto p : inputs)
-         g.addEdge(p.first, p.second);
+      for (auto e : inputs)
+         g.addEdge(e);
 
       ConnectedComponents cc(g);
       assert(3 == cc.componentCount());

@@ -33,7 +33,7 @@ namespace algorithm
 
       void addEdge(T const& x, T const& y)
       {
-         m_graph.addEdge(idFromSymbol(x), idFromSymbol(y));
+         m_graph.addEdge({ idFromSymbol(x), idFromSymbol(y) });
       }
 
       size_t addVertex(T const& v)

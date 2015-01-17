@@ -18,10 +18,13 @@ namespace algorithm
    class Edge
    {
    public:
-      Edge(size_t to);
+      Edge(size_t from, size_t to);
+      size_t from() const;
       size_t to() const;
+      Edge reverse() const;
 
    private:
+      size_t m_from;
       size_t m_to;
    };
 

@@ -13,7 +13,7 @@ namespace algorithm
    template<typename Edge>
    class EdgeContractSafisfied
    {
-      template <typename C> static char test(decltype(&C::to));
+      template <typename C> static char test(decltype(&C::to)); //TODO - Add more constraints
       template <typename C> static long test(...);
 
    public:
@@ -24,7 +24,8 @@ namespace algorithm
    template<typename Edge>
    class GenericDiGraph
    {
-      static_assert(EdgeContractSafisfied<Edge>::value, "Edge must have a method: size_t to() const");
+      static_assert(EdgeContractSafisfied<Edge>::value,
+         "Edge does not respect its contract (to, from, reverse).");
 
    public:
       using AdjList = std::vector<Edge>;
@@ -48,11 +49,11 @@ namespace algorithm
          return m_count;
       }
 
-      void addEdge(size_t from, Edge const& e)
+      void addEdge(Edge const& e)
       {
-         checkVertexId(from);
+         checkVertexId(e.from());
          checkVertexId(e.to());
-         m_adjacencyLists[from].push_back(e);
+         m_adjacencyLists[e.from()].push_back(e);
          ++m_count;
       }
 
@@ -107,8 +108,8 @@ namespace algorithm
    {
       GenericDiGraph<Edge> rg(g.vertexCount());
       for (size_t v = 0; v < g.vertexCount(); ++v)
-         for (auto w : g.adjacents(v))
-            rg.addEdge(w, v);
+         for (auto e : g.edgesFrom(v))
+            rg.addEdge(e.reverse());
       return rg;
    }
 }
