@@ -28,11 +28,6 @@ namespace algorithm
 
       virtual ~BFS() = default;
 
-      void searchFrom(size_t v)
-      {
-         searchFrom(v, [](size_t){});
-      }
-
       void searchFrom(size_t v, OnMarked listener)
       {
          std::deque<size_t> toScan;

@@ -29,11 +29,6 @@ namespace algorithm
 
       virtual ~DFS() = default;
 
-      void searchFrom(size_t v)
-      {
-         searchFrom(v, [](size_t){});
-      }
-
       void searchFrom(size_t v, OnMarked listener)
       {
          if (isMarked(v))
