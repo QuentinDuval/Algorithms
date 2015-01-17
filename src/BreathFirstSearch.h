@@ -36,21 +36,27 @@ namespace algorithm
       void searchFrom(size_t v, OnMarked listener)
       {
          std::deque<size_t> toScan;
-         toScan.push_back(v);
+         if (!isMarked(v))
+         {
+            toScan.push_back(v);
+            listener(v);
+            mark(v);
+         }
 
          while (!toScan.empty())
          {
             auto current = toScan.front();
             toScan.pop_front();
-            if (isMarked(current))
-               continue;
 
-            listener(current);
-            mark(current);
-
-            for (auto neighbor : m_graph.adjacents(current))
-               if (!isMarked(neighbor))
-                  toScan.push_back(neighbor);
+            for (auto a : m_graph.adjacents(current))
+            {
+               if (!isMarked(a))
+               {
+                  listener(a);
+                  mark(a);
+                  toScan.push_back(a);
+               }
+            }
          }
       }
 
