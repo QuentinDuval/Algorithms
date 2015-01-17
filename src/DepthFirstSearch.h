@@ -29,12 +29,11 @@ namespace algorithm
 
       virtual ~DFS() = default;
 
-      void markFrom(size_t v, OnMarked listener)
+      void searchFrom(size_t v, OnMarked listener)
       {
          if (isMarked(v))
             return;
 
-         listener(v);
          mark(v);
          searchImpl(v, listener);
       }
@@ -42,12 +41,13 @@ namespace algorithm
    private:
       void searchImpl(size_t v, OnMarked listener)
       {
-         for (auto a : m_graph.adjacents(v))
+         for (auto e : m_graph.edgesFrom(v))
          {
+            auto a = e.to();
             if (isMarked(a))
                continue;
 
-            listener(a);
+            listener(e);
             mark(a);
             searchImpl(a, listener);
          }

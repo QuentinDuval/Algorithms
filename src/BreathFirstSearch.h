@@ -28,27 +28,27 @@ namespace algorithm
 
       virtual ~BFS() = default;
 
-      void markFrom(size_t v, OnMarked listener)
+      void searchFrom(size_t v, OnMarked listener)
       {
+         if (isMarked(v))
+            return;
+
          std::deque<size_t> toScan;
-         if (!isMarked(v))
-         {
-            toScan.push_back(v);
-            listener(v);
-            mark(v);
-         }
+         toScan.push_back(v);
+         mark(v);
 
          while (!toScan.empty())
          {
             auto current = toScan.front();
             toScan.pop_front();
 
-            for (auto a : m_graph.adjacents(current))
+            for (auto e : m_graph.edgesFrom(current))
             {
+               auto a = e.to();
                if (isMarked(a))
                   continue;
                
-               listener(a);
+               listener(e);
                mark(a);
                toScan.push_back(a);
             }

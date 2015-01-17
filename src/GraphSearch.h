@@ -9,27 +9,27 @@ namespace algorithm
    class GraphSearch
    {
    public:
-      using OnMarked = std::function<void(size_t)>;
+      using OnMarked = std::function<void(Edge const&)>;
 
    public:
-      GraphSearch::GraphSearch(size_t vertexCount)
+      GraphSearch(size_t vertexCount)
          : m_count(0)
          , m_marked(vertexCount, false)
       {}
 
-      bool GraphSearch::isMarked(size_t v) const
+      bool isMarked(size_t v) const
       {
          if (v >= m_marked.size())
             throw InvalidVertex(v);
          return m_marked[v];
       }
 
-      bool GraphSearch::allMarked() const
+      bool allMarked() const
       {
          return m_count == m_marked.size();
       }
 
-      void GraphSearch::mark(size_t v)
+      void mark(size_t v)
       {
          if (v >= m_marked.size())
             throw InvalidVertex(v);
@@ -37,13 +37,22 @@ namespace algorithm
          ++m_count;
       }
 
-      void GraphSearch::markFrom(size_t v)
+      void markFrom(size_t v)
       {
-         static auto nullListener = [](size_t){};
+         static auto nullListener = [](Edge const&){};
          searchFrom(v, nullListener);
       }
 
-      virtual void markFrom(size_t v, OnMarked listener) = 0;
+      void markFrom(size_t v, std::function<void(size_t)> onVertexMarked)
+      {
+         if (!isMarked(v))
+            onVertexMarked(v);
+
+         auto listener = [onVertexMarked](Edge const& e){ onVertexMarked(e.to()); };
+         searchFrom(v, listener);
+      }
+
+      virtual void searchFrom(size_t v, OnMarked listener) = 0;
 
    private:
       size_t m_count;
