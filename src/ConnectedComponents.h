@@ -24,9 +24,20 @@ namespace algorithm
          }
       }
 
-      size_t componentCount() const;
-      size_t componentIdOf(size_t vertex) const;
-      bool   connected(size_t v, size_t w) const;
+      size_t componentCount() const
+      {
+         return m_componentCount;
+      }
+
+      size_t componentIdOf(size_t vertex) const
+      {
+         return m_componentIds[vertex];
+      }
+
+      bool connected(size_t v, size_t w) const
+      {
+         return componentIdOf(v) == componentIdOf(w);
+      }
 
    private:
       size_t m_componentCount;
