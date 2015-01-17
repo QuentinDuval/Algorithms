@@ -22,11 +22,8 @@ namespace algorithm
       {}
 
       explicit BFS(GenericGraph<Edge> const& g)
-         : GraphSearch(g.vertexCount())
-         , m_graph(g.toDiGraph())
+         : BFS(g.toDiGraph())
       {}
-
-      virtual ~BFS() = default;
 
    private:
       void searchImpl(size_t v, OnPathTaken listener) override

@@ -24,11 +24,8 @@ namespace algorithm
       {}
 
       explicit DFS(GenericGraph<Edge> const& g)
-         : GraphSearch(g.vertexCount())
-         , m_graph(g.toDiGraph())
+         : DFS(g.toDiGraph())
       {}
-
-      virtual ~DFS() = default;
 
       void postOrderFrom(size_t v, OnMarked onAdjVisited)
       {
