@@ -1,4 +1,5 @@
 #pragma once
+#include "DepthFirstSearch.h"
 #include "internal/GenericGraph.h"
 #include <vector>
 

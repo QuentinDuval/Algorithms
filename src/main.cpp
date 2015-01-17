@@ -1,3 +1,4 @@
+#include "tests/ConnectedComponentTests.h"
 #include "tests/GraphSearchTests.h"
 #include "tests/GraphTests.h"
 #include "tests/PriorityQueueTests.h"

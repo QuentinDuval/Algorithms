@@ -49,23 +49,6 @@ namespace algorithm
       assert(true == bfs.allMarked());
    }
 
-   void connectedComponentsTests()
-   {
-      Graph g(6);
-      std::vector<Edge> inputs{ { 0, 1 }, { 0, 2 }, { 1, 2 }, { 3, 4 } };
-
-      for (auto e : inputs)
-         g.addEdge(e);
-
-      ConnectedComponents cc(g);
-      assert(3 == cc.componentCount());
-      assert(true == cc.connected(0, 0));
-      assert(true == cc.connected(0, 2));
-      assert(true == cc.connected(3, 4));
-      assert(false == cc.connected(0, 3));
-      assert(false == cc.connected(3, 5));
-   }
-
    void symbolGraphSearchTests()
    {
       auto inputs = { "a", "b", "c", "d", "e" };
