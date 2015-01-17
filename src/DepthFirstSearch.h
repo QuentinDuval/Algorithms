@@ -14,7 +14,7 @@ namespace algorithm
    {
    public:
       using DiGraph = GenericDiGraph<Edge>;
-      using OnMarked = GraphSearch<Edge>::OnMarked;
+      using OnPathTaken = GraphSearch<Edge>::OnPathTaken;
 
    public:
       explicit DFS(DiGraph const& g)
@@ -30,7 +30,7 @@ namespace algorithm
       virtual ~DFS() = default;
 
    private:
-      void searchImpl(size_t v, OnMarked listener)
+      void searchImpl(size_t v, OnPathTaken listener)
       {
          if (isMarked(v))
             return;
@@ -39,7 +39,7 @@ namespace algorithm
          searchImplRec(v, listener);
       }
 
-      void searchImplRec(size_t v, OnMarked listener)
+      void searchImplRec(size_t v, OnPathTaken listener)
       {
          for (auto e : m_graph.edgesFrom(v))
          {

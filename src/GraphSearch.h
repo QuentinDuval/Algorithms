@@ -9,7 +9,8 @@ namespace algorithm
    class GraphSearch
    {
    public:
-      using OnMarked = std::function<void(Edge const&)>;
+      using OnMarked = std::function<void(size_t)>;
+      using OnPathTaken = std::function<void(Edge const&)>;
 
    public:
       GraphSearch(size_t vertexCount)
@@ -43,7 +44,7 @@ namespace algorithm
          searchImpl(v, nullListener);
       }
 
-      void markFrom(size_t v, std::function<void(size_t)> onVertexMarked)
+      void markFrom(size_t v, OnMarked onVertexMarked)
       {
          if (!isMarked(v))
             onVertexMarked(v);
@@ -52,13 +53,13 @@ namespace algorithm
          searchImpl(v, listener);
       }
 
-      void searchFrom(size_t v, OnMarked listener)
+      void pathsFrom(size_t v, OnPathTaken listener)
       {
          searchImpl(v, listener);
       }
 
    private:
-      virtual void searchImpl(size_t v, OnMarked listener) = 0;
+      virtual void searchImpl(size_t v, OnPathTaken listener) = 0;
 
    private:
       size_t m_count;

@@ -13,7 +13,7 @@ namespace algorithm
    {
    public:
       using DiGraph = GenericDiGraph<Edge>;
-      using OnMarked = GraphSearch<Edge>::OnMarked;
+      using OnPathTaken = GraphSearch<Edge>::OnPathTaken;
 
    public:
       explicit BFS(DiGraph const& g)
@@ -29,7 +29,7 @@ namespace algorithm
       virtual ~BFS() = default;
 
    private:
-      void searchImpl(size_t v, OnMarked listener)
+      void searchImpl(size_t v, OnPathTaken listener)
       {
          if (isMarked(v))
             return;
