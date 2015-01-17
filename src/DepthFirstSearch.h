@@ -10,11 +10,12 @@
 namespace algorithm
 {
    template<typename Edge>
-   class DFS : public GraphSearch
+   class DFS : public GraphSearch<Edge>
    {
    public:
-      using DiGraph  = GenericDiGraph<Edge>;
-      using OnMarked = GraphSearch::OnMarked;
+      using DiGraph = GenericDiGraph<Edge>;
+      using OnMarked = GraphSearch<Edge>::OnMarked;
+      using OnNewPath = GraphSearch<Edge>::OnNewPath;
 
    public:
       explicit DFS(DiGraph const& g)
@@ -29,7 +30,7 @@ namespace algorithm
 
       virtual ~DFS() = default;
 
-      void searchFrom(size_t v, OnMarked listener)
+      void markFrom(size_t v, OnMarked listener)
       {
          if (isMarked(v))
             return;
@@ -82,8 +83,7 @@ namespace algorithm
       void searchFrom(T const& v, OnMarked listener)
       {
          size_t vid = m_graph.idFromSymbol(v);
-         m_dfs.searchFrom(vid,
-            [this, &listener](size_t v){ listener(m_graph.symbolFromId(v)); });
+         m_dfs.markFrom(vid, [this, &listener](size_t v){ listener(m_graph.symbolFromId(v)); });
       }
 
       bool isMarked(T const& v) const

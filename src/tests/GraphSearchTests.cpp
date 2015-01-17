@@ -12,11 +12,12 @@
 
 namespace algorithm
 {
-   static void runTest(GraphSearch& search, size_t from, std::string const& expected)
+   template<typename Edge>
+   void runTest(GraphSearch<Edge>& search, size_t from, std::string const& expected)
    {
       std::ostringstream str;
       auto out = [&str](size_t v) { str << v; };
-      search.searchFrom(from, out);
+      search.markFrom(from, out);
       assert(expected == str.str());
    }
 

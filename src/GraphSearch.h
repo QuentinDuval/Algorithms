@@ -5,20 +5,46 @@
 
 namespace algorithm
 {
+   template<typename Edge>
    class GraphSearch
    {
    public:
       using OnMarked = std::function<void(size_t)>;
+      using OnNewPath = std::function<void(Edge const&)>;
 
    public:
-      GraphSearch(size_t vertexCount);
-      virtual ~GraphSearch() = default;
+      GraphSearch::GraphSearch(size_t vertexCount)
+         : m_count(0)
+         , m_marked(vertexCount, false)
+      {}
 
-      bool           isMarked    (size_t v) const;
-      bool           allMarked   () const;
-      void           mark        (size_t v);
-      void           searchFrom  (size_t v);
-      virtual void   searchFrom  (size_t v, OnMarked listener) = 0;
+      bool GraphSearch::isMarked(size_t v) const
+      {
+         if (v >= m_marked.size())
+            throw InvalidVertex(v);
+         return m_marked[v];
+      }
+
+      bool GraphSearch::allMarked() const
+      {
+         return m_count == m_marked.size();
+      }
+
+      void GraphSearch::mark(size_t v)
+      {
+         if (v >= m_marked.size())
+            throw InvalidVertex(v);
+         m_marked[v] = true;
+         ++m_count;
+      }
+
+      void GraphSearch::markFrom(size_t v)
+      {
+         static auto nullListener = [](size_t){};
+         searchFrom(v, nullListener);
+      }
+
+      virtual void markFrom(size_t v, OnMarked listener) = 0;
 
    private:
       size_t m_count;

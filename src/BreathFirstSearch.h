@@ -9,11 +9,12 @@
 namespace algorithm
 {
    template<typename Edge>
-   class BFS : public GraphSearch
+   class BFS : public GraphSearch<Edge>
    {
    public:
-      using DiGraph  = GenericDiGraph<Edge>;
-      using OnMarked = GraphSearch::OnMarked;
+      using DiGraph = GenericDiGraph<Edge>;
+      using OnMarked = GraphSearch<Edge>::OnMarked;
+      using OnNewPath = GraphSearch<Edge>::OnNewPath;
 
    public:
       explicit BFS(DiGraph const& g)
@@ -28,7 +29,7 @@ namespace algorithm
 
       virtual ~BFS() = default;
 
-      void searchFrom(size_t v, OnMarked listener)
+      void markFrom(size_t v, OnMarked listener)
       {
          std::deque<size_t> toScan;
          if (!isMarked(v))

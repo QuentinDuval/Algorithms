@@ -20,7 +20,7 @@ namespace algorithm
             if (dfs.isMarked(i))
                continue;
 
-            dfs.searchFrom(i, [this](size_t v) { m_componentIds[v] = m_componentCount; });
+            dfs.markFrom(i, [this](size_t v) { m_componentIds[v] = m_componentCount; });
             ++m_componentCount;
          }
       }
