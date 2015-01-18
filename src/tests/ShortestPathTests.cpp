@@ -27,7 +27,6 @@ namespace algorithm
          if (y < 3)
             g.addEdge({ i, i + dim });
       }
-      assert(24 == g.edgeCount());
 
       //Testing Manhattan distance
       ShortestPathFrom sp(g, 0);
