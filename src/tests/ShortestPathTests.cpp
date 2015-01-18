@@ -20,11 +20,11 @@ namespace algorithm
       for (size_t i = 0; i < g.vertexCount(); ++i)
       {
          size_t x = i % dim;
-         if (x < 3)
+         if (x < dim - 1)
             g.addEdge({ i, i + 1 });
 
          size_t y = i / dim;
-         if (y < 3)
+         if (y < dim - 1)
             g.addEdge({ i, i + dim });
       }
 
