@@ -38,6 +38,7 @@ int main()
 
    if (runPerformanceTests())
    {
+      shortestPathPerformanceTests();
       unionFindPerfTests();
       sortingPerfTests();
       subStringSearchPerfTests();

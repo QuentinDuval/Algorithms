@@ -61,7 +61,7 @@ namespace algorithm
    void unionFindPerfTests()
    {
       const size_t size = 50000;
-      std::cout << "[Union-Find] Performance test" << std::endl;
+      std::cout << std::endl << "[Union-Find] Performance test" << std::endl;
       std::cout << "Number of entries, union and finds: " << size << std::endl;
 
       std::vector<size_t> sources(size);

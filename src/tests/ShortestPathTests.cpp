@@ -4,6 +4,7 @@
 #include "Graph.h"
 #include "ShortestPath.h"
 #include "utils/Algorithms.h"
+#include "utils/Timer.h"
 
 #include <assert.h>
 #include <iostream>
@@ -12,10 +13,8 @@
 
 namespace algorithm
 {
-   void shortestPathTests()
+   static Graph twoDimPlane(size_t dim)
    {
-      //Two dimentional plane
-      size_t dim = 4;
       Graph g(dim * dim);
       for (size_t i = 0; i < g.vertexCount(); ++i)
       {
@@ -27,19 +26,38 @@ namespace algorithm
          if (y < dim - 1)
             g.addEdge({ i, i + dim });
       }
+      return g;
+   }
+
+   void shortestPathTests()
+   {
+      //Two dimentional plane
+      const size_t dim = 4;
+      Graph g = twoDimPlane(dim);
 
       //Testing Manhattan distance
       ShortestPathFrom sp(g, 0);
       for (size_t i = 0; i < g.vertexCount(); ++i)
       {
+         size_t expectedLength = i % dim + i / dim;
          assert(true == sp.hasPathTo(i));
-         size_t x = i % dim;
-         size_t y = i / dim;
-         size_t expectedLength = x + y;
          assert(expectedLength == sp.pathLengthTo(i));
       }
 
       //Testing paths
       assert(equal(sp.pathTo(15), std::vector<size_t>{1, 2, 3, 7, 11, 15}));
+   }
+
+   //--------------------------------------------------------------------------
+
+   void shortestPathPerformanceTests()
+   {
+      size_t size = 1000;
+      Graph g = twoDimPlane(size);
+
+      std::cout << std::endl << "[Shortest path] Unweighed graph of size " << size * size << std::endl;
+      showTime(std::cout, [&]{
+         ShortestPathFrom sp(g, 0);
+      });
    }
 }
