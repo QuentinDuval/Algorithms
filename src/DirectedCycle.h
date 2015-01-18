@@ -11,12 +11,11 @@ namespace algorithm
    class DirectedCycle
    {
    public:
-      DirectedCycle(GenericDiGraph<Edge> const& g, size_t from)
+      DirectedCycle(GenericDiGraph<Edge> const& g)
          : m_cycle()
       {
          std::vector<Edge> stack;
          std::vector<bool> onStack(g.vertexCount(), false);
-         onStack[from] = true;
          
          auto postOrder = [&](size_t v){
             onStack[v] = false;
@@ -40,7 +39,14 @@ namespace algorithm
          };
 
          DFS<Edge> dfs(g);
-         dfs.searchFrom(from, postOrder, onAlreadyMarked, onPathTaken);
+         for (size_t i = 0; i < g.vertexCount() && !hasCycle(); ++i)
+         {
+            if (dfs.isMarked(i))
+               continue;
+
+            onStack[i] = true;
+            dfs.searchFrom(i, postOrder, onAlreadyMarked, onPathTaken);
+         }
       }
 
       bool hasCycle() const

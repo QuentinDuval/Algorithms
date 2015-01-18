@@ -66,15 +66,15 @@ namespace algorithm
       for (size_t i = 1; i < 10; ++i)
          g.addEdge({ i - 1, i });
 
-      DirectedCycle<Edge> c1(g, 0);
+      DirectedCycle<Edge> c1(g);
       assert(false == c1.hasCycle());
 
       g.addEdge({ 0, 9 });
-      DirectedCycle<Edge> c2(g, 0);
+      DirectedCycle<Edge> c2(g);
       assert(false == c2.hasCycle());
 
       g.addEdge({ 9, 2 });
-      DirectedCycle<Edge> c3(g, 0);
+      DirectedCycle<Edge> c3(g);
       assert(true == c3.hasCycle());
 
       for (auto e : c3.cycle())
