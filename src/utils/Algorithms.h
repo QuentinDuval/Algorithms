@@ -28,6 +28,12 @@ namespace algorithm
       return std::find_if(begin(cont), end(cont), pred);
    }
 
+   template<typename Container, typename Container2>
+   bool equal(Container const& cont, Container2 cont2)
+   {
+      return std::equal(begin(cont), end(cont), begin(cont2));
+   }
+
    template<typename Container, typename Value, typename Accumulator>
    Value accumulate(Container const& cont, Value const& val, Accumulator acc)
    {
