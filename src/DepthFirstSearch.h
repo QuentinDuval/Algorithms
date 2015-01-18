@@ -30,7 +30,7 @@ namespace algorithm
 
       void postOrderFrom(size_t v, OnMarked postOrder)
       {
-         searchFrom(v, postOrder, [](size_t){}, [](Edge const&){});
+         searchFrom(v, postOrder, [](Edge const&){}, [](Edge const&){});
       }
 
       void searchFrom(size_t v, OnMarked postOrder, OnPathTaken onAlreadyMarked, OnPathTaken pathTaken)

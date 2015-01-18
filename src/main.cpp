@@ -5,6 +5,7 @@
 #include "tests/ShortestPathTests.h"
 #include "tests/SortTests.h"
 #include "tests/SubStringSearchTests.h"
+#include "tests/TopologicalSortTests.h"
 #include "tests/UnionFindTests.h"
 #include <iostream>
 #include <string>
@@ -31,6 +32,7 @@ int main()
    connectedComponentsTests();
    shortestPathTests();
    cycleTests();
+   topologicalSortTests();
 
    unionFindTests();
    unionFindExample();
