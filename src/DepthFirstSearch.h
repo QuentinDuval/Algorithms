@@ -50,6 +50,7 @@ namespace algorithm
          searchImplRec(v, onAdjVisited, listener);
       }
 
+      /** Recursive implementation: leads to stack overflows for big graphgs */
       //void searchImplRec(size_t v, OnMarked onAdjVisited, OnPathTaken listener)
       //{
       //   for (auto e : m_graph.edgesFrom(v))
@@ -65,55 +66,32 @@ namespace algorithm
       //   onAdjVisited(v);
       //}
 
-      //void searchImplRec(size_t v, OnMarked onAdjVisited, OnPathTaken listener)
-      //{
-      //   auto initEdges = reverseRange(m_graph.edgesFrom(v));
-      //   std::vector<Edge> stack(begin(initEdges), end(initEdges));
-
-      //   while (!stack.empty())
-      //   {
-      //      auto e = stack.back();
-      //      auto c = e.to();
-      //      stack.pop_back();
-      //      if (isMarked(c))
-      //         continue;
-
-      //      listener(e);
-      //      mark(c);
-
-      //      for (auto ne : reverseRange(m_graph.edgesFrom(c)))
-      //         if (!isMarked(ne.to()))
-      //            stack.push_back(ne);
-      //   }
-      //}
-
+      /** Iterative implementation emulating the stack */
       void searchImplRec(size_t v, OnMarked onAdjVisited, OnPathTaken listener)
       {
          auto edges = m_graph.edgesFrom(v);
-         std::vector<size_t> fathers{ v };
-         std::vector<decltype(edges)> stack{ edges };
+         using StackedRange = std::pair<size_t, decltype(edges)>;
+         std::vector<StackedRange> stack{ { v, edges } };
 
          while (!stack.empty())
          {
-            auto range = stack.back();
+            auto& range = stack.back().second;
             if (range.empty())
             {
+               onAdjVisited(stack.back().first);
                stack.pop_back();
-               onAdjVisited(fathers.back());
-               fathers.pop_back();
             }
             else
             {
-               auto e = stack.back().begin();
+               auto e = range.begin();
                auto c = e->to();
-               stack.back().pop();
+               range.pop();
                if (isMarked(c))
                   continue;
 
                listener(*e);
                mark(c);
-               fathers.push_back(e->from());
-               stack.push_back(m_graph.edgesFrom(c));
+               stack.push_back({ c, m_graph.edgesFrom(c) });
             }
          }
       }
