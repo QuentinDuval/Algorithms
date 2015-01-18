@@ -1,12 +1,5 @@
 #pragma once
-
-#include "GraphExceptions.h"
-#include "internal/GenericDiGraph.h"
-#include "utils/Algorithms.h"
-#include "utils/Utils.h"
-
-#include <istream>
-#include <vector>
+#include <ostream>
 
 
 namespace algorithm
@@ -23,6 +16,11 @@ namespace algorithm
       size_t m_from;
       size_t m_to;
    };
+
+   inline std::ostream& operator<< (std::ostream& os, Edge const& e)
+   {
+      return os << e.from() << " " << e.to();
+   }
 
    //--------------------------------------------------------------------------
 
@@ -42,5 +40,10 @@ namespace algorithm
       size_t m_to;
       double m_weight;
    };
+
+   inline std::ostream& operator<< (std::ostream& os, WeightedEdge const& e)
+   {
+      return os << e.from() << " " << e.to() << " " << e.weight();
+   }
 }
 
