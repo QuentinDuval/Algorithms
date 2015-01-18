@@ -62,32 +62,36 @@ namespace algorithm
 
    void unionFindVsCCPerfTests()
    {
-      const size_t size = 100000;
+      const size_t size  = 50000;
+      const size_t links = 1000000;
       std::cout << std::endl << "[Union-Find vs CC] Performance test" << std::endl;
-      std::cout << "Number of entries, union and finds: " << size << std::endl;
+      std::cout << "> Number of entries: " << size << std::endl;
+      std::cout << "> Number of links:   " << links << std::endl;
 
-      std::vector<size_t> sources(size);
-      generate(sources, 0, [](int i) { return i + 1; });
+      std::vector<size_t> sources(links);
+      generate(sources, 0, [=](int i) { return (i + 1) % size; });
       std::vector<size_t> destinations(sources);
 
       shuffle(sources);
       shuffle(destinations);
 
+      std::cout << "* Union-Find:" << std::endl;
       showTime(std::cout, [&]{
          UnionFind uf(size);
-         for (size_t i = 0; i < size; ++i)
+         for (size_t i = 0; i < links; ++i)
             uf.connect(sources[i], destinations[i]);
-         for (size_t i = 0; i < size; ++i)
+         for (size_t i = 0; i < links; ++i)
             assert(true == uf.connected(sources[i], destinations[i]));
       });
 
+      std::cout << "* Connected-Components:" << std::endl;
       showTime(std::cout, [&]{
          Graph g(size);
-         for (size_t i = 0; i < size; ++i)
+         for (size_t i = 0; i < links; ++i)
             g.addEdge({ sources[i], destinations[i] });
 
          ConnectedComponents cc(g);
-         for (size_t i = 0; i < size; ++i)
+         for (size_t i = 0; i < links; ++i)
             assert(true == cc.connected(sources[i], destinations[i]));
       });
    }
