@@ -23,6 +23,14 @@ namespace algorithm
       Iterator m_last;
    };
 
+   template<typename Iterator>
+   Range<std::reverse_iterator<Iterator>> reverseRange(Range<Iterator> const& r)
+   {
+      std::reverse_iterator<Iterator> rbegin(r.end());
+      std::reverse_iterator<Iterator> rend(r.begin());
+      return Range<std::reverse_iterator<Iterator>>(rbegin, rend);
+   }
+
    //--------------------------------------------------------------------------
 
    template<typename Iterator>
