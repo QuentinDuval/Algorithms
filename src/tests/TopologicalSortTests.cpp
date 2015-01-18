@@ -3,6 +3,7 @@
 #include "TopologicalSort.h"
 #include "DiGraph.h"
 #include "WeightedDiGraph.h"
+#include "tests/GraphTestUtils.h"
 #include "utils/Algorithms.h"
 
 #include <assert.h>
@@ -11,7 +12,7 @@
 
 namespace algorithm
 {
-   void topologicalSortTests()
+   static void basicTopologicalSort()
    {
       DiGraph g(10);
       for (size_t i = 1; i < 10; ++i)
@@ -20,7 +21,20 @@ namespace algorithm
       TopologicalSort sort(g);
       assert(true == sort.hasOrder());
 
-      auto expected = {0,1,2,3,4,5,6,7,8,9};
+      auto expected = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
       assert(equal(sort.order(), expected));
+   }
+
+   static void planeTopologicalSort()
+   {
+      DiGraph g = topLeftBottomRightPlane(10);
+      TopologicalSort sort(g);
+      assert(true == sort.hasOrder());
+   }
+
+   void topologicalSortTests()
+   {
+      basicTopologicalSort();
+      planeTopologicalSort();
    }
 }

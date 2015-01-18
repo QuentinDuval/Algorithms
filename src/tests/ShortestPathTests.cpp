@@ -3,6 +3,7 @@
 #include "DiGraph.h"
 #include "Graph.h"
 #include "ShortestPath.h"
+#include "tests/GraphTestUtils.h"
 #include "utils/Algorithms.h"
 #include "utils/Timer.h"
 
@@ -13,22 +14,6 @@
 
 namespace algorithm
 {
-   static Graph twoDimPlane(size_t dim)
-   {
-      Graph g(dim * dim);
-      for (size_t i = 0; i < g.vertexCount(); ++i)
-      {
-         size_t x = i % dim;
-         if (x < dim - 1)
-            g.addEdge({ i, i + 1 });
-
-         size_t y = i / dim;
-         if (y < dim - 1)
-            g.addEdge({ i, i + dim });
-      }
-      return g;
-   }
-
    void shortestPathTests()
    {
       //Two dimentional plane
