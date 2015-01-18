@@ -5,6 +5,7 @@
 #include "internal/GenericDiGraph.h"
 #include "internal/GenericGraph.h"
 #include <functional>
+#include <vector>
 
 
 namespace algorithm
@@ -49,19 +50,41 @@ namespace algorithm
          searchImplRec(v, onAdjVisited, listener);
       }
 
+      //void searchImplRec(size_t v, OnMarked onAdjVisited, OnPathTaken listener)
+      //{
+      //   for (auto e : m_graph.edgesFrom(v))
+      //   {
+      //      auto a = e.to();
+      //      if (isMarked(a))
+      //         continue;
+      //
+      //      listener(e);
+      //      mark(a);
+      //      searchImplRec(a, onAdjVisited, listener);
+      //   }
+      //   onAdjVisited(v);
+      //}
+
       void searchImplRec(size_t v, OnMarked onAdjVisited, OnPathTaken listener)
       {
-         for (auto e : m_graph.edgesFrom(v))
+         auto initEdges = reverseRange(m_graph.edgesFrom(v));
+         std::vector<Edge> stack(begin(initEdges), end(initEdges));
+
+         while (!stack.empty())
          {
-            auto a = e.to();
-            if (isMarked(a))
+            auto e = stack.back();
+            auto c = e.to();
+            stack.pop_back();
+            if (isMarked(c))
                continue;
 
             listener(e);
-            mark(a);
-            searchImplRec(a, onAdjVisited, listener);
+            mark(c);
+
+            for (auto ne : reverseRange(m_graph.edgesFrom(c)))
+               if (!isMarked(ne.to()))
+                  stack.push_back(ne);
          }
-         onAdjVisited(v);
       }
 
    private:

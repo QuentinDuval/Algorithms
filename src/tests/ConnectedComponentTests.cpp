@@ -53,7 +53,7 @@ namespace algorithm
 
    void connectedComponentsPerformanceTests()
    {
-      const size_t size = 50000;
+      const size_t size = 100000;
       std::cout << std::endl << "[Connected components] Performance test" << std::endl;
       std::cout << "Number of entries, union and finds: " << size << std::endl;
 

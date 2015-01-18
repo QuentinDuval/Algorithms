@@ -7,13 +7,14 @@
 #include "tests/SubStringSearchTests.h"
 #include "tests/UnionFindTests.h"
 #include <iostream>
+#include <string>
 
 using namespace algorithm;
 
 
-static bool runPerformanceTests()
+static bool runPerformanceTests(std::string const& title)
 {
-   std::cout << std::endl << "Run performance test? ";
+   std::cout << std::endl << "Run performance test on " << title << "? ";
    char res;
    std::cin >> res;
    return res == 'y';
@@ -36,11 +37,18 @@ int main()
    sortingTests();
    subStringSearchTests();
 
-   if (runPerformanceTests())
+   if (runPerformanceTests("graphs"))
    {
       shortestPathPerformanceTests();
+      connectedComponentsPerformanceTests();
       unionFindPerfTests();
+   }
+
+   if (runPerformanceTests("sorts"))
       sortingPerfTests();
+
+   if (runPerformanceTests("string searches"))
+   {
       subStringSearchPerfTests();
       system("PAUSE");
    }
