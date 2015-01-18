@@ -3,7 +3,7 @@
 namespace algorithm
 {
    void unionFindTests();
-   void unionFindPerfTests();
+   void unionFindVsCCPerfTests();
    void unionFindExample();
 }
 

@@ -4,5 +4,4 @@
 namespace algorithm
 {
    void connectedComponentsTests();
-   void connectedComponentsPerformanceTests();
 }

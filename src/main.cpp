@@ -40,8 +40,7 @@ int main()
    if (runPerformanceTests("graphs"))
    {
       shortestPathPerformanceTests();
-      connectedComponentsPerformanceTests();
-      unionFindPerfTests();
+      unionFindVsCCPerfTests();
    }
 
    if (runPerformanceTests("sorts"))

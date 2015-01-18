@@ -1,5 +1,7 @@
 #include "tests/UnionFindTests.h"
 
+#include "ConnectedComponents.h"
+#include "Graph.h"
 #include "UnionFind.h"
 #include "UnionFindExample.h"
 #include "utils/Algorithms.h"
@@ -58,10 +60,10 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   void unionFindPerfTests()
+   void unionFindVsCCPerfTests()
    {
       const size_t size = 100000;
-      std::cout << std::endl << "[Union-Find] Performance test" << std::endl;
+      std::cout << std::endl << "[Union-Find vs CC] Performance test" << std::endl;
       std::cout << "Number of entries, union and finds: " << size << std::endl;
 
       std::vector<size_t> sources(size);
@@ -77,6 +79,16 @@ namespace algorithm
             uf.connect(sources[i], destinations[i]);
          for (size_t i = 0; i < size; ++i)
             assert(true == uf.connected(sources[i], destinations[i]));
+      });
+
+      showTime(std::cout, [&]{
+         Graph g(size);
+         for (size_t i = 0; i < size; ++i)
+            g.addEdge({ sources[i], destinations[i] });
+
+         ConnectedComponents cc(g);
+         for (size_t i = 0; i < size; ++i)
+            assert(true == cc.connected(sources[i], destinations[i]));
       });
    }
 

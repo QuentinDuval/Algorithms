@@ -48,30 +48,4 @@ namespace algorithm
       graphCCTests();
       weightedGraphCCTests();
    }
-
-   //--------------------------------------------------------------------------
-
-   void connectedComponentsPerformanceTests()
-   {
-      const size_t size = 100000;
-      std::cout << std::endl << "[Connected components] Performance test" << std::endl;
-      std::cout << "Number of entries, union and finds: " << size << std::endl;
-
-      std::vector<size_t> sources(size);
-      generate(sources, 0, [](int i) { return i + 1; });
-      std::vector<size_t> destinations(sources);
-
-      shuffle(sources);
-      shuffle(destinations);
-
-      showTime(std::cout, [&]{
-         Graph g(size);
-         for (size_t i = 0; i < size; ++i)
-            g.addEdge({ sources[i], destinations[i] });
-
-         ConnectedComponents cc(g);
-         for (size_t i = 0; i < size; ++i)
-            assert(true == cc.connected(sources[i], destinations[i]));
-      });
-   }
 }
