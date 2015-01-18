@@ -65,25 +65,56 @@ namespace algorithm
       //   onAdjVisited(v);
       //}
 
+      //void searchImplRec(size_t v, OnMarked onAdjVisited, OnPathTaken listener)
+      //{
+      //   auto initEdges = reverseRange(m_graph.edgesFrom(v));
+      //   std::vector<Edge> stack(begin(initEdges), end(initEdges));
+
+      //   while (!stack.empty())
+      //   {
+      //      auto e = stack.back();
+      //      auto c = e.to();
+      //      stack.pop_back();
+      //      if (isMarked(c))
+      //         continue;
+
+      //      listener(e);
+      //      mark(c);
+
+      //      for (auto ne : reverseRange(m_graph.edgesFrom(c)))
+      //         if (!isMarked(ne.to()))
+      //            stack.push_back(ne);
+      //   }
+      //}
+
       void searchImplRec(size_t v, OnMarked onAdjVisited, OnPathTaken listener)
       {
-         auto initEdges = reverseRange(m_graph.edgesFrom(v));
-         std::vector<Edge> stack(begin(initEdges), end(initEdges));
+         auto edges = m_graph.edgesFrom(v);
+         std::vector<size_t> fathers{ v };
+         std::vector<decltype(edges)> stack{ edges };
 
          while (!stack.empty())
          {
-            auto e = stack.back();
-            auto c = e.to();
-            stack.pop_back();
-            if (isMarked(c))
-               continue;
+            auto range = stack.back();
+            if (range.empty())
+            {
+               stack.pop_back();
+               onAdjVisited(fathers.back());
+               fathers.pop_back();
+            }
+            else
+            {
+               auto e = stack.back().begin();
+               auto c = e->to();
+               stack.back().pop();
+               if (isMarked(c))
+                  continue;
 
-            listener(e);
-            mark(c);
-
-            for (auto ne : reverseRange(m_graph.edgesFrom(c)))
-               if (!isMarked(ne.to()))
-                  stack.push_back(ne);
+               listener(*e);
+               mark(c);
+               fathers.push_back(e->from());
+               stack.push_back(m_graph.edgesFrom(c));
+            }
          }
       }
 
