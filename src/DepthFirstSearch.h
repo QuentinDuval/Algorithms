@@ -28,26 +28,24 @@ namespace algorithm
          : DFS(g.toDiGraph())
       {}
 
-      void postOrderFrom(size_t v, OnMarked onAdjVisited)
+      void postOrderFrom(size_t v, OnMarked postOrder)
       {
-         static OnPathTaken nullListener = [](Edge const&){};
-         searchImpl(v, onAdjVisited, nullListener);
+         searchFrom(v, postOrder, [](size_t){}, [](Edge const&){});
       }
 
-   private:
-      void searchImpl(size_t v, OnPathTaken listener) override
-      {
-         static OnMarked nullListener = [](size_t){};
-         searchImpl(v, nullListener, listener);
-      }
-
-      void searchImpl(size_t v, OnMarked onAdjVisited, OnPathTaken listener)
+      void searchFrom(size_t v, OnMarked postOrder, OnPathTaken onAlreadyMarked, OnPathTaken pathTaken)
       {
          if (isMarked(v))
             return;
 
          mark(v);
-         searchImplRec(v, onAdjVisited, listener);
+         searchImplRec(v, postOrder, onAlreadyMarked, pathTaken);
+      }
+
+   private:
+      void searchImpl(size_t v, OnPathTaken listener) override
+      {
+         searchFrom(v, [](size_t){}, [](Edge const&){}, listener);
       }
 
       /** Recursive implementation: leads to stack overflows for big graphgs */
@@ -67,7 +65,7 @@ namespace algorithm
       //}
 
       /** Iterative implementation emulating the stack */
-      void searchImplRec(size_t v, OnMarked onAdjVisited, OnPathTaken listener)
+      void searchImplRec(size_t v, OnMarked onAdjVisited, OnPathTaken onAlreadyMarked, OnPathTaken listener)
       {
          auto edges = m_graph.edgesFrom(v);
          using StackedRange = std::pair<size_t, decltype(edges)>;
@@ -86,12 +84,17 @@ namespace algorithm
                auto e = range.begin();
                auto c = e->to();
                range.pop();
-               if (isMarked(c))
-                  continue;
 
-               listener(*e);
-               mark(c);
-               stack.push_back({ c, m_graph.edgesFrom(c) });
+               if (!isMarked(c))
+               {
+                  listener(*e);
+                  mark(c);
+                  stack.push_back({ c, m_graph.edgesFrom(c) });
+               }
+               else
+               {
+                  onAlreadyMarked(*e);
+               }
             }
          }
       }

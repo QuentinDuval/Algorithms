@@ -30,6 +30,7 @@ int main()
    symbolGraphSearchTests();
    connectedComponentsTests();
    shortestPathTests();
+   cycleTests();
 
    unionFindTests();
    unionFindExample();
