@@ -4,6 +4,9 @@
 #include "Graph.h"
 #include "WeightedGraph.h"
 #include "utils/TestUtils.h"
+#include "utils/Timer.h"
+
+#include <iostream>
 
 
 namespace algorithm
@@ -40,11 +43,35 @@ namespace algorithm
       assert(false == cc.connected(3, 5));
    }
 
-   //--------------------------------------------------------------------------
-
    void connectedComponentsTests()
    {
       graphCCTests();
       weightedGraphCCTests();
+   }
+
+   //--------------------------------------------------------------------------
+
+   void connectedComponentsPerformanceTests()
+   {
+      const size_t size = 50000;
+      std::cout << std::endl << "[Connected components] Performance test" << std::endl;
+      std::cout << "Number of entries, union and finds: " << size << std::endl;
+
+      std::vector<size_t> sources(size);
+      generate(sources, 0, [](int i) { return i + 1; });
+      std::vector<size_t> destinations(sources);
+
+      shuffle(sources);
+      shuffle(destinations);
+
+      showTime(std::cout, [&]{
+         Graph g(size);
+         for (size_t i = 0; i < size; ++i)
+            g.addEdge({ sources[i], destinations[i] });
+
+         ConnectedComponents cc(g);
+         for (size_t i = 0; i < size; ++i)
+            assert(true == cc.connected(sources[i], destinations[i]));
+      });
    }
 }
