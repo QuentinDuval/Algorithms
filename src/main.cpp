@@ -4,6 +4,7 @@
 #include "tests/PriorityQueueTests.h"
 #include "tests/ShortestPathTests.h"
 #include "tests/SortTests.h"
+#include "tests/SpanningTreeTests.h"
 #include "tests/SubStringSearchTests.h"
 #include "tests/TopologicalSortTests.h"
 #include "tests/UnionFindTests.h"
@@ -33,6 +34,7 @@ int main()
    shortestPathTests();
    cycleTests();
    topologicalSortTests();
+   spanningTreeTests();
 
    unionFindTests();
    unionFindExample();
