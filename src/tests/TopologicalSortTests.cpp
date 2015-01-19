@@ -21,7 +21,7 @@ namespace algorithm
       TopologicalSort sort(g);
       assert(true == sort.hasOrder());
 
-      auto expected = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+      std::vector<size_t> expected = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
       assert(equal(sort.order(), expected));
    }
 
