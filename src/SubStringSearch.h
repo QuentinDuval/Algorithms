@@ -18,12 +18,12 @@ namespace algorithm
       static size_t search(std::string const& text, std::string const& pattern);
    };
 
-   struct KMPSearch
+   struct KMPSearchFullDfa
    {
       static size_t search(std::string const& text, std::string const& pattern);
    };
 
-   struct KMPSearch2
+   struct KMPSearchBorder
    {
       static size_t search(std::string const& text, std::string const& pattern);
    };

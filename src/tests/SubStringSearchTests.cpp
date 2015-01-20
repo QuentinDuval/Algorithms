@@ -52,8 +52,8 @@ namespace algorithm
       basicTests(BruteForceSearch::search);
       basicTests(BoyerMooreSearch::search);
       basicTests(RabinKarpSearch::search);
-      basicTests(KMPSearch::search);
-      basicTests(KMPSearch2::search);
+      basicTests(KMPSearchFullDfa::search);
+      basicTests(KMPSearchBorder::search);
    }
 
    void subStringSearchPerfTests()
@@ -62,8 +62,8 @@ namespace algorithm
       performanceTests(BruteForceSearch::search, "Brute Force");
       performanceTests(BoyerMooreSearch::search, "Boyer Moore");
       performanceTests(RabinKarpSearch::search, "Rabin Karp");
-      performanceTests(KMPSearch::search, "KMP search");
-      performanceTests(KMPSearch2::search, "KMP search (2)");
+      performanceTests(KMPSearchFullDfa::search, "KMP search (dfa)");
+      performanceTests(KMPSearchBorder::search, "KMP search (border)");
    }
 }
 

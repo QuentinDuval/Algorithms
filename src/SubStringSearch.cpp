@@ -185,14 +185,14 @@ namespace algorithm
    };
 
 
-   size_t KMPSearch::search(std::string const& text, std::string const& pattern)
+   size_t KMPSearchBorder::search(std::string const& text, std::string const& pattern)
    {
       if (pattern.empty() || text.empty())
          return std::string::npos;
       return KMPAlgo<NextWidestBorderDfa>::search(text, pattern);
    }
 
-   size_t KMPSearch2::search(std::string const& text, std::string const& pattern)
+   size_t KMPSearchFullDfa::search(std::string const& text, std::string const& pattern)
    {
       if (pattern.empty() || text.empty())
          return std::string::npos;
