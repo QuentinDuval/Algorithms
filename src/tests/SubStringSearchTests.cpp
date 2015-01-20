@@ -17,6 +17,7 @@ namespace algorithm
       assert(0 == search("searching for random strings", "searching"));
       assert(9 == search("searching for random strings", " "));
       assert(21 == search("searching for random strings", "strings"));
+      assert(12 == search("ababababababababac", "ababac"));
 
       assert(std::string::npos == search("searching for random strings", "ramdon"));
       assert(std::string::npos == search("searching for random strings", ""));

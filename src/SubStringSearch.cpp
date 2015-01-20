@@ -129,7 +129,11 @@ namespace algorithm
       FullDfa(std::string const& pattern)
          : m_dfa(radix, pattern.size(), 0)
       {
-         for (size_t j = 0, i = 0; i < pattern.size(); ++i)
+         for (size_t c = 0; c < radix; ++c)
+            m_dfa.at(c, 0) = 0;
+         m_dfa.at(pattern[0] - CHAR_MIN, 0) = 1;
+
+         for (size_t j = 0, i = 1; i < pattern.size(); ++i)
          {
             for (size_t c = 0; c < radix; ++c)
                m_dfa.at(c, i) = m_dfa.at(c, j);
