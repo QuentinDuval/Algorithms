@@ -1,4 +1,6 @@
 #include "SpanningTree.h"
+
+#include "UnionFind.h"
 #include "PriorityQueue.h"
 
 
@@ -83,5 +85,40 @@ namespace algorithm
    Range<MinimumSpanningTree::edge_it> MinimumSpanningTree::edges(size_t ccId) const
    {
       return Range<MinimumSpanningTree::edge_it>{ begin(m_trees[ccId]), end(m_trees[ccId]) };
+   }
+
+   //--------------------------------------------------------------------------
+
+   KruskalMinimumSpanningTree::KruskalMinimumSpanningTree(GenericDiGraph<WeightedEdge> const& g)
+      : m_tree()
+   {
+      std::vector<WeightedEdge> edges;
+      for (size_t v = 0; v < g.vertexCount(); ++v)
+      {
+         auto range = g.edgesFrom(v);
+         edges.insert(edges.end(), begin(range), end(range));
+      }
+
+      auto less = [](WeightedEdge const& lhs, WeightedEdge const& rhs) { return lhs.weight() < rhs.weight(); };
+      std::sort(begin(edges), end(edges), less);
+
+      UnionFind uf(g.vertexCount());
+      for (auto& e : edges)
+      {
+         if (uf.connected(e.from(), e.to()))
+            continue;
+
+         m_tree.push_back(e);
+         uf.connect(e.from(), e.to());
+      }
+   }
+
+   KruskalMinimumSpanningTree::KruskalMinimumSpanningTree(GenericGraph<WeightedEdge> const& g)
+      : KruskalMinimumSpanningTree(g.toDiGraph())
+   {}
+
+   Range<KruskalMinimumSpanningTree::edge_it> KruskalMinimumSpanningTree::edges() const
+   {
+      return Range<KruskalMinimumSpanningTree::edge_it>{ begin(m_tree), end(m_tree) };
    }
 }

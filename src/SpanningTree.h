@@ -44,4 +44,22 @@ namespace algorithm
    private:
       std::vector<Edges> m_trees;
    };
+
+   //--------------------------------------------------------------------------
+
+   class KruskalMinimumSpanningTree
+   {
+   public:
+      using Edges = std::vector<WeightedEdge>;
+      using edge_it = Edges::const_iterator;
+
+   public:
+      KruskalMinimumSpanningTree(GenericDiGraph<WeightedEdge> const&);
+      KruskalMinimumSpanningTree(GenericGraph<WeightedEdge>   const&);
+
+      Range<edge_it> edges() const;
+
+   private:
+      Edges m_tree;
+   };
 }

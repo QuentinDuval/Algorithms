@@ -34,13 +34,18 @@ namespace algorithm
       for (auto& e : inputs)
          g.addEdge(e);
 
+      auto sumWeights = [](double weight, WeightedEdge const& e) { return weight + e.weight(); };
+
       MinimumSpanningTree spt(g);
       assert(3 == spt.connectedComponentCount());
       assert(2 == spt.edges(0).size());
-      double totalWeight = accumulate(spt.edges(0), 0., [](double weight, WeightedEdge const& e) { return weight + e.weight(); });
-      assert(2. == totalWeight);
+      assert(2. == accumulate(spt.edges(0), 0., sumWeights));
       assert(1 == spt.edges(1).size());
       assert(0 == spt.edges(2).size());
+
+      KruskalMinimumSpanningTree kspt(g);
+      assert(3 == kspt.edges().size());
+      assert(3. == accumulate(kspt.edges(), 0., sumWeights));
    }
 
    void spanningTreeTests()
@@ -61,6 +66,12 @@ namespace algorithm
          MinimumSpanningTree spt(g);
          assert(1 == spt.connectedComponentCount());
          assert((dim * dim - 1) == spt.edges(0).size());
+      });
+
+      std::cout << std::endl << "[Minimum spanning tree] Kruskal's algorithm on " << dim * dim << " nodes." << std::endl;
+      showTime(std::cout, [&]{
+         KruskalMinimumSpanningTree spt(g);
+         assert((dim * dim - 1) == spt.edges().size());
       });
    }
 }
