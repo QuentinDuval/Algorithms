@@ -4,4 +4,5 @@
 namespace algorithm
 {
    void spanningTreeTests();
+   void spanningTreePerfTests();
 }

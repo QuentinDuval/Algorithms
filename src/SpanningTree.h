@@ -25,4 +25,23 @@ namespace algorithm
    private:
       std::vector<Edges> m_trees;
    };
+
+   //--------------------------------------------------------------------------
+
+   class MinimumSpanningTree
+   {
+   public:
+      using Edges = std::vector<WeightedEdge>;
+      using edge_it = Edges::const_iterator;
+
+   public:
+      MinimumSpanningTree(GenericDiGraph<WeightedEdge> const&);
+      MinimumSpanningTree(GenericGraph<WeightedEdge>   const&);
+
+      size_t connectedComponentCount() const;
+      Range<edge_it> edges(size_t ccId) const;
+
+   private:
+      std::vector<Edges> m_trees;
+   };
 }

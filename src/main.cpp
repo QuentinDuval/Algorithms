@@ -46,6 +46,7 @@ int main()
    {
       shortestPathPerformanceTests();
       unionFindVsCCPerfTests();
+      spanningTreePerfTests();
    }
 
    if (runPerformanceTests("sorts"))

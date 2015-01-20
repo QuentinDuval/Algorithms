@@ -1,4 +1,4 @@
-#include "tests/ShortestPathTests.h"
+#include "tests/GraphTestUtils.h"
 
 #include "DiGraph.h"
 #include "Graph.h"
@@ -13,31 +13,47 @@
 
 namespace algorithm
 {
-   template<typename GraphType>
-   GraphType makePlane(size_t dim)
+   template<typename GraphType, typename MakeEdge>
+   GraphType makePlane(size_t dim, MakeEdge makeEdge)
    {
       GraphType g(dim * dim);
       for (size_t i = 0; i < g.vertexCount(); ++i)
       {
          size_t x = i % dim;
          if (x < dim - 1)
-            g.addEdge({ i, i + 1 });
+            g.addEdge(makeEdge(i, i + 1));
 
          size_t y = i / dim;
          if (y < dim - 1)
-            g.addEdge({ i, i + dim });
+            g.addEdge(makeEdge(i, i + dim));
       }
       return g;
    }
 
+   static Edge makeEdge(size_t from, size_t to)
+   {
+      return Edge(from, to);
+   }
+
+   static WeightedEdge makeWeightedEdge(size_t from, size_t to)
+   {
+      return WeightedEdge(from, to, 1.);
+   }
+
+   //--------------------------------------------------------------------------
 
    Graph twoDimPlane(size_t dim)
    {
-      return makePlane<Graph>(dim);
+      return makePlane<Graph>(dim, makeEdge);
+   }
+
+   WeightedGraph twoDimWeightedPlane(size_t dim)
+   {
+      return makePlane<WeightedGraph>(dim, makeWeightedEdge);
    }
 
    DiGraph topLeftBottomRightPlane(size_t dim)
    {
-      return makePlane<DiGraph>(dim);
+      return makePlane<DiGraph>(dim, makeEdge);
    }
 }
