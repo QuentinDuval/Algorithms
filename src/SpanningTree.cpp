@@ -1,12 +1,13 @@
 #include "SpanningTree.h"
 
-#include "UnionFind.h"
+#include "DepthFirstSearch.h"
 #include "PriorityQueue.h"
+#include "UnionFind.h"
 
 
 namespace algorithm
 {
-   SpanningTree::SpanningTree(GenericDiGraph<Edge> const& g)
+   SpanningTree::SpanningTree(DiGraph const& g)
       : m_trees()
    {
       DFS<Edge> dfs(g);
@@ -21,7 +22,7 @@ namespace algorithm
       }
    }
 
-   SpanningTree::SpanningTree(GenericGraph<Edge> const& g)
+   SpanningTree::SpanningTree(Graph const& g)
       : SpanningTree(g.toDiGraph())
    {}
 
@@ -37,7 +38,7 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   MinimumSpanningTree::MinimumSpanningTree(GenericDiGraph<WeightedEdge> const& g)
+   MinimumSpanningTree::MinimumSpanningTree(WeightedDiGraph const& g)
       : m_trees()
    {
       //Prim's algorithm
@@ -73,7 +74,7 @@ namespace algorithm
       }
    }
 
-   MinimumSpanningTree::MinimumSpanningTree(GenericGraph<WeightedEdge> const& g)
+   MinimumSpanningTree::MinimumSpanningTree(WeightedGraph const& g)
       : MinimumSpanningTree(g.toDiGraph())
    {}
 
@@ -89,7 +90,7 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   KruskalMinimumSpanningTree::KruskalMinimumSpanningTree(GenericDiGraph<WeightedEdge> const& g)
+   KruskalMinimumSpanningTree::KruskalMinimumSpanningTree(WeightedDiGraph const& g)
       : m_tree()
    {
       std::vector<WeightedEdge> edges;
@@ -113,7 +114,7 @@ namespace algorithm
       }
    }
 
-   KruskalMinimumSpanningTree::KruskalMinimumSpanningTree(GenericGraph<WeightedEdge> const& g)
+   KruskalMinimumSpanningTree::KruskalMinimumSpanningTree(WeightedGraph const& g)
       : KruskalMinimumSpanningTree(g.toDiGraph())
    {}
 

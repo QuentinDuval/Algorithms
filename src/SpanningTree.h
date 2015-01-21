@@ -1,9 +1,10 @@
 #pragma once
 
-#include "DepthFirstSearch.h"
+#include "DiGraph.h"
 #include "Edge.h"
-#include "internal/GenericDiGraph.h"
-#include "internal/GenericGraph.h"
+#include "Graph.h"
+#include "WeightedDiGraph.h"
+#include "WeightedGraph.h"
 #include <vector>
 
 
@@ -16,8 +17,8 @@ namespace algorithm
       using edge_it = Edges::const_iterator;
 
    public:
-      SpanningTree(GenericDiGraph<Edge> const&);
-      SpanningTree(GenericGraph<Edge>   const&);
+      SpanningTree(DiGraph const&);
+      SpanningTree(Graph   const&);
 
       size_t connectedComponentCount() const;
       Range<edge_it> edges(size_t ccId) const;
@@ -35,8 +36,8 @@ namespace algorithm
       using edge_it = Edges::const_iterator;
 
    public:
-      MinimumSpanningTree(GenericDiGraph<WeightedEdge> const&);
-      MinimumSpanningTree(GenericGraph<WeightedEdge>   const&);
+      MinimumSpanningTree(WeightedDiGraph const&);
+      MinimumSpanningTree(WeightedGraph   const&);
 
       size_t connectedComponentCount() const;
       Range<edge_it> edges(size_t ccId) const;
@@ -54,8 +55,8 @@ namespace algorithm
       using edge_it = Edges::const_iterator;
 
    public:
-      KruskalMinimumSpanningTree(GenericDiGraph<WeightedEdge> const&);
-      KruskalMinimumSpanningTree(GenericGraph<WeightedEdge>   const&);
+      KruskalMinimumSpanningTree(WeightedDiGraph const&);
+      KruskalMinimumSpanningTree(WeightedGraph   const&);
 
       Range<edge_it> edges() const;
 
