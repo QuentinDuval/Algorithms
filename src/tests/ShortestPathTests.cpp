@@ -14,7 +14,7 @@
 
 namespace algorithm
 {
-   void shortestPathTests()
+   static void graphShortestPathTests()
    {
       //Two dimentional plane
       const size_t dim = 4;
@@ -31,6 +31,31 @@ namespace algorithm
 
       //Testing paths
       assert(equal(sp.pathTo(15), std::vector<size_t>{1, 2, 3, 7, 11, 15}));
+   }
+
+   static void weightedGraphShortestPathTests()
+   {
+      //Two dimentional plane
+      const size_t dim = 4;
+      WeightedGraph g = twoDimWeightedPlane(dim);
+
+      //Testing Manhattan distance
+      DijkstraShortestPathFrom sp(g, 0);
+      for (size_t i = 0; i < g.vertexCount(); ++i)
+      {
+         double expectedLength = i % dim + i / dim;
+         assert(true == sp.hasPathTo(i));
+         assert(expectedLength == sp.pathLengthTo(i));
+      }
+
+      //Testing paths
+      //assert(equal(sp.pathTo(15), std::vector<size_t>{1, 2, 3, 7, 11, 15}));
+   }
+
+   void shortestPathTests()
+   {
+      graphShortestPathTests();
+      weightedGraphShortestPathTests();
    }
 
    //--------------------------------------------------------------------------
