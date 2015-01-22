@@ -1,9 +1,7 @@
 #pragma once
 
-#include "DiGraph.h"
 #include "Edge.h"
 #include "Graph.h"
-#include "WeightedDiGraph.h"
 #include "WeightedGraph.h"
 #include <vector>
 
@@ -17,8 +15,7 @@ namespace algorithm
       using edge_it = Edges::const_iterator;
 
    public:
-      SpanningTree(DiGraph const&);
-      SpanningTree(Graph   const&);
+      SpanningTree(Graph const&);
 
       size_t connectedComponentCount() const;
       Range<edge_it> edges(size_t ccId) const;
@@ -36,8 +33,7 @@ namespace algorithm
       using edge_it = Edges::const_iterator;
 
    public:
-      MinimumSpanningTree(WeightedDiGraph const&);
-      MinimumSpanningTree(WeightedGraph   const&);
+      MinimumSpanningTree(WeightedGraph const&);
 
       size_t connectedComponentCount() const;
       Range<edge_it> edges(size_t ccId) const;
@@ -55,8 +51,7 @@ namespace algorithm
       using edge_it = Edges::const_iterator;
 
    public:
-      KruskalMinimumSpanningTree(WeightedDiGraph const&);
-      KruskalMinimumSpanningTree(WeightedGraph   const&);
+      KruskalMinimumSpanningTree(WeightedGraph const&);
 
       Range<edge_it> edges() const;
 

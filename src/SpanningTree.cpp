@@ -7,7 +7,7 @@
 
 namespace algorithm
 {
-   SpanningTree::SpanningTree(DiGraph const& g)
+   SpanningTree::SpanningTree(Graph const& g)
       : m_trees()
    {
       DFS<Edge> dfs(g);
@@ -22,10 +22,6 @@ namespace algorithm
       }
    }
 
-   SpanningTree::SpanningTree(Graph const& g)
-      : SpanningTree(g.toDiGraph())
-   {}
-
    size_t SpanningTree::connectedComponentCount() const
    {
       return m_trees.size();
@@ -38,7 +34,7 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   MinimumSpanningTree::MinimumSpanningTree(WeightedDiGraph const& g)
+   MinimumSpanningTree::MinimumSpanningTree(WeightedGraph const& g)
       : m_trees()
    {
       //Prim's algorithm
@@ -74,10 +70,6 @@ namespace algorithm
       }
    }
 
-   MinimumSpanningTree::MinimumSpanningTree(WeightedGraph const& g)
-      : MinimumSpanningTree(g.toDiGraph())
-   {}
-
    size_t MinimumSpanningTree::connectedComponentCount() const
    {
       return m_trees.size();
@@ -90,7 +82,7 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   KruskalMinimumSpanningTree::KruskalMinimumSpanningTree(WeightedDiGraph const& g)
+   KruskalMinimumSpanningTree::KruskalMinimumSpanningTree(WeightedGraph const& g)
       : m_tree()
    {
       std::vector<WeightedEdge> edges;
@@ -113,10 +105,6 @@ namespace algorithm
          uf.connect(e.from(), e.to());
       }
    }
-
-   KruskalMinimumSpanningTree::KruskalMinimumSpanningTree(WeightedGraph const& g)
-      : KruskalMinimumSpanningTree(g.toDiGraph())
-   {}
 
    Range<KruskalMinimumSpanningTree::edge_it> KruskalMinimumSpanningTree::edges() const
    {
