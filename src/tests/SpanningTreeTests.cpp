@@ -59,7 +59,7 @@ namespace algorithm
    void spanningTreePerfTests()
    {
       size_t dim = 1000;
-      WeightedGraph g = twoDimWeightedPlane(dim);
+      WeightedGraph g = twoDimRandomWeightedPlane(dim);
 
       std::cout << std::endl << "[Minimum spanning tree] Lazy prim's algorithm on " << dim * dim << " nodes." << std::endl;
       showTime(std::cout, [&]{

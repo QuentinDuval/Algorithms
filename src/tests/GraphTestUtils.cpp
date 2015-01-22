@@ -40,6 +40,11 @@ namespace algorithm
       return WeightedEdge(from, to, 1.);
    }
 
+   static WeightedEdge makeRandomWeightedEdge(size_t from, size_t to)
+   {
+      return WeightedEdge(from, to, rand() / (1.0 * RAND_MAX));
+   }
+
    //--------------------------------------------------------------------------
 
    Graph twoDimPlane(size_t dim)
@@ -50,6 +55,11 @@ namespace algorithm
    WeightedGraph twoDimWeightedPlane(size_t dim)
    {
       return makePlane<WeightedGraph>(dim, makeWeightedEdge);
+   }
+
+   WeightedGraph twoDimRandomWeightedPlane(size_t dim)
+   {
+      return makePlane<WeightedGraph>(dim, makeRandomWeightedEdge);
    }
 
    DiGraph topLeftBottomRightPlane(size_t dim)
