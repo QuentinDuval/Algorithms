@@ -62,12 +62,22 @@ namespace algorithm
 
    void shortestPathPerformanceTests()
    {
-      size_t size = 1000;
-      Graph g = twoDimPlane(size);
+      size_t dim = 1000;
+      Graph g = twoDimPlane(dim);
 
-      std::cout << std::endl << "[Shortest path] Unweighed graph of size " << size * size << std::endl;
+      std::cout << std::endl << "[Shortest path] Unweighed graph of size " << dim * dim << std::endl;
       showTime(std::cout, [&]{
          ShortestPathFrom sp(g, 0);
+         assert(dim == sp.pathLengthTo(dim * 2 - 1));
+         assert((2 * (dim - 1)) == sp.pathLengthTo(dim * dim - 1));
+      });
+
+      WeightedGraph wg = twoDimWeightedPlane(dim);
+      std::cout << std::endl << "[Shortest path] Weighed graph of size " << dim * dim << std::endl;
+      showTime(std::cout, [&]{
+         DijkstraShortestPathFrom sp(wg, 0);
+         assert(dim == sp.pathLengthTo(dim * 2 - 1));
+         assert((2 * (dim - 1)) == sp.pathLengthTo(dim * dim - 1));
       });
    }
 }
