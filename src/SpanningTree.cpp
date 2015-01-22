@@ -37,7 +37,7 @@ namespace algorithm
    MinimumSpanningTree::MinimumSpanningTree(WeightedGraph const& g)
       : m_trees()
    {
-      //Prim's algorithm
+      //Lazy Prim's algorithm
       auto less = [](WeightedEdge const& lhs, WeightedEdge const& rhs) { return lhs.weight() < rhs.weight(); };
 
       MinPriorityQueue<WeightedEdge, decltype(less)> edgeQueue(less);
@@ -68,6 +68,8 @@ namespace algorithm
                   edgeQueue.add(e);
          }
       }
+
+      //TODO - Implement Eager Prim's algorithm (with nodes keeping trace of shortest path to them)
    }
 
    size_t MinimumSpanningTree::connectedComponentCount() const
