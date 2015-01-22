@@ -49,7 +49,7 @@ namespace algorithm
       }
 
       //Testing paths
-      //assert(equal(sp.pathTo(15), std::vector<size_t>{1, 2, 3, 7, 11, 15}));
+      assert(equal(sp.pathTo(15), std::vector<size_t>{1, 5, 6, 7, 11, 15}));
    }
 
    void shortestPathTests()
