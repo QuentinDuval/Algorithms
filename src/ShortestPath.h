@@ -54,4 +54,6 @@ namespace algorithm
       std::vector<size_t> m_sources;
       std::vector<double> m_distances;
    };
+
+   //TODO - Add an algorithm for shortest path on weighted digraph with no cycle => topological sort
 }
