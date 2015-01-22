@@ -93,16 +93,18 @@ namespace algorithm
       }
 
       auto less = [](WeightedEdge const& lhs, WeightedEdge const& rhs) { return lhs.weight() < rhs.weight(); };
-      std::sort(begin(edges), end(edges), less);
+      MinPriorityQueue<WeightedEdge, decltype(less)> edgeQueue(less, begin(edges), end(edges));
 
       UnionFind uf(g.vertexCount());
-      for (auto& e : edges)
+      size_t stopCount = g.vertexCount() - 1;
+      while (!edgeQueue.empty() && m_tree.size() < stopCount)
       {
-         if (uf.connected(e.from(), e.to()))
+         auto e = edgeQueue.top();
+         edgeQueue.pop();
+         if (!uf.connect(e.from(), e.to()))
             continue;
 
          m_tree.push_back(e);
-         uf.connect(e.from(), e.to());
       }
    }
 
