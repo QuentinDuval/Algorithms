@@ -2,6 +2,7 @@
 #include "tests/GraphSearchTests.h"
 #include "tests/GraphTests.h"
 #include "tests/PriorityQueueTests.h"
+#include "tests/SetTests.h"
 #include "tests/ShortestPathTests.h"
 #include "tests/SortTests.h"
 #include "tests/SpanningTreeTests.h"
@@ -35,6 +36,7 @@ int main()
    cycleTests();
    topologicalSortTests();
    spanningTreeTests();
+   setTests();
 
    unionFindTests();
    unionFindExample();
