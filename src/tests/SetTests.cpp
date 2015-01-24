@@ -23,5 +23,15 @@ namespace algorithm
 
       for (size_t i = 0; i < 30; ++i)
          assert(true == set.contains(i));
+
+      auto it = set.find(0);
+      set.erase(it);
+      assert(false == set.contains(0));
+
+      for (auto first = set.begin(); first != set.end(); ++first)
+         set.erase(first);
+
+      for (size_t i = 0; i < 30; ++i)
+         assert(false == set.contains(i));
    }
 }

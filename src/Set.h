@@ -53,27 +53,14 @@ namespace algorithm
          , m_marked(10, false), m_keys(10)
       {}
 
-
       bool insert(Key const& k)
       {
          if (contains(k))
             return false;
 
-         const size_t start = startIndex(k);
-         size_t i = start;
-         while (i != start - 1)
-         {
-            if (!m_marked[i])
-               break;
-            i = (i + 1) % m_keys.size();
-         }
-
-         //Ensure by construction that there will be a spot
-         m_marked[i] = true;
-         m_keys[i] = k;
+         insert_(k);
          ++m_count;
 
-         //Check the load factor afterwards
          if (m_count > size() * m_load_factor)
             resize(2 * size());
          return true;
@@ -97,7 +84,7 @@ namespace algorithm
       key_iterator find(Key const& k) const
       {
          const size_t start = startIndex(k);
-         for (size_t i = start; i != start - 1; i = (i + 1) % m_keys.size())
+         for (size_t i = start; i != start - 1; i = nextIndex(i))
          {
             //End of range in which the key could be
             if (!m_marked[i])
@@ -116,7 +103,19 @@ namespace algorithm
 
       void erase(key_iterator it)
       {
-         //TODO
+         size_t start = std::distance(begin(), it);
+         m_marked[start] = false;
+
+         key_container keys;
+         size_t end = emptySpotFrom(start + 1);
+         for (size_t i = start + 1; i != end; i = nextIndex(i))
+         {
+            keys.push_back(m_keys[i]);
+            m_marked[i] = false;
+         }
+
+         for (auto& k : keys)
+            insert_(k);
          --m_count;
       }
 
@@ -134,12 +133,32 @@ namespace algorithm
          m_marked = key_marking(size, false);
          m_keys.resize(size);
          for (auto& k : keys)
-            insert(k);
+            insert_(k);
+      }
+
+      void insert_(Key const& k)
+      {
+         size_t i = emptySpotFrom(startIndex(k));
+         m_marked[i] = true;
+         m_keys[i] = k;
+      }
+
+      size_t emptySpotFrom(size_t start) const
+      {
+         for (size_t i = start; i != start - 1; i = nextIndex(i))
+            if (!m_marked[i])
+               return i;
+         return 0; //Not reachable by construction
       }
 
       size_t startIndex(Key const& k) const
       {
          return m_hash(k) % m_keys.size();
+      }
+
+      size_t nextIndex(size_t i) const
+      {
+         return i + 1 % m_keys.size();
       }
 
    private:
