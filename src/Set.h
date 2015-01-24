@@ -41,7 +41,7 @@ namespace algorithm
    public:
       using key_marking = std::vector<bool>;
       using key_container = std::vector<Key>;
-      using key_iterator = typename key_container::const_iterator;
+      class key_iterator;
 
    public:
       DenseHashSet() : DenseHashSet(Compare(), Hasher()) {}
@@ -52,6 +52,40 @@ namespace algorithm
          , m_load_factor(0.5), m_count(0)
          , m_marked(10, false), m_keys(10)
       {}
+
+      key_iterator begin() const
+      {
+         return key_iterator(*this, 0);
+      }
+
+      key_iterator end() const
+      {
+         return key_iterator(*this, m_keys.size());
+      }
+
+      size_t size() const
+      {
+         return std::distance(begin(), end());
+      }
+
+      key_iterator find(Key const& k) const
+      {
+         const size_t start = startIndex(k);
+         for (size_t i = start; i != start - 1; i = nextIndex(i))
+         {
+            if (!m_marked[i])
+               return end();
+
+            if (m_comp(k, m_keys[i]))
+               return key_iterator(*this, i);
+         }
+         return end();
+      }
+
+      bool contains(Key const& k) const
+      {
+         return find(k) != end();
+      }
 
       bool insert(Key const& k)
       {
@@ -64,44 +98,9 @@ namespace algorithm
          return true;
       }
 
-      key_iterator begin() const
-      {
-         return m_keys.begin();
-      }
-
-      key_iterator end() const
-      {
-         return m_keys.end();
-      }
-
-      size_t size() const
-      {
-         return m_keys.size();
-      }
-
-      key_iterator find(Key const& k) const
-      {
-         const size_t start = startIndex(k);
-         for (size_t i = start; i != start - 1; i = nextIndex(i))
-         {
-            //End of range in which the key could be
-            if (!m_marked[i])
-               return end();
-
-            if (m_comp(k, m_keys[i]))
-               return begin() + i;
-         }
-         return end();
-      }
-
-      bool contains(Key const& k) const
-      {
-         return find(k) != end();
-      }
-
       void erase(key_iterator it)
       {
-         size_t start = std::distance(begin(), it);
+         size_t start = it.getPos();
          m_marked[start] = false;
 
          key_container keys;
@@ -143,9 +142,9 @@ namespace algorithm
 
       void loadFactorCheck()
       {
-         size_t upperBound = static_cast<size_t>(size() * m_load_factor);
+         size_t upperBound = static_cast<size_t>(m_keys.size() * m_load_factor);
          if (m_count > upperBound)
-            resize(2 * size());
+            resize(2 * m_keys.size());
       }
 
       size_t emptySpotFrom(size_t start) const
@@ -177,3 +176,5 @@ namespace algorithm
       key_container m_keys;
    };
 }
+
+#include "Set.inl.h"
