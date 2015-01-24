@@ -102,6 +102,7 @@ namespace algorithm
       {
          size_t start = it.getPos();
          m_marked[start] = false;
+         --m_count;
 
          key_container keys;
          size_t end = emptySpotFrom(start + 1);
@@ -113,7 +114,6 @@ namespace algorithm
 
          for (auto& k : keys)
             insert_(k);
-         --m_count;
       }
 
    private:
