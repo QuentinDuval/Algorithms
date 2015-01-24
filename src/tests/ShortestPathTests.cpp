@@ -85,9 +85,15 @@ namespace algorithm
       });
 
       WeightedGraph wg = make2DRandomWeightedPlane(dim, true);
-      std::cout << std::endl << "[Shortest path] Weighed graph of size " << dim * dim << std::endl;
+      std::cout << std::endl << "[Shortest path] Weighed graph of size (Dijkstra) " << dim * dim << std::endl;
       showTime(std::cout, [&]{
          DijkstraShortestPathFrom sp(wg, 0);
+      });
+
+      WeightedDiGraph dag = make2DWeightedDiPlane(dim, true);
+      std::cout << std::endl << "[Shortest path] Weighed graph of size (Topological) " << dim * dim << std::endl;
+      showTime(std::cout, [&]{
+         TopologicalShortestPathFrom sp(dag, 0);
       });
    }
 }

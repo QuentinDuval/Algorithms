@@ -5,6 +5,7 @@
 #include "WeightedDiGraph.h"
 #include "tests/GraphTestUtils.h"
 #include "utils/Algorithms.h"
+#include "utils/Timer.h"
 
 #include <assert.h>
 #include <iostream>
@@ -36,5 +37,17 @@ namespace algorithm
    {
       basicTopologicalSort();
       planeTopologicalSort();
+   }
+
+   //--------------------------------------------------------------------------
+
+   void topologicalSortPerfTests()
+   {
+      size_t dim = 1000;
+      WeightedDiGraph dag = make2DWeightedDiPlane(dim, true);
+      std::cout << std::endl << "[Topological sort] Graph of size " << dim * dim << std::endl;
+      showTime(std::cout, [&]{
+         TopologicalSort sort(dag);
+      });
    }
 }

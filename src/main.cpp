@@ -46,6 +46,7 @@ int main()
 
    if (runPerformanceTests("graphs"))
    {
+      topologicalSortPerfTests();
       shortestPathPerformanceTests();
       unionFindVsCCPerfTests();
       spanningTreePerfTests();
