@@ -94,8 +94,8 @@ namespace algorithm
             {
                m_distances[w] = m_distances[v] + e.weight();
                m_sources[w] = v;
+               nodes.add(w, m_distances[w]);
             }
-            nodes.add(w, m_distances[w]);
          }
       }
    }
