@@ -22,9 +22,6 @@ namespace algorithm
       size_t               pathLengthTo(size_t to) const;
 
    private:
-      void fillPathNodes(size_t to, std::vector<size_t>& nodes) const;
-
-   private:
       size_t m_from;
       std::vector<bool> m_marked;
       std::vector<size_t> m_sources;
@@ -43,14 +40,9 @@ namespace algorithm
       double               pathLengthTo(size_t to) const;
 
    private:
-      void fillPathNodes(size_t to, std::vector<size_t>& nodes) const;
-
-   private:
       size_t m_from;
       std::vector<bool> m_marked;
       std::vector<size_t> m_sources;
       std::vector<double> m_distances;
    };
-
-   //TODO - Add an algorithm for shortest path on weighted digraph with no cycle => topological sort
 }

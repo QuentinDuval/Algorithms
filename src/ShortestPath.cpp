@@ -6,6 +6,17 @@
 
 namespace algorithm
 {
+   void fillPathNodes(std::vector<size_t> const& sources, size_t from , size_t to, std::vector<size_t>& nodes)
+   {
+      if (to == from)
+         return;
+
+      fillPathNodes(sources, from, sources[to], nodes);
+      nodes.push_back(to);
+   }
+
+   //--------------------------------------------------------------------------
+
    ShortestPathFrom::ShortestPathFrom(DiGraph const& g, size_t from)
       : m_from(from)
       , m_marked(g.vertexCount(), false)
@@ -42,17 +53,8 @@ namespace algorithm
    {
       std::vector<size_t> out;
       if (hasPathTo(to))
-         fillPathNodes(to, out);
+         fillPathNodes(m_sources, m_from, to, out);
       return out;
-   }
-
-   void ShortestPathFrom::fillPathNodes(size_t to, std::vector<size_t>& nodes) const
-   {
-      if (to == m_from)
-         return;
-
-      fillPathNodes(m_sources[to], nodes);
-      nodes.push_back(to);
    }
 
    //--------------------------------------------------------------------------
@@ -118,16 +120,7 @@ namespace algorithm
    {
       std::vector<size_t> out;
       if (hasPathTo(to))
-         fillPathNodes(to, out);
+         fillPathNodes(m_sources, m_from, to, out);
       return out;
-   }
-
-   void DijkstraShortestPathFrom::fillPathNodes(size_t to, std::vector<size_t>& nodes) const
-   {
-      if (to == m_from)
-         return;
-
-      fillPathNodes(m_sources[to], nodes);
-      nodes.push_back(to);
    }
 }
