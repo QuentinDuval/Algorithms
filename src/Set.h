@@ -60,9 +60,7 @@ namespace algorithm
 
          insert_(k);
          ++m_count;
-
-         if (m_count > size() * m_load_factor)
-            resize(2 * size());
+         loadFactorCheck();
          return true;
       }
 
@@ -141,6 +139,13 @@ namespace algorithm
          size_t i = emptySpotFrom(startIndex(k));
          m_marked[i] = true;
          m_keys[i] = k;
+      }
+
+      void loadFactorCheck()
+      {
+         size_t upperBound = static_cast<size_t>(size() * m_load_factor);
+         if (m_count > upperBound)
+            resize(2 * size());
       }
 
       size_t emptySpotFrom(size_t start) const
