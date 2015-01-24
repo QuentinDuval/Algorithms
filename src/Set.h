@@ -105,6 +105,7 @@ namespace algorithm
          for (auto& k : toReinsert)
             insert_(k);
 
+         --m_count;
          loadFactorCheck();
       }
 
@@ -139,7 +140,6 @@ namespace algorithm
             return;
 
          m_marked[start] = false;
-         --m_count;
 
          key_container keys;
          start = nextIndex(start);
