@@ -35,8 +35,8 @@ namespace algorithm
       DijkstraShortestPathFrom(WeightedDiGraph const&, size_t from);
       DijkstraShortestPathFrom(WeightedGraph   const&, size_t from);
 
-      bool                 hasPathTo(size_t to) const;
-      std::vector<size_t>  pathTo(size_t to) const;
+      bool                 hasPathTo   (size_t to) const;
+      std::vector<size_t>  pathTo      (size_t to) const;
       double               pathLengthTo(size_t to) const;
 
    private:
@@ -56,8 +56,8 @@ namespace algorithm
    public:
       TopologicalShortestPathFrom(WeightedDiGraph const&, size_t from);
 
-      bool                 hasPathTo(size_t to) const;
-      std::vector<size_t>  pathTo(size_t to) const;
+      bool                 hasPathTo   (size_t to) const;
+      std::vector<size_t>  pathTo      (size_t to) const;
       double               pathLengthTo(size_t to) const;
 
    private:
@@ -69,4 +69,6 @@ namespace algorithm
       std::vector<size_t> m_sources;
       std::vector<double> m_distances;
    };
+
+   //TODO - Bellman - Ford
 }
