@@ -144,7 +144,7 @@ namespace algorithm
       m_marked[from] = true;
       m_distances[from] = 0.;
 
-      TopologicalSort sort(g);
+      TopologicalSort sort(g, from);
       if (!sort.hasOrder())
          return;
 

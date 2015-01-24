@@ -1,6 +1,5 @@
 #pragma once
 #include "DepthFirstSearch.h"
-#include "DirectedCycle.h"
 #include "internal/GenericDiGraph.h"
 #include "utils/Algorithms.h"
 #include <vector>
@@ -18,16 +17,20 @@ namespace algorithm
       TopologicalSort(GenericDiGraph<Edge> const& g)
          : m_vertices()
       {
-         DirectedCycle<Edge> cycle(g);
-         if (cycle.hasCycle())
-            return;
-
          DFS<Edge> dfs(g);
          for (size_t i = 0; i < g.vertexCount(); ++i)
          {
             if (!dfs.isMarked(i))
                dfs.postOrderFrom(i, [this](size_t v) { m_vertices.push_back(v); });
          }
+      }
+
+      template<typename Edge>
+      TopologicalSort(GenericDiGraph<Edge> const& g, size_t from)
+         : m_vertices()
+      {
+         DFS<Edge> dfs(g);
+         dfs.postOrderFrom(from, [this](size_t v) { m_vertices.push_back(v); });
       }
 
       bool hasOrder() const
