@@ -154,8 +154,8 @@ namespace algorithm
          if (m_count > upperBound)
             resize(2 * m_keys.size());
 
-         //else if (m_count < upperBound / 4)
-         //   resize(m_keys.size() / 2);
+         else if (m_count < upperBound / 4)
+            resize(m_keys.size() / 2);
       }
 
       void resize(size_t size)
