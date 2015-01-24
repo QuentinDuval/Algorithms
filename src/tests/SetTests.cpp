@@ -32,9 +32,7 @@ namespace algorithm
       assert(false == set.contains(0));
       assert(29 == set.size());
 
-      for (auto first = set.begin(); first != set.end(); ++first)
-         set.erase(first);
-
+      set.erase(set.begin(), set.end());
       assert(0 == set.size());
       for (size_t i = 0; i < 30; ++i)
          assert(false == set.contains(i));
@@ -62,8 +60,7 @@ namespace algorithm
 
       std::cout << std::endl << "* Deletes:" << std::endl;
       showTime(std::cout, [&]{
-         for (auto it = set.begin(); it != set.end(); ++it)
-            set.erase(it);
+         set.erase(set.begin(), set.end());
       });
    }
 }

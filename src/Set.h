@@ -97,7 +97,42 @@ namespace algorithm
          return true;
       }
 
+      /** Invalidates the iterators because of load factors */
       void erase(key_iterator it)
+      {
+         key_container toReinsert;
+         erase_(it, toReinsert);
+         for (auto& k : toReinsert)
+            insert_(k);
+
+         loadFactorCheck();
+      }
+
+      /** Invalidates the iterators because of load factors */
+      void erase(key_iterator first, key_iterator last)
+      {
+         //Do it now, as iterators are invalidated afterwards
+         m_count -= std::distance(first, last);
+
+         key_container toReinsert;
+         for (; first != last; ++first)
+            erase_(first, toReinsert);
+
+         for (auto& k : toReinsert)
+            insert_(k);
+
+         loadFactorCheck();
+      }
+
+   private:
+      void insert_(Key const& k)
+      {
+         size_t i = emptySpotFrom(startIndex(k));
+         m_marked[i] = true;
+         m_keys[i] = k;
+      }
+
+      void erase_(key_iterator it, key_container& toReinsert)
       {
          size_t start = it.getPos();
          m_marked[start] = false;
@@ -111,14 +146,18 @@ namespace algorithm
             keys.push_back(m_keys[i]);
             m_marked[i] = false;
          }
-
-         for (auto& k : keys)
-            insert_(k);
-
-         loadFactorCheck();
       }
 
-   private:
+      void loadFactorCheck()
+      {
+         size_t upperBound = m_keys.size() / 2;
+         if (m_count > upperBound)
+            resize(2 * m_keys.size());
+
+         //else if (m_count < upperBound / 4)
+         //   resize(m_keys.size() / 2);
+      }
+
       void resize(size_t size)
       {
          key_container keys;
@@ -133,23 +172,6 @@ namespace algorithm
          m_keys.resize(size);
          for (auto& k : keys)
             insert_(k);
-      }
-
-      void insert_(Key const& k)
-      {
-         size_t i = emptySpotFrom(startIndex(k));
-         m_marked[i] = true;
-         m_keys[i] = k;
-      }
-
-      void loadFactorCheck()
-      {
-         size_t upperBound = m_keys.size() / 2;
-         if (m_count > upperBound)
-            resize(2 * m_keys.size());
-
-         //else if (m_count < upperBound / 4)
-         //   resize(m_keys.size() / 2);
       }
 
       size_t emptySpotFrom(size_t start) const
