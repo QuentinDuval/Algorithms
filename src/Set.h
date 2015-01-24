@@ -104,8 +104,9 @@ namespace algorithm
          --m_count;
 
          key_container keys;
-         size_t end = emptySpotFrom(start + 1);
-         for (size_t i = start + 1; i != end; i = nextIndex(i))
+         start = nextIndex(start);
+         size_t end = emptySpotFrom(start);
+         for (size_t i = start; i != end; i = nextIndex(i))
          {
             keys.push_back(m_keys[i]);
             m_marked[i] = false;
