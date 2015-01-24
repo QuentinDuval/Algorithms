@@ -1,8 +1,10 @@
 #include "tests/SetTests.h"
 
 #include "Set.h"
+#include "utils/Timer.h"
 
 #include <assert.h>
+#include <iostream>
 #include <string>
 
 
@@ -34,8 +36,34 @@ namespace algorithm
          set.erase(first);
 
       assert(0 == set.size());
-
       for (size_t i = 0; i < 30; ++i)
          assert(false == set.contains(i));
+   }
+
+
+   void setPerfTests()
+   {
+      size_t size = 100000;
+      DenseHashSet<size_t> set;
+
+      std::cout << std::endl << "[Dense Hash Set]" << std::endl;
+
+      std::cout << std::endl << "* Inserts:" << std::endl;
+      showTime(std::cout, [&]{
+         for (size_t i = 0; i < size; ++i)
+            set.insert(i);
+      });
+
+      std::cout << std::endl << "* Scan and search:" << std::endl;
+      showTime(std::cout, [&]{
+         for (auto& k : set)
+            assert(true == set.contains(k));
+      });
+
+      std::cout << std::endl << "* Deletes:" << std::endl;
+      showTime(std::cout, [&]{
+         for (auto it = set.begin(); it != set.end(); ++it)
+            set.erase(it);
+      });
    }
 }

@@ -51,8 +51,15 @@ int main()
       spanningTreePerfTests();
    }
 
+   if (runPerformanceTests("collections"))
+   {
+      setPerfTests();
+   }
+
    if (runPerformanceTests("sorts"))
+   {
       sortingPerfTests();
+   }
 
    if (runPerformanceTests("string searches"))
    {
