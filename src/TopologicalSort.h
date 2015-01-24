@@ -33,11 +33,6 @@ namespace algorithm
          dfs.postOrderFrom(from, [this](size_t v) { m_vertices.push_back(v); });
       }
 
-      bool hasOrder() const
-      {
-         return !m_vertices.empty();
-      }
-
       Range<vertex_it> order() const
       {
          return Range<vertex_it>{ rbegin(m_vertices), rend(m_vertices) };
