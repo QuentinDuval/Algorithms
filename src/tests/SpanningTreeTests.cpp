@@ -36,7 +36,7 @@ namespace algorithm
 
       auto sumWeights = [](double weight, WeightedEdge const& e) { return weight + e.weight(); };
 
-      MinimumSpanningTree spt(g);
+      LazyPrimMinimumSpanningTree spt(g);
       assert(3 == spt.connectedComponentCount());
       assert(2 == spt.edges(0).size());
       assert(2. == accumulate(spt.edges(0), 0., sumWeights));
@@ -63,7 +63,7 @@ namespace algorithm
 
       std::cout << std::endl << "[Minimum spanning tree] Lazy prim's algorithm on " << dim * dim << " nodes." << std::endl;
       showTime(std::cout, [&]{
-         MinimumSpanningTree spt(g);
+         LazyPrimMinimumSpanningTree spt(g);
          assert(1 == spt.connectedComponentCount());
          assert((dim * dim - 1) == spt.edges(0).size());
       });

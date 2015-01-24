@@ -26,14 +26,14 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   class MinimumSpanningTree
+   class LazyPrimMinimumSpanningTree
    {
    public:
       using Edges = std::vector<WeightedEdge>;
       using edge_it = Edges::const_iterator;
 
    public:
-      MinimumSpanningTree(WeightedGraph const&);
+      LazyPrimMinimumSpanningTree(WeightedGraph const&);
 
       size_t connectedComponentCount() const;
       Range<edge_it> edges(size_t ccId) const;

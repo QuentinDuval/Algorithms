@@ -34,7 +34,7 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   MinimumSpanningTree::MinimumSpanningTree(WeightedGraph const& g)
+   LazyPrimMinimumSpanningTree::LazyPrimMinimumSpanningTree(WeightedGraph const& g)
       : m_trees()
    {
       //Lazy Prim's algorithm
@@ -71,14 +71,14 @@ namespace algorithm
       //TODO - Implement Eager Prim's algorithm (with nodes keeping trace of shortest path to them)
    }
 
-   size_t MinimumSpanningTree::connectedComponentCount() const
+   size_t LazyPrimMinimumSpanningTree::connectedComponentCount() const
    {
       return m_trees.size();
    }
 
-   Range<MinimumSpanningTree::edge_it> MinimumSpanningTree::edges(size_t ccId) const
+   Range<LazyPrimMinimumSpanningTree::edge_it> LazyPrimMinimumSpanningTree::edges(size_t ccId) const
    {
-      return Range<MinimumSpanningTree::edge_it>{ begin(m_trees[ccId]), end(m_trees[ccId]) };
+      return Range<LazyPrimMinimumSpanningTree::edge_it>{ begin(m_trees[ccId]), end(m_trees[ccId]) };
    }
 
    //--------------------------------------------------------------------------
