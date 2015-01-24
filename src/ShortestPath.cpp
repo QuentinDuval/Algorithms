@@ -90,12 +90,12 @@ namespace algorithm
             if (m_marked[w])
                continue;
 
-            if (m_distances[v] + e.weight() < m_distances[w])
-            {
-               m_distances[w] = m_distances[v] + e.weight();
-               m_sources[w] = v;
-               nodes.add(w, m_distances[w]);
-            }
+            if (m_distances[v] + e.weight() >= m_distances[w])
+               continue;
+            
+            m_distances[w] = m_distances[v] + e.weight();
+            m_sources[w] = v;
+            nodes.add(w, m_distances[w]);
          }
       }
    }
