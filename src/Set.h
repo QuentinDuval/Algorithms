@@ -162,7 +162,7 @@ namespace algorithm
 
       size_t nextIndex(size_t i) const
       {
-         return i + 1 % m_keys.size();
+         return (i + 1) % m_keys.size();
       }
 
    private:
