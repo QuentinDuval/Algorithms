@@ -43,7 +43,7 @@ namespace algorithm
 
    void setPerfTests()
    {
-      size_t size = 100000;
+      size_t size = 1000000;
       DenseHashSet<size_t> set;
 
       std::cout << std::endl << "[Dense Hash Set]" << std::endl;
