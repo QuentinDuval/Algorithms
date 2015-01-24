@@ -135,6 +135,9 @@ namespace algorithm
       void erase_(key_iterator it, key_container& toReinsert)
       {
          size_t start = it.getPos();
+         if (start == m_keys.size())
+            return;
+
          m_marked[start] = false;
          --m_count;
 
