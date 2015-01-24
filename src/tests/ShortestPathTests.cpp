@@ -18,7 +18,7 @@ namespace algorithm
    {
       //Two dimentional plane
       const size_t dim = 4;
-      Graph g = twoDimPlane(dim);
+      Graph g = make2DPlane(dim);
 
       //Testing Manhattan distance
       ShortestPathFrom sp(g, 0);
@@ -37,7 +37,7 @@ namespace algorithm
    {
       //Two dimentional plane
       const size_t dim = 4;
-      WeightedGraph g = twoDimWeightedPlane(dim);
+      WeightedGraph g = make2DWeightedPlane(dim);
 
       //Testing Manhattan distance
       DijkstraShortestPathFrom sp(g, 0);
@@ -64,13 +64,13 @@ namespace algorithm
    {
       size_t dim = 1000;
 
-      Graph g = twoDimPlane(dim, true);
+      Graph g = make2DPlane(dim, true);
       std::cout << std::endl << "[Shortest path] Unweighed graph of size " << dim * dim << std::endl;
       showTime(std::cout, [&]{
          ShortestPathFrom sp(g, 0);
       });
 
-      WeightedGraph wg = twoDimRandomWeightedPlane(dim, true);
+      WeightedGraph wg = make2DRandomWeightedPlane(dim, true);
       std::cout << std::endl << "[Shortest path] Weighed graph of size " << dim * dim << std::endl;
       showTime(std::cout, [&]{
          DijkstraShortestPathFrom sp(wg, 0);

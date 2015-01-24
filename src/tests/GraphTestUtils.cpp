@@ -50,22 +50,22 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   Graph twoDimPlane(size_t dim, bool withDiagnonals)
+   Graph make2DPlane(size_t dim, bool withDiagnonals)
    {
       return makePlane<Graph>(dim, makeEdge, withDiagnonals);
    }
 
-   WeightedGraph twoDimWeightedPlane(size_t dim, bool withDiagnonals)
+   WeightedGraph make2DWeightedPlane(size_t dim, bool withDiagnonals)
    {
       return makePlane<WeightedGraph>(dim, makeWeightedEdge, withDiagnonals);
    }
 
-   WeightedGraph twoDimRandomWeightedPlane(size_t dim, bool withDiagnonals)
+   WeightedGraph make2DRandomWeightedPlane(size_t dim, bool withDiagnonals)
    {
       return makePlane<WeightedGraph>(dim, makeRandomWeightedEdge, withDiagnonals);
    }
 
-   DiGraph topLeftBottomRightPlane(size_t dim, bool withDiagnonals)
+   DiGraph make2DTopLeftBottomRightPlane(size_t dim, bool withDiagnonals)
    {
       return makePlane<DiGraph>(dim, makeEdge, withDiagnonals);
    }

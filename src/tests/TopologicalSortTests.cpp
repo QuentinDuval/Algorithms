@@ -27,7 +27,7 @@ namespace algorithm
 
    static void planeTopologicalSort()
    {
-      DiGraph g = topLeftBottomRightPlane(10);
+      DiGraph g = make2DTopLeftBottomRightPlane(10);
       TopologicalSort sort(g);
       assert(true == sort.hasOrder());
    }
