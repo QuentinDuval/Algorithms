@@ -18,6 +18,7 @@ namespace algorithm
          : m_vertices()
       {
          DFS<Edge> dfs(g);
+         m_vertices.reserve(g.vertexCount());
          for (size_t i = 0; i < g.vertexCount(); ++i)
          {
             if (!dfs.isMarked(i))
@@ -30,6 +31,7 @@ namespace algorithm
          : m_vertices()
       {
          DFS<Edge> dfs(g);
+         m_vertices.reserve(g.vertexCount());
          dfs.postOrderFrom(from, [this](size_t v) { m_vertices.push_back(v); });
       }
 
