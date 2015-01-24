@@ -49,8 +49,7 @@ namespace algorithm
 
       DenseHashSet(Compare comp, Hasher hash)
          : m_comp(comp), m_hash(hash)
-         , m_load_factor(0.5), m_count(0)
-         , m_marked(10, false), m_keys(10)
+         , m_count(0), m_marked(10, false), m_keys(10)
       {}
 
       key_iterator begin() const
@@ -114,6 +113,8 @@ namespace algorithm
 
          for (auto& k : keys)
             insert_(k);
+
+         loadFactorCheck();
       }
 
    private:
@@ -142,9 +143,12 @@ namespace algorithm
 
       void loadFactorCheck()
       {
-         size_t upperBound = static_cast<size_t>(m_keys.size() * m_load_factor);
+         size_t upperBound = m_keys.size() / 2;
          if (m_count > upperBound)
             resize(2 * m_keys.size());
+
+         //else if (m_count < upperBound / 4)
+         //   resize(m_keys.size() / 2);
       }
 
       size_t emptySpotFrom(size_t start) const
@@ -168,8 +172,6 @@ namespace algorithm
    private:
       Compare m_comp;
       Hasher m_hash;
-
-      double m_load_factor;
       size_t m_count;
 
       key_marking m_marked;

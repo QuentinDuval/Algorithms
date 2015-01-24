@@ -47,7 +47,7 @@ namespace algorithm
 
       void nextValidState()
       {
-         while (m_pos != m_set.m_keys.size() && !m_set.m_marked[m_pos])
+         while (m_pos < m_set.m_keys.size() && !m_set.m_marked[m_pos])
             ++m_pos;
       }
 
