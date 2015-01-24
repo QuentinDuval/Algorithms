@@ -79,8 +79,7 @@ namespace algorithm
       //Start analysis neightbor and relax distances
       while (!nodes.empty())
       {
-         auto v = nodes.top();
-         nodes.pop();
+         auto v = nodes.removeTop();
          if (m_marked[v])
             continue;
 

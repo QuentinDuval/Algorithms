@@ -55,8 +55,7 @@ namespace algorithm
 
          while (!edgeQueue.empty())
          {
-            auto e = edgeQueue.top();
-            edgeQueue.pop();
+            auto e = edgeQueue.removeTop();
             if (marked[e.to()])
                continue;
 
@@ -101,8 +100,7 @@ namespace algorithm
       size_t stopCount = g.vertexCount() - 1;
       while (!edgeQueue.empty() && m_tree.size() < stopCount)
       {
-         auto e = edgeQueue.top();
-         edgeQueue.pop();
+         auto e = edgeQueue.removeTop();
          if (!uf.connect(e.from(), e.to()))
             continue;
 

@@ -42,6 +42,13 @@ namespace algorithm
          sink(0);
       }
 
+      Key removeTop()
+      {
+         Key k = top();
+         pop();
+         return k;
+      }
+
       bool   empty() const { return m_keys.empty(); }
       size_t size()  const { return m_keys.size(); }
 
@@ -86,6 +93,7 @@ namespace algorithm
 
       T const& top() const    { return m_impl.top().first; }
       void     pop()          { return m_impl.pop(); }
+      T        removeTop()    { return m_impl.removeTop().first; }
       bool     empty() const  { return m_impl.empty(); }
       size_t   size() const   { return m_impl.size(); }
 
