@@ -37,7 +37,7 @@ namespace algorithm
 
       Range<vertex_it> order() const
       {
-         return { rbegin(m_vertices), rend(m_vertices) };
+         return Range<vertex_it>{ rbegin(m_vertices), rend(m_vertices) };
       }
 
    private:
