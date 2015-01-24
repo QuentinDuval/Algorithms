@@ -69,4 +69,14 @@ namespace algorithm
    {
       return makePlane<DiGraph>(dim, makeEdge, withDiagnonals);
    }
+
+   WeightedDiGraph make2DWeightedDiPlane(size_t dim, bool withDiagonals)
+   {
+      return makePlane<WeightedDiGraph>(dim, makeWeightedEdge, withDiagonals);
+   }
+
+   WeightedDiGraph make2DWeightedDiRandomPlane(size_t dim, bool withDiagonals)
+   {
+      return makePlane<WeightedDiGraph>(dim, makeRandomWeightedEdge, withDiagonals);
+   }
 }

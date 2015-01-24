@@ -1,6 +1,7 @@
 #include "ShortestPath.h"
 
 #include "PriorityQueue.h"
+#include "TopologicalSort.h"
 #include <limits>
 
 
@@ -73,8 +74,7 @@ namespace algorithm
       for (auto& e : g.edgesFrom(from))
       {
          auto w = e.to();
-         m_distances[w] = e.weight();
-         m_sources[w] = from;
+         relax(e);
          nodes.add(w, m_distances[w]);
       }
 
@@ -92,12 +92,8 @@ namespace algorithm
             if (m_marked[w])
                continue;
 
-            if (m_distances[v] + e.weight() >= m_distances[w])
-               continue;
-            
-            m_distances[w] = m_distances[v] + e.weight();
-            m_sources[w] = v;
-            nodes.add(w, m_distances[w]);
+            if (relax(e))
+               nodes.add(w, m_distances[w]);
          }
       }
    }
@@ -105,6 +101,19 @@ namespace algorithm
    DijkstraShortestPathFrom::DijkstraShortestPathFrom(WeightedGraph const& g, size_t from)
       : DijkstraShortestPathFrom(g.toDiGraph(), from)
    {}
+
+   bool DijkstraShortestPathFrom::relax(WeightedEdge const& e)
+   {
+      auto v = e.from();
+      auto w = e.to();
+      if (m_distances[v] + e.weight() >= m_distances[w])
+         return false;
+
+      m_distances[w] = m_distances[v] + e.weight();
+      m_sources[w] = v;
+      return true;
+      
+   }
 
    bool DijkstraShortestPathFrom::hasPathTo(size_t to) const
    {
@@ -117,6 +126,60 @@ namespace algorithm
    }
 
    std::vector<size_t> DijkstraShortestPathFrom::pathTo(size_t to) const
+   {
+      std::vector<size_t> out;
+      if (hasPathTo(to))
+         fillPathNodes(m_sources, m_from, to, out);
+      return out;
+   }
+
+   //--------------------------------------------------------------------------
+
+   TopologicalShortestPathFrom::TopologicalShortestPathFrom(WeightedDiGraph const& g, size_t from)
+      : m_from(from)
+      , m_marked(g.vertexCount(), false)
+      , m_sources(g.vertexCount())
+      , m_distances(g.vertexCount(), std::numeric_limits<double>::max())
+   {
+      m_marked[from] = true;
+      m_distances[from] = 0.;
+
+      TopologicalSort sort(g);
+      if (!sort.hasOrder())
+         return;
+
+      for (auto& v : sort.order())
+      {
+         m_marked[v] = true;
+         for (auto& e : g.edgesFrom(v))
+            relax(e);
+      }
+   }
+
+   bool TopologicalShortestPathFrom::relax(WeightedEdge const& e)
+   {
+      auto v = e.from();
+      auto w = e.to();
+      if (m_distances[v] + e.weight() >= m_distances[w])
+         return false;
+
+      m_distances[w] = m_distances[v] + e.weight();
+      m_sources[w] = v;
+      return true;
+
+   }
+
+   bool TopologicalShortestPathFrom::hasPathTo(size_t to) const
+   {
+      return m_marked[to];
+   }
+
+   double TopologicalShortestPathFrom::pathLengthTo(size_t to) const
+   {
+      return m_distances[to];
+   }
+
+   std::vector<size_t> TopologicalShortestPathFrom::pathTo(size_t to) const
    {
       std::vector<size_t> out;
       if (hasPathTo(to))

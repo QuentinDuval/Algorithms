@@ -40,6 +40,30 @@ namespace algorithm
       double               pathLengthTo(size_t to) const;
 
    private:
+      bool relax(WeightedEdge const&);
+
+   private:
+      size_t m_from;
+      std::vector<bool> m_marked;
+      std::vector<size_t> m_sources;
+      std::vector<double> m_distances;
+   };
+
+   //--------------------------------------------------------------------------
+
+   class TopologicalShortestPathFrom
+   {
+   public:
+      TopologicalShortestPathFrom(WeightedDiGraph const&, size_t from);
+
+      bool                 hasPathTo(size_t to) const;
+      std::vector<size_t>  pathTo(size_t to) const;
+      double               pathLengthTo(size_t to) const;
+
+   private:
+      bool relax(WeightedEdge const&);
+
+   private:
       size_t m_from;
       std::vector<bool> m_marked;
       std::vector<size_t> m_sources;
