@@ -17,9 +17,6 @@ namespace algorithm
       ShortestPathFrom(DiGraph const&, size_t from);
       ShortestPathFrom(Graph   const&, size_t from);
 
-      ShortestPathFrom(WeightedDiGraph const&, size_t from);
-      ShortestPathFrom(WeightedGraph   const&, size_t from);
-
       bool                 hasPathTo   (size_t to) const;
       std::vector<size_t>  pathTo      (size_t to) const;
       size_t               pathLengthTo(size_t to) const;
