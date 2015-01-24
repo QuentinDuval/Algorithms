@@ -64,13 +64,13 @@ namespace algorithm
    {
       size_t dim = 1000;
 
-      Graph g = twoDimPlane(dim);
+      Graph g = twoDimPlane(dim, true);
       std::cout << std::endl << "[Shortest path] Unweighed graph of size " << dim * dim << std::endl;
       showTime(std::cout, [&]{
          ShortestPathFrom sp(g, 0);
       });
 
-      WeightedGraph wg = twoDimRandomWeightedPlane(dim);
+      WeightedGraph wg = twoDimRandomWeightedPlane(dim, true);
       std::cout << std::endl << "[Shortest path] Weighed graph of size " << dim * dim << std::endl;
       showTime(std::cout, [&]{
          DijkstraShortestPathFrom sp(wg, 0);

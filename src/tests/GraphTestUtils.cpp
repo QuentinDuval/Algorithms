@@ -14,7 +14,7 @@
 namespace algorithm
 {
    template<typename GraphType, typename MakeEdge>
-   GraphType makePlane(size_t dim, MakeEdge makeEdge)
+   GraphType makePlane(size_t dim, MakeEdge makeEdge, bool withDiagonals)
    {
       GraphType g(dim * dim);
       for (size_t i = 0; i < g.vertexCount(); ++i)
@@ -26,6 +26,9 @@ namespace algorithm
          size_t y = i / dim;
          if (y < dim - 1)
             g.addEdge(makeEdge(i, i + dim));
+
+         if (withDiagonals && x < dim - 1 && y < dim - 1)
+            g.addEdge(makeEdge(i, i + dim + 1));
       }
       return g;
    }
@@ -47,23 +50,23 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   Graph twoDimPlane(size_t dim)
+   Graph twoDimPlane(size_t dim, bool withDiagnonals)
    {
-      return makePlane<Graph>(dim, makeEdge);
+      return makePlane<Graph>(dim, makeEdge, withDiagnonals);
    }
 
-   WeightedGraph twoDimWeightedPlane(size_t dim)
+   WeightedGraph twoDimWeightedPlane(size_t dim, bool withDiagnonals)
    {
-      return makePlane<WeightedGraph>(dim, makeWeightedEdge);
+      return makePlane<WeightedGraph>(dim, makeWeightedEdge, withDiagnonals);
    }
 
-   WeightedGraph twoDimRandomWeightedPlane(size_t dim)
+   WeightedGraph twoDimRandomWeightedPlane(size_t dim, bool withDiagnonals)
    {
-      return makePlane<WeightedGraph>(dim, makeRandomWeightedEdge);
+      return makePlane<WeightedGraph>(dim, makeRandomWeightedEdge, withDiagnonals);
    }
 
-   DiGraph topLeftBottomRightPlane(size_t dim)
+   DiGraph topLeftBottomRightPlane(size_t dim, bool withDiagnonals)
    {
-      return makePlane<DiGraph>(dim, makeEdge);
+      return makePlane<DiGraph>(dim, makeEdge, withDiagnonals);
    }
 }
