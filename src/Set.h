@@ -70,7 +70,7 @@ namespace algorithm
       key_iterator find(Key const& k) const
       {
          const size_t start = startIndex(k);
-         for (size_t i = start; i != start - 1; i = nextIndex(i))
+         for (size_t i = start; i != prevIndex(start); i = nextIndex(i))
          {
             if (!m_marked[i])
                return end();
@@ -154,7 +154,7 @@ namespace algorithm
 
       size_t emptySpotFrom(size_t start) const
       {
-         for (size_t i = start; i != start - 1; i = nextIndex(i))
+         for (size_t i = start; i != prevIndex(start); i = nextIndex(i))
             if (!m_marked[i])
                return i;
          return 0; //Not reachable by construction
@@ -168,6 +168,12 @@ namespace algorithm
       size_t nextIndex(size_t i) const
       {
          return (i + 1) % m_keys.size();
+      }
+
+      size_t prevIndex(size_t i) const
+      {
+         if (0 < i) return i - 1;
+         else return m_keys.size() - 1;
       }
 
    private:
