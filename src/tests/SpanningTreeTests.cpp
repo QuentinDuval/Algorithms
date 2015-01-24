@@ -27,6 +27,21 @@ namespace algorithm
       assert(0 == spt.edges(2).size());
    }
 
+   static double sumWeights(double weight, WeightedEdge const& e)
+   {
+      return weight + e.weight();
+   };
+
+   template<typename PrimsAlgorithm>
+   static void primsTests(PrimsAlgorithm const& spt)
+   {
+      assert(3 == spt.connectedComponentCount());
+      assert(2 == spt.edges(0).size());
+      assert(2. == accumulate(spt.edges(0), 0., sumWeights));
+      assert(1 == spt.edges(1).size());
+      assert(0 == spt.edges(2).size());
+   }
+
    static void weightedGraphTreeTests()
    {
       WeightedGraph g(6);
@@ -34,14 +49,11 @@ namespace algorithm
       for (auto& e : inputs)
          g.addEdge(e);
 
-      auto sumWeights = [](double weight, WeightedEdge const& e) { return weight + e.weight(); };
-
       LazyPrimMinimumSpanningTree spt(g);
-      assert(3 == spt.connectedComponentCount());
-      assert(2 == spt.edges(0).size());
-      assert(2. == accumulate(spt.edges(0), 0., sumWeights));
-      assert(1 == spt.edges(1).size());
-      assert(0 == spt.edges(2).size());
+      primsTests(spt);
+
+      EagerPrimMinimumSpanningTree espt(g);
+      primsTests(espt);
 
       KruskalMinimumSpanningTree kspt(g);
       assert(3 == kspt.edges().size());
@@ -64,6 +76,13 @@ namespace algorithm
       std::cout << std::endl << "[Minimum spanning tree] Lazy prim's algorithm on " << dim * dim << " nodes." << std::endl;
       showTime(std::cout, [&]{
          LazyPrimMinimumSpanningTree spt(g);
+         assert(1 == spt.connectedComponentCount());
+         assert((dim * dim - 1) == spt.edges(0).size());
+      });
+
+      std::cout << std::endl << "[Minimum spanning tree] Eager prim's algorithm on " << dim * dim << " nodes." << std::endl;
+      showTime(std::cout, [&]{
+         EagerPrimMinimumSpanningTree spt(g);
          assert(1 == spt.connectedComponentCount());
          assert((dim * dim - 1) == spt.edges(0).size());
       });

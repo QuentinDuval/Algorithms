@@ -37,7 +37,6 @@ namespace algorithm
    LazyPrimMinimumSpanningTree::LazyPrimMinimumSpanningTree(WeightedGraph const& g)
       : m_trees()
    {
-      //Lazy Prim's algorithm
       auto less = [](WeightedEdge const& lhs, WeightedEdge const& rhs) { return lhs.weight() < rhs.weight(); };
 
       MinPriorityQueue<WeightedEdge, decltype(less)> edgeQueue(less);
@@ -62,13 +61,12 @@ namespace algorithm
             auto w = e.to();
             marked[w] = true;
             m_trees.back().push_back(e);
+
             for (auto e : g.edgesFrom(w))
                if (!marked[e.to()])
                   edgeQueue.add(e);
          }
       }
-
-      //TODO - Implement Eager Prim's algorithm (with nodes keeping trace of shortest path to them)
    }
 
    size_t LazyPrimMinimumSpanningTree::connectedComponentCount() const
@@ -79,6 +77,63 @@ namespace algorithm
    Range<LazyPrimMinimumSpanningTree::edge_it> LazyPrimMinimumSpanningTree::edges(size_t ccId) const
    {
       return Range<LazyPrimMinimumSpanningTree::edge_it>{ begin(m_trees[ccId]), end(m_trees[ccId]) };
+   }
+
+   //--------------------------------------------------------------------------
+
+   EagerPrimMinimumSpanningTree::EagerPrimMinimumSpanningTree(WeightedGraph const& g)
+      : m_trees()
+   {
+      auto less = [](WeightedEdge const& lhs, WeightedEdge const& rhs) { return lhs.weight() < rhs.weight(); };
+
+      MinPriorityQueue<WeightedEdge, decltype(less)> edgeQueue(less);
+      std::vector<bool> marked(g.vertexCount(), false);
+      std::vector<double> minEdgeDistTo(g.vertexCount(), std::numeric_limits<double>::max());
+
+      for (size_t v = 0; v < g.vertexCount(); ++v)
+      {
+         if (marked[v])
+            continue;
+
+         m_trees.emplace_back();
+         marked[v] = true;
+         for (auto e : g.edgesFrom(v))
+         {
+            edgeQueue.add(e);
+            minEdgeDistTo[e.to()] = e.weight();
+         }
+
+         while (!edgeQueue.empty())
+         {
+            auto e = edgeQueue.removeTop();
+            if (marked[e.to()])
+               continue;
+
+            auto w = e.to();
+            marked[w] = true;
+            m_trees.back().push_back(e);
+
+            for (auto e : g.edgesFrom(w))
+            {
+               auto to = e.to();
+               if (!marked[to] && minEdgeDistTo[to] > e.weight())
+               {
+                  edgeQueue.add(e);
+                  minEdgeDistTo[to] = e.weight();
+               }
+            }
+         }
+      }
+   }
+
+   size_t EagerPrimMinimumSpanningTree::connectedComponentCount() const
+   {
+      return m_trees.size();
+   }
+
+   Range<EagerPrimMinimumSpanningTree::edge_it> EagerPrimMinimumSpanningTree::edges(size_t ccId) const
+   {
+      return Range<EagerPrimMinimumSpanningTree::edge_it>{ begin(m_trees[ccId]), end(m_trees[ccId]) };
    }
 
    //--------------------------------------------------------------------------
