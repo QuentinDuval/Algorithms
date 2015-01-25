@@ -12,11 +12,38 @@ namespace algorithm
    {
    public:
       DirectedCycle(GenericDiGraph<Edge> const& g)
-         : m_cycle()
+      {
+         DFS<Edge> dfs(g);
+         for (size_t i : g.vertices())
+         {
+            if (hasCycle()) break;
+            if (!dfs.isMarked(i))
+               searchCycleFrom(dfs, g, i);
+         }
+      }
+
+      DirectedCycle(GenericDiGraph<Edge> const& g, size_t from)
+      {
+         DFS<Edge> dfs(g);
+         searchCycleFrom(dfs, from, i);
+      }
+
+      bool hasCycle() const
+      {
+         return !m_cycle.empty();
+      }
+
+      std::vector<Edge> const& cycle() const
+      {
+         return m_cycle;
+      }
+
+   private:
+      void searchCycleFrom(DFS<Edge>& dfs, GenericDiGraph<Edge> const& g, size_t from)
       {
          std::vector<Edge> stack;
          std::vector<bool> onStack(g.vertexCount(), false);
-         
+
          auto postOrder = [&](size_t v){
             onStack[v] = false;
             if (!stack.empty())
@@ -32,32 +59,15 @@ namespace algorithm
             size_t v = e.to();
             if (!onStack[v])
                return false;
-            
+
             auto it = findIf(stack, [v](Edge const& e){ return e.from() == v; });
             std::copy(it, cend(stack), std::back_inserter(m_cycle));
             m_cycle.push_back(e);
             return true;
          };
 
-         DFS<Edge> dfs(g);
-         for (size_t i = 0; i < g.vertexCount() && !hasCycle(); ++i)
-         {
-            if (dfs.isMarked(i))
-               continue;
-
-            onStack[i] = true;
-            dfs.searchFrom(i, postOrder, onAlreadyMarked, onPathTaken);
-         }
-      }
-
-      bool hasCycle() const
-      {
-         return !m_cycle.empty();
-      }
-
-      std::vector<Edge> const& cycle() const
-      {
-         return m_cycle;
+         onStack[from] = true;
+         dfs.searchFrom(from, postOrder, onAlreadyMarked, onPathTaken);
       }
 
    private:
