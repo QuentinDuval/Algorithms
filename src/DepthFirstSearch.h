@@ -19,6 +19,7 @@ namespace algorithm
       using Graph = GenericGraph<Edge>;
       using OnMarked = GraphSearch<Edge>::OnMarked;
       using OnPathTaken = GraphSearch<Edge>::OnPathTaken;
+      using OnAlreadyFound = std::function<bool(Edge const&)>;
 
    public:
       explicit DFS(DiGraph const& g)
@@ -32,10 +33,10 @@ namespace algorithm
 
       void postOrderFrom(size_t v, OnMarked postOrder)
       {
-         searchFrom(v, postOrder, [](Edge const&){}, [](Edge const&){});
+         searchFrom(v, postOrder, [](Edge const&){ return false; }, [](Edge const&){});
       }
 
-      void searchFrom(size_t v, OnMarked postOrder, OnPathTaken onAlreadyMarked, OnPathTaken pathTaken)
+      void searchFrom(size_t v, OnMarked postOrder, OnAlreadyFound onAlreadyMarked, OnPathTaken pathTaken)
       {
          if (isMarked(v))
             return;
@@ -47,11 +48,11 @@ namespace algorithm
    private:
       void searchImpl(size_t v, OnPathTaken listener) override
       {
-         searchFrom(v, [](size_t){}, [](Edge const&){}, listener);
+         searchFrom(v, [](size_t){}, [](Edge const&){ return false; }, listener);
       }
 
       /** Iterative implementation emulating the stack */
-      void searchImplIter(size_t v, OnMarked onAdjVisited, OnPathTaken onAlreadyMarked, OnPathTaken listener)
+      void searchImplIter(size_t v, OnMarked onAdjVisited, OnAlreadyFound onAlreadyMarked, OnPathTaken listener)
       {
          auto edges = m_graph.edgesFrom(v);
          using StackedRange = std::pair<size_t, decltype(edges)>;
@@ -78,9 +79,9 @@ namespace algorithm
                auto nextRange = m_graph.edgesFrom(c);
                stack.emplace_back(c, nextRange);
             }
-            else
+            else if (onAlreadyMarked(*e))
             {
-               onAlreadyMarked(*e);
+               return;
             }
          }
       }
@@ -112,14 +113,15 @@ namespace algorithm
       }
 
       /** Recursive implementation: leads to stack overflows for big graphs */
-      void searchImplRec(size_t v, OnMarked onAdjVisited, OnPathTaken onAlreadyMarked, OnPathTaken listener)
+      void searchImplRec(size_t v, OnMarked onAdjVisited, OnAlreadyFound onAlreadyMarked, OnPathTaken listener)
       {
          for (auto e : m_graph.edgesFrom(v))
          {
             auto a = e.to();
             if (isMarked(a))
             {
-               onAlreadyMarked(e);
+               if (onAlreadyMarked(e));
+                  return;
                continue;
             }
 

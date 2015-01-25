@@ -31,7 +31,6 @@ int main()
    symbolGraphTests();
    connectedComponentsTests();
    shortestPathTests();
-   cycleTests();
    topologicalSortTests();
    spanningTreeTests();
    setTests();

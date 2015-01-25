@@ -1,7 +1,6 @@
 #include "tests/GraphTests.h"
 
 #include "DiGraph.h"
-#include "DirectedCycle.h"
 #include "Graph.h"
 #include "SymbolGraph.h"
 #include "WeightedDiGraph.h"
@@ -57,31 +56,6 @@ namespace algorithm
       for (auto w : wg.adjacents(3))
          std::cout << w << std::endl;
    }
-
-   //--------------------------------------------------------------------------
-
-   void cycleTests()
-   {
-      DiGraph g(10);
-      for (size_t i = 1; i < 10; ++i)
-         g.addEdge({ i - 1, i });
-
-      DirectedCycle<Edge> c1(g);
-      assert(false == c1.hasCycle());
-
-      g.addEdge({ 0, 9 });
-      DirectedCycle<Edge> c2(g);
-      assert(false == c2.hasCycle());
-
-      g.addEdge({ 9, 2 });
-      DirectedCycle<Edge> c3(g);
-      assert(true == c3.hasCycle());
-
-      for (auto e : c3.cycle())
-         std::cout << e << std::endl;
-   }
-
-   //TODO - Add tests of directed cycle
 
    //--------------------------------------------------------------------------
 

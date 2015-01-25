@@ -2,6 +2,7 @@
 
 #include "BreathFirstSearch.h"
 #include "DepthFirstSearch.h"
+#include "DirectedCycle.h"
 #include "Graph.h"
 #include "WeightedGraph.h"
 #include "tests/GraphTestUtils.h"
@@ -71,6 +72,27 @@ namespace algorithm
       runTest(bfs, 0, "012345768");
    }
 
+   static void cycleTests()
+   {
+      DiGraph g(10);
+      for (size_t i = 1; i < 10; ++i)
+         g.addEdge({ i - 1, i });
+
+      DirectedCycle<Edge> c1(g);
+      assert(false == c1.hasCycle());
+
+      g.addEdge({ 0, 9 });
+      DirectedCycle<Edge> c2(g);
+      assert(false == c2.hasCycle());
+
+      g.addEdge({ 9, 2 });
+      DirectedCycle<Edge> c3(g);
+      assert(true == c3.hasCycle());
+
+      for (auto e : c3.cycle())
+         std::cout << e << std::endl;
+   }
+
    static void symbolGraphSearchTests()
    {
       auto inputs = { "a", "b", "c", "d", "e" };
@@ -91,11 +113,12 @@ namespace algorithm
    {
       unweightedGraphSearchTests();
       weightedGraphSearchTests();
+      cycleTests();
       symbolGraphTests();
    }
 
    //--------------------------------------------------------------------------
-
+   
    template<typename SearchAlgo>
    static void runPerfTest(size_t dim)
    {
@@ -119,10 +142,20 @@ namespace algorithm
    {
       size_t dim = 1000;
 
+      std::cout << std::endl << "[DFS] Graph of size " << dim * dim << std::endl;
+      runPerfTest<DFS<Edge>>(dim);
+
       std::cout << std::endl << "[BFS] Graph of size " << dim * dim << std::endl;
       runPerfTest<BFS<Edge>>(dim);
 
-      std::cout << std::endl << "[DFS] Graph of size " << dim * dim << std::endl;
-      runPerfTest<DFS<Edge>>(dim);
+      std::cout << std::endl << "[Directed cycle] Graph of size " << dim * dim << std::endl;
+      
+      DiGraph dg = make2DTopLeftBottomRightPlane(dim, true);
+      std::cout << "* No cycle:" << std::endl;
+      showTime(std::cout, [&]{ DirectedCycle<Edge> s(dg); });
+
+      dg.addEdge({dim * dim - 1, 0});
+      std::cout << "* With cycle:" << std::endl;
+      showTime(std::cout, [&]{ DirectedCycle<Edge> s(dg); });
    }
 }
