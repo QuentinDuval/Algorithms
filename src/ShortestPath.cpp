@@ -157,7 +157,7 @@ namespace algorithm
    {
       auto v = e.from();
       auto w = e.to();
-      if (m_distances[v] + e.weight() >= m_distances[w])
+      if (m_distances[v] + e.weight() >= m_distances[w]) //TODO - deal with  +infinity
          return false;
 
       m_distances[w] = m_distances[v] + e.weight();
@@ -177,6 +177,75 @@ namespace algorithm
    }
 
    std::vector<size_t> TopologicalShortestPathFrom::pathTo(size_t to) const
+   {
+      std::vector<size_t> out;
+      if (hasPathTo(to))
+         fillPathNodes(m_sources, m_from, to, out);
+      return out;
+   }
+
+   //--------------------------------------------------------------------------
+
+   BellmanFordShortestPathFrom::BellmanFordShortestPathFrom(WeightedDiGraph const& g, size_t from)
+      : m_from(from)
+      , m_sources(g.vertexCount())
+      , m_distances(g.vertexCount(), std::numeric_limits<double>::max())
+   {
+      std::vector<size_t> lastChanged(g.vertexCount(), std::numeric_limits<size_t>::max());
+      m_distances[from] = 0.;
+      lastChanged[from] = 0;
+
+      for (size_t i = 1; i <= g.vertexCount(); ++i)
+      {
+         bool hasChanged = false;
+         for (size_t v = 0; v < g.vertexCount(); ++v)
+         {
+            if (lastChanged[v] != i - 1)
+               continue;
+
+            for (auto& e : g.edgesFrom(v))
+            {
+               if (!relax(e))
+                  continue;
+               
+               lastChanged[e.to()] = i;
+               hasChanged = true;
+            }
+         }
+
+         if (!hasChanged)
+            break;
+      }
+   }
+
+   BellmanFordShortestPathFrom::BellmanFordShortestPathFrom(WeightedGraph const& g, size_t from)
+      : BellmanFordShortestPathFrom(g.toDiGraph(), from)
+   {}
+
+   bool BellmanFordShortestPathFrom::relax(WeightedEdge const& e)
+   {
+      auto v = e.from();
+      auto w = e.to();
+      if (m_distances[v] + e.weight() >= m_distances[w])
+         return false;
+
+      m_distances[w] = m_distances[v] + e.weight();
+      m_sources[w] = v;
+      return true;
+
+   }
+
+   bool BellmanFordShortestPathFrom::hasPathTo(size_t to) const
+   {
+      return m_distances[to] != std::numeric_limits<double>::max();
+   }
+
+   double BellmanFordShortestPathFrom::pathLengthTo(size_t to) const
+   {
+      return m_distances[to];
+   }
+
+   std::vector<size_t> BellmanFordShortestPathFrom::pathTo(size_t to) const
    {
       std::vector<size_t> out;
       if (hasPathTo(to))

@@ -70,5 +70,25 @@ namespace algorithm
       std::vector<double> m_distances;
    };
 
-   //TODO - Bellman - Ford
+
+   //--------------------------------------------------------------------------
+
+   class BellmanFordShortestPathFrom
+   {
+   public:
+      BellmanFordShortestPathFrom(WeightedDiGraph const&, size_t from);
+      BellmanFordShortestPathFrom(WeightedGraph   const&, size_t from);
+
+      bool                 hasPathTo   (size_t to) const;
+      std::vector<size_t>  pathTo      (size_t to) const;
+      double               pathLengthTo(size_t to) const;
+
+   private:
+      bool relax(WeightedEdge const&);
+
+   private:
+      size_t m_from;
+      std::vector<size_t> m_sources;
+      std::vector<double> m_distances;
+   };
 }

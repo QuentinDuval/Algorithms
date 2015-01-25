@@ -65,11 +65,27 @@ namespace algorithm
       }
    }
 
+   static void bellmanFordShortestPathTests()
+   {
+      const size_t dim = 4;
+      WeightedGraph g = make2DWeightedPlane(dim);
+
+      //Testing Manhattan distance
+      BellmanFordShortestPathFrom sp(g, 0);
+      for (size_t i = 0; i < g.vertexCount(); ++i)
+      {
+         double expectedLength = i % dim + i / dim;
+         assert(true == sp.hasPathTo(i));
+         assert(expectedLength == sp.pathLengthTo(i));
+      }
+   }
+
    void shortestPathTests()
    {
       graphShortestPathTests();
       weightedGraphShortestPathTests();
       dagShortestPathTests();
+      bellmanFordShortestPathTests();
    }
 
    //--------------------------------------------------------------------------
