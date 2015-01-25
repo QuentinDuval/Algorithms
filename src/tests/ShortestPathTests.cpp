@@ -106,6 +106,11 @@ namespace algorithm
          DijkstraShortestPathFrom sp(wg, 0);
       });
 
+      std::cout << std::endl << "[Shortest path] Weighed graph of size (Bellman-Ford) " << dim * dim << std::endl;
+      showTime(std::cout, [&]{
+         BellmanFordShortestPathFrom sp(wg, 0);
+      });
+
       WeightedDiGraph dag = make2DWeightedDiPlane(dim, true);
       std::cout << std::endl << "[Shortest path] Weighed graph of size (Topological) " << dim * dim << std::endl;
       showTime(std::cout, [&]{
