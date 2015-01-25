@@ -15,7 +15,7 @@ namespace algorithm
          , m_componentIds(g.vertexCount(), 0)
       {
          DFS<Edge> dfs(g);
-         for (size_t i = 0; i < g.vertexCount(); ++i)
+         for (size_t i : g.vertices())
          {
             if (dfs.isMarked(i))
                continue;

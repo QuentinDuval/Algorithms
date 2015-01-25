@@ -19,7 +19,7 @@ namespace algorithm
       {
          DFS<Edge> dfs(g);
          m_vertices.reserve(g.vertexCount());
-         for (size_t i = 0; i < g.vertexCount(); ++i)
+         for (size_t i : g.vertices())
          {
             if (!dfs.isMarked(i))
                dfs.postOrderFrom(i, [this](size_t v) { m_vertices.push_back(v); });

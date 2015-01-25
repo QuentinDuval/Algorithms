@@ -11,7 +11,7 @@ namespace algorithm
       : m_trees()
    {
       DFS<Edge> dfs(g);
-      for (size_t v = 0; v < g.vertexCount(); ++v)
+      for (size_t v : g.vertices())
       {
          if (dfs.isMarked(v))
             continue;
@@ -42,7 +42,7 @@ namespace algorithm
       MinPriorityQueue<WeightedEdge, decltype(less)> edgeQueue(less);
       std::vector<bool> marked(g.vertexCount(), false);
 
-      for (size_t v = 0; v < g.vertexCount(); ++v)
+      for (size_t v : g.vertices())
       {
          if (marked[v])
             continue;
@@ -90,7 +90,7 @@ namespace algorithm
       std::vector<bool> marked(g.vertexCount(), false);
       std::vector<double> minEdgeDistTo(g.vertexCount(), std::numeric_limits<double>::max());
 
-      for (size_t v = 0; v < g.vertexCount(); ++v)
+      for (size_t v : g.vertices())
       {
          if (marked[v])
             continue;
@@ -142,7 +142,7 @@ namespace algorithm
       : m_tree()
    {
       std::vector<WeightedEdge> edges;
-      for (size_t v = 0; v < g.vertexCount(); ++v)
+      for (size_t v : g.vertices())
       {
          auto range = g.edgesFrom(v);
          edges.insert(edges.end(), begin(range), end(range));

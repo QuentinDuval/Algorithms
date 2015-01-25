@@ -21,7 +21,7 @@ namespace algorithm
 
       //Testing Manhattan distance
       ShortestPathFrom sp(g, 0);
-      for (size_t i = 0; i < g.vertexCount(); ++i)
+      for (size_t i : g.vertices())
       {
          size_t expectedLength = i % dim + i / dim;
          assert(true == sp.hasPathTo(i));
@@ -39,7 +39,7 @@ namespace algorithm
 
       //Testing Manhattan distance
       DijkstraShortestPathFrom sp(g, 0);
-      for (size_t i = 0; i < g.vertexCount(); ++i)
+      for (size_t i : g.vertices())
       {
          double expectedLength = i % dim + i / dim;
          assert(true == sp.hasPathTo(i));
@@ -57,7 +57,7 @@ namespace algorithm
 
       //Testing Manhattan distance
       TopologicalShortestPathFrom sp(g, 0);
-      for (size_t i = 0; i < g.vertexCount(); ++i)
+      for (size_t i : g.vertices())
       {
          double expectedLength = i % dim + i / dim;
          assert(true == sp.hasPathTo(i));
@@ -72,7 +72,7 @@ namespace algorithm
 
       //Testing Manhattan distance
       BellmanFordShortestPathFrom sp(g, 0);
-      for (size_t i = 0; i < g.vertexCount(); ++i)
+      for (size_t i : g.vertices())
       {
          double expectedLength = i % dim + i / dim;
          assert(true == sp.hasPathTo(i));

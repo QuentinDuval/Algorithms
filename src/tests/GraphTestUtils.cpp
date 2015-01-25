@@ -17,7 +17,7 @@ namespace algorithm
    GraphType makePlane(size_t dim, MakeEdge makeEdge, bool withDiagonals)
    {
       GraphType g(dim * dim);
-      for (size_t i = 0; i < g.vertexCount(); ++i)
+      for (size_t i : g.vertices())
       {
          size_t x = i % dim;
          if (x < dim - 1)

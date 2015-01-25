@@ -113,7 +113,7 @@ namespace algorithm
    GenericDiGraph<Edge> makeReversed(GenericDiGraph<Edge> const& g)
    {
       GenericDiGraph<Edge> rg(g.vertexCount());
-      for (size_t v = 0; v < g.vertexCount(); ++v)
+      for (size_t v : g.vertices())
          for (auto e : g.edgesFrom(v))
             rg.addEdge(e.reverse());
       return rg;

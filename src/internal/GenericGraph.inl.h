@@ -11,7 +11,7 @@ namespace algorithm
       auto diGraph = GenericDiGraph<Edge>::createFrom(is, readEdge);
 
       GenericGraph<Edge> g(diGraph.vertexCount());
-      for (size_t v = 0; v < diGraph.vertexCount(); ++v)
+      for (size_t v : g.vertices())
          for (auto e : diGraph.edgesFrom(v))
             g.addEdge(e);
       return g;

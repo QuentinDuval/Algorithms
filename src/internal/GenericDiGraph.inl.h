@@ -103,11 +103,13 @@ namespace algorithm
    void GenericDiGraph<Edge>::serializeTo(GenericDiGraph<Edge> const& g, std::ostream& os, WriteEdge writeEdge)
    {
       os << std::endl << g.vertexCount() << std::endl;
-      for (size_t v = 0; v < g.vertexCount(); ++v)
-      for (auto e : g.edgesFrom(v))
+      for (size_t v : g.vertices())
       {
-         writeEdge(os, e);
-         os << std::endl;
+         for (auto e : g.edgesFrom(v))
+         {
+            writeEdge(os, e);
+            os << std::endl;
+         }
       }
       os << ";";
    }
