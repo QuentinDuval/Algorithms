@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DepthFirstSearch.h"
+#include "TopologicalSort.h"
 #include "internal/GenericGraph.h"
 #include "internal/GenericDiGraph.h"
 
@@ -33,21 +34,12 @@ namespace algorithm
          : m_componentCount(0)
          , m_componentIds(g.vertexCount(), 0)
       {
-         std::vector<size_t> vertexStack;
-         vertexStack.reserve(g.vertexCount());
-
-         DFS<Edge> dfs(g);
-         for (size_t v : g.vertices())
-         {
-            if (!dfs.isMarked(v))
-               dfs.postOrderFrom(v, [this, &vertexStack](size_t w) { vertexStack.push_back(w); });
-         }
+         TopologicalSort order(g);
 
          GenericDiGraph<Edge> reversed = makeReversed(g);
          DFS<Edge> reversedDfs(reversed);
-         for (auto b = vertexStack.rbegin(); b != vertexStack.rend(); ++b)
+         for (auto v : order.order())
          {
-            size_t v = *b;
             if (reversedDfs.isMarked(v))
                continue;
 
