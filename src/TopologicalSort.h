@@ -15,24 +15,22 @@ namespace algorithm
    public:
       template<typename Edge>
       TopologicalSort(GenericDiGraph<Edge> const& g)
-         : m_vertices()
       {
          DFS<Edge> dfs(g);
          m_vertices.reserve(g.vertexCount());
          for (size_t i : g.vertices())
          {
             if (!dfs.isMarked(i))
-               dfs.postOrderFrom(i, [this](size_t v) { m_vertices.push_back(v); });
+               dfs.postOrderFrom(i, [this](size_t v) { m_vertices.emplace_back(v); });
          }
       }
 
       template<typename Edge>
       TopologicalSort(GenericDiGraph<Edge> const& g, size_t from)
-         : m_vertices()
       {
          DFS<Edge> dfs(g);
          m_vertices.reserve(g.vertexCount());
-         dfs.postOrderFrom(from, [this](size_t v) { m_vertices.push_back(v); });
+         dfs.postOrderFrom(from, [this](size_t v) { m_vertices.emplace_back(v); });
       }
 
       Range<vertex_it> order() const
