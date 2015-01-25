@@ -29,8 +29,6 @@ int main()
    graphTests();
    graphSearchTests();
    symbolGraphTests();
-   weightedGraphSearchTests();
-   symbolGraphSearchTests();
    connectedComponentsTests();
    shortestPathTests();
    cycleTests();
@@ -46,6 +44,7 @@ int main()
 
    if (runPerformanceTests("graphs"))
    {
+      graphSearchPerfTests();
       topologicalSortPerfTests();
       shortestPathPerformanceTests();
       unionFindVsCCPerfTests();

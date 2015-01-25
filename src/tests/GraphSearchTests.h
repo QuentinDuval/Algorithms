@@ -4,6 +4,5 @@
 namespace algorithm
 {
    void graphSearchTests();
-   void weightedGraphSearchTests();
-   void symbolGraphSearchTests();
+   void graphSearchPerfTests();
 }

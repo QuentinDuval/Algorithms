@@ -4,7 +4,9 @@
 #include "DepthFirstSearch.h"
 #include "Graph.h"
 #include "WeightedGraph.h"
+#include "tests/GraphTestUtils.h"
 #include "utils/TestUtils.h"
+#include "utils/Timer.h"
 
 #include <assert.h>
 #include <sstream>
@@ -21,7 +23,7 @@ namespace algorithm
       assert(expected == str.str());
    }
 
-   void graphSearchTests()
+   static void unweightedGraphSearchTests()
    {
       Graph g(10);
       std::vector<Edge> inputs {
@@ -49,7 +51,7 @@ namespace algorithm
       assert(true == bfs.allMarked());
    }
 
-   void weightedGraphSearchTests()
+   static void weightedGraphSearchTests()
    {
       WeightedGraph g(10);
       std::vector<WeightedEdge> inputs{
@@ -69,7 +71,7 @@ namespace algorithm
       runTest(bfs, 0, "012345768");
    }
 
-   void symbolGraphSearchTests()
+   static void symbolGraphSearchTests()
    {
       auto inputs = { "a", "b", "c", "d", "e" };
       SymbolGraph<std::string> g(begin(inputs), end(inputs));
@@ -83,5 +85,32 @@ namespace algorithm
       dfs.searchFrom("a", out);
       dfs.searchFrom("d", out);
       assert("abcde" == str.str());
+   }
+
+   void graphSearchTests()
+   {
+      unweightedGraphSearchTests();
+      weightedGraphSearchTests();
+      symbolGraphTests();
+   }
+
+   //--------------------------------------------------------------------------
+
+   void graphSearchPerfTests()
+   {
+      size_t dim = 1000;
+      Graph g = make2DPlane(dim, true);
+
+      std::cout << std::endl << "[BFS] Graph of size " << dim * dim << std::endl;
+      showTime(std::cout, [&]{
+         BFS<Edge> bfs(g);
+         bfs.markFrom(0);
+      });
+
+      std::cout << std::endl << "[DFS] Graph of size " << dim * dim << std::endl;
+      showTime(std::cout, [&]{
+         DFS<Edge> dfs(g);
+         dfs.markFrom(0);
+      });
    }
 }
