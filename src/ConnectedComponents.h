@@ -1,6 +1,9 @@
 #pragma once
+
 #include "DepthFirstSearch.h"
 #include "internal/GenericGraph.h"
+#include "internal/GenericDiGraph.h"
+
 #include <vector>
 
 
@@ -15,12 +18,40 @@ namespace algorithm
          , m_componentIds(g.vertexCount(), 0)
       {
          DFS<Edge> dfs(g);
-         for (size_t i : g.vertices())
+         for (size_t v : g.vertices())
          {
-            if (dfs.isMarked(i))
+            if (dfs.isMarked(v))
                continue;
 
-            dfs.markFrom(i, [this](size_t v) { m_componentIds[v] = m_componentCount; });
+            dfs.markFrom(v, [this](size_t w) { m_componentIds[w] = m_componentCount; });
+            ++m_componentCount;
+         }
+      }
+
+      template<typename Edge>
+      ConnectedComponents(GenericDiGraph<Edge> const& g)
+         : m_componentCount(0)
+         , m_componentIds(g.vertexCount(), 0)
+      {
+         std::vector<size_t> vertexStack;
+         vertexStack.reserve(g.vertexCount());
+
+         DFS<Edge> dfs(g);
+         for (size_t v : g.vertices())
+         {
+            if (!dfs.isMarked(v))
+               dfs.postOrderFrom(v, [this, &vertexStack](size_t w) { vertexStack.push_back(w); });
+         }
+
+         GenericDiGraph<Edge> reversed = makeReversed(g);
+         DFS<Edge> reversedDfs(reversed);
+         for (auto b = vertexStack.rbegin(); b != vertexStack.rend(); ++b)
+         {
+            size_t v = *b;
+            if (reversedDfs.isMarked(v))
+               continue;
+
+            reversedDfs.markFrom(v, [this](size_t w) { m_componentIds[w] = m_componentCount; });
             ++m_componentCount;
          }
       }

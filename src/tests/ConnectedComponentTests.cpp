@@ -3,6 +3,7 @@
 #include "ConnectedComponents.h"
 #include "Graph.h"
 #include "WeightedGraph.h"
+#include "tests/GraphTestUtils.h"
 #include "utils/TestUtils.h"
 #include "utils/Timer.h"
 
@@ -43,9 +44,21 @@ namespace algorithm
       assert(false == cc.connected(3, 5));
    }
 
+   static void stronglyCCTests()
+   {
+      DiGraph g1 = make2DTopLeftBottomRightPlane(4);
+      ConnectedComponents cc1(g1);
+      assert(16 == cc1.componentCount());
+
+      DiGraph g2 = make2DPlane(4).toDiGraph();
+      ConnectedComponents cc2(g2);
+      assert(1 == cc2.componentCount());
+   }
+
    void connectedComponentsTests()
    {
       graphCCTests();
       weightedGraphCCTests();
+      stronglyCCTests();
    }
 }
