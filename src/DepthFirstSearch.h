@@ -4,6 +4,7 @@
 #include "SymbolGraph.h"
 #include "internal/GenericDiGraph.h"
 #include "internal/GenericGraph.h"
+
 #include <functional>
 #include <vector>
 
@@ -15,6 +16,7 @@ namespace algorithm
    {
    public:
       using DiGraph = GenericDiGraph<Edge>;
+      using Graph = GenericGraph<Edge>;
       using OnMarked = GraphSearch<Edge>::OnMarked;
       using OnPathTaken = GraphSearch<Edge>::OnPathTaken;
 
@@ -24,7 +26,7 @@ namespace algorithm
          , m_graph(g)
       {}
 
-      explicit DFS(GenericGraph<Edge> const& g)
+      explicit DFS(Graph const& g)
          : DFS(g.toDiGraph())
       {}
 
@@ -39,7 +41,7 @@ namespace algorithm
             return;
 
          mark(v);
-         searchImplRec(v, postOrder, onAlreadyMarked, pathTaken);
+         searchImplIter(v, postOrder, onAlreadyMarked, pathTaken);
       }
 
    private:
@@ -48,24 +50,8 @@ namespace algorithm
          searchFrom(v, [](size_t){}, [](Edge const&){}, listener);
       }
 
-      /** Recursive implementation: leads to stack overflows for big graphgs */
-      //void searchImplRec(size_t v, OnMarked onAdjVisited, OnPathTaken listener)
-      //{
-      //   for (auto e : m_graph.edgesFrom(v))
-      //   {
-      //      auto a = e.to();
-      //      if (isMarked(a))
-      //         continue;
-      //
-      //      listener(e);
-      //      mark(a);
-      //      searchImplRec(a, onAdjVisited, listener);
-      //   }
-      //   onAdjVisited(v);
-      //}
-
       /** Iterative implementation emulating the stack */
-      void searchImplRec(size_t v, OnMarked onAdjVisited, OnPathTaken onAlreadyMarked, OnPathTaken listener)
+      void searchImplIter(size_t v, OnMarked onAdjVisited, OnPathTaken onAlreadyMarked, OnPathTaken listener)
       {
          auto edges = m_graph.edgesFrom(v);
          using StackedRange = std::pair<size_t, decltype(edges)>;
@@ -78,25 +64,70 @@ namespace algorithm
             {
                onAdjVisited(stack.back().first);
                stack.pop_back();
+               continue;
+            }
+            
+            auto e = range.begin();
+            auto c = e->to();
+            range.pop();
+
+            if (!isMarked(c))
+            {
+               listener(*e);
+               mark(c);
+               auto nextRange = m_graph.edgesFrom(c);
+               stack.emplace_back(c, nextRange);
             }
             else
             {
-               auto e = range.begin();
-               auto c = e->to();
-               range.pop();
-
-               if (!isMarked(c))
-               {
-                  listener(*e);
-                  mark(c);
-                  stack.push_back({ c, m_graph.edgesFrom(c) });
-               }
-               else
-               {
-                  onAlreadyMarked(*e);
-               }
+               onAlreadyMarked(*e);
             }
          }
+      }
+
+      /** Alternate iterative implementation when the post-order is not needed (faster) */
+      void searchImplIter2(size_t v, OnPathTaken onAlreadyMarked, OnPathTaken listener)
+      {
+         auto initEdges = reverseRange(m_graph.edgesFrom(v));
+         std::vector<Edge> stack(begin(initEdges), end(initEdges));
+         
+         while (!stack.empty())
+         {
+            auto e = stack.back();
+            auto c = e.to();
+            stack.pop_back();
+            if (isMarked(c))
+               continue;
+
+            listener(e);
+            mark(c);
+            for (auto ne : reverseRange(m_graph.edgesFrom(c)))
+            {
+               if (!isMarked(ne.to()))
+                  stack.push_back(ne);
+               else
+                  onAlreadyMarked(ne);
+            }
+         }
+      }
+
+      /** Recursive implementation: leads to stack overflows for big graphs */
+      void searchImplRec(size_t v, OnMarked onAdjVisited, OnPathTaken onAlreadyMarked, OnPathTaken listener)
+      {
+         for (auto e : m_graph.edgesFrom(v))
+         {
+            auto a = e.to();
+            if (isMarked(a))
+            {
+               onAlreadyMarked(e);
+               continue;
+            }
+
+            listener(e);
+            mark(a);
+            searchImplRec(a, onAdjVisited, onAlreadyMarked, listener);
+         }
+         onAdjVisited(v);
       }
 
    private:
