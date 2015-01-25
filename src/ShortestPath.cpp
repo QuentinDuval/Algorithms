@@ -78,7 +78,7 @@ namespace algorithm
          nodes.add(w, m_distances[w]);
       }
 
-      //Start analysis neightbor and relax distances
+      //Start analysing neightbor and relax distances
       while (!nodes.empty())
       {
          auto v = nodes.removeTop();
@@ -157,7 +157,7 @@ namespace algorithm
    {
       auto v = e.from();
       auto w = e.to();
-      if (m_distances[v] + e.weight() >= m_distances[w]) //TODO - deal with  +infinity
+      if (m_distances[v] + e.weight() >= m_distances[w])
          return false;
 
       m_distances[w] = m_distances[v] + e.weight();
