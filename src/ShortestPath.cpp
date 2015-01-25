@@ -198,7 +198,7 @@ namespace algorithm
       for (size_t i = 1; i <= g.vertexCount(); ++i)
       {
          bool hasChanged = false;
-         for (size_t v = 0; v < g.vertexCount(); ++v)
+         for (size_t v : g.vertices())
          {
             if (lastChanged[v] != i - 1)
                continue;
