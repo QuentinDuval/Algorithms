@@ -124,7 +124,5 @@ namespace algorithm
 
       std::cout << std::endl << "[DFS] Graph of size " << dim * dim << std::endl;
       runPerfTest<DFS<Edge>>(dim);
-
-      //TODO - Add tests of directed cycle
    }
 }

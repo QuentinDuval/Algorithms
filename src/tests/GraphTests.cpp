@@ -81,6 +81,8 @@ namespace algorithm
          std::cout << e << std::endl;
    }
 
+   //TODO - Add tests of directed cycle
+
    //--------------------------------------------------------------------------
 
    void symbolGraphTests()
