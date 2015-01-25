@@ -17,6 +17,7 @@ namespace algorithm
    public:
       using DiGraphImpl = GenericDiGraph<Edge>;
       using edge_it = typename DiGraphImpl::edge_it;
+      using vertex_it = typename DiGraphImpl::vertex_it;
       using destination_it = typename DiGraphImpl::destination_it;
 
    public:
@@ -52,6 +53,11 @@ namespace algorithm
       Range<destination_it> adjacents(size_t v) const
       {
          return m_impl.adjacents(v);
+      }
+
+      Range<vertex_it> vertices() const
+      {
+         return m_impl.vertices();
       }
 
       DiGraphImpl const& toDiGraph() const
