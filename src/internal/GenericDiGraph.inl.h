@@ -15,12 +15,6 @@ namespace algorithm
          return *this;
       }
 
-      destination_it& operator++(int)
-      {
-         m_edgeIt++;
-         return *this;
-      }
-
       bool operator!=(destination_it const& rhs) const
       {
          return m_edgeIt != rhs.m_edgeIt;
@@ -39,6 +33,40 @@ namespace algorithm
    private:
       destination_it(edge_it const& it) : m_edgeIt(it) {}
       edge_it m_edgeIt;
+      friend GenericDiGraph<Edge>;
+   };
+
+   //--------------------------------------------------------------------------
+
+   template<typename Edge>
+   struct GenericDiGraph<Edge>::vertex_it
+      : public std::iterator<std::input_iterator_tag, size_t>
+   {
+   public:
+      vertex_it& operator++()
+      {
+         ++m_vertex_index;
+         return *this;
+      }
+
+      bool operator!=(vertex_it const& rhs) const
+      {
+         return m_vertex_index != rhs.m_vertex_index;
+      }
+
+      bool operator==(vertex_it const& rhs) const
+      {
+         return m_vertex_index == rhs.m_vertex_index;
+      }
+
+      size_t operator*() const
+      {
+         return m_vertex_index;
+      }
+
+   private:
+      vertex_it(size_t v) : m_vertex_index(v) {}
+      size_t m_vertex_index;
       friend GenericDiGraph<Edge>;
    };
 

@@ -31,6 +31,7 @@ namespace algorithm
       using AdjList = std::vector<Edge>;
       using edge_it = typename AdjList::const_iterator;
       struct destination_it;
+      struct vertex_it;
 
    public:
       explicit GenericDiGraph(size_t vertexCount)
@@ -68,7 +69,7 @@ namespace algorithm
          checkVertexId(v);
          auto b = begin(m_adjacencyLists[v]);
          auto e = end(m_adjacencyLists[v]);
-         return Range<GenericDiGraph::edge_it>(b, e);
+         return Range<edge_it>(b, e);
       }
 
       Range<destination_it> adjacents(size_t v) const
@@ -76,7 +77,12 @@ namespace algorithm
          auto edges = edgesFrom(v);
          auto b = destination_it(begin(edges));
          auto e = destination_it(end(edges));
-         return Range<GenericDiGraph::destination_it>(b, e);
+         return Range<destination_it>(b, e);
+      }
+
+      Range<vertex_it> vertices() const
+      {
+         return Range<vertex_it>(0, vertexCount());
       }
 
       template<typename ReadEdge>
