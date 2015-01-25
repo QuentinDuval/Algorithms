@@ -64,9 +64,8 @@ namespace algorithm
    {
       const size_t size  = 50000;
       const size_t links = 1000000;
-      std::cout << std::endl << "[Union-Find vs CC] Performance test" << std::endl;
-      std::cout << "> Number of entries: " << size << std::endl;
-      std::cout << "> Number of links:   " << links << std::endl;
+      std::cout << std::endl << "[Union-Find vs CC] Performance test ("
+         << size << " entries, " << links << " links)" << std::endl;
 
       std::vector<size_t> sources(links);
       generate(sources, 0, [=](int i) { return (i + 1) % size; });
@@ -91,6 +90,17 @@ namespace algorithm
             g.addEdge({ sources[i], destinations[i] });
 
          ConnectedComponents cc(g);
+         for (size_t i = 0; i < links; ++i)
+            assert(true == cc.connected(sources[i], destinations[i]));
+      });
+
+      std::cout << "* Strongly Connected-Components:" << std::endl;
+      showTime(std::cout, [&]{
+         Graph g(size);
+         for (size_t i = 0; i < links; ++i)
+            g.addEdge({ sources[i], destinations[i] });
+
+         ConnectedComponents cc(g.toDiGraph());
          for (size_t i = 0; i < links; ++i)
             assert(true == cc.connected(sources[i], destinations[i]));
       });
