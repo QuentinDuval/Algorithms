@@ -46,7 +46,7 @@ namespace algorithm
                continue;
 
             onStack[i] = true;
-            dfs.searchFrom(i, postOrder, onAlreadyMarked, onPathTaken); //TODO - continues even if cycle detected...
+            dfs.searchFrom(i, postOrder, onAlreadyMarked, onPathTaken);
          }
       }
 
