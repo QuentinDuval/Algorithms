@@ -96,21 +96,33 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
+   template<typename SearchAlgo>
+   static void runPerfTest(size_t dim)
+   {
+      Graph g     = make2DPlane(dim, true);
+      DiGraph dg  = make2DTopLeftBottomRightPlane(dim, true);
+
+      std::cout << "* Graph:" << std::endl;
+      showTime(std::cout, [&]{
+         SearchAlgo s(g);
+         s.markFrom(0);
+      });
+
+      std::cout << "* Directed graph:" << std::endl;
+      showTime(std::cout, [&]{
+         SearchAlgo s(dg);
+         s.markFrom(0);
+      });
+   }
+
    void graphSearchPerfTests()
    {
       size_t dim = 1000;
-      Graph g = make2DPlane(dim, true);
 
       std::cout << std::endl << "[BFS] Graph of size " << dim * dim << std::endl;
-      showTime(std::cout, [&]{
-         BFS<Edge> bfs(g);
-         bfs.markFrom(0);
-      });
+      runPerfTest<BFS<Edge>>(dim);
 
       std::cout << std::endl << "[DFS] Graph of size " << dim * dim << std::endl;
-      showTime(std::cout, [&]{
-         DFS<Edge> dfs(g);
-         dfs.markFrom(0);
-      });
+      runPerfTest<DFS<Edge>>(dim);
    }
 }
