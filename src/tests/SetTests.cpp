@@ -10,40 +10,21 @@
 
 namespace algorithm
 {
-   //template <template<typename> class HashSetImpl>
-   //static void hashSetCommonTests()
-   //{
-   //   HashSetImpl<std::string> stringSet;
-   //   assert(true == stringSet.insert("a"));
-   //   assert(true == stringSet.insert("b"));
-   //   assert(false == stringSet.insert("b"));
-   //   assert(true == stringSet.contains("a"));
-   //   assert(true == stringSet.contains("b"));
-
-   //   HashSetImpl<size_t> set;
-   //   for (size_t i = 0; i < 30; ++i)
-   //      set.insert(i);
-
-   //   assert(30 == set.size());
-   //   for (size_t i = 0; i < 30; ++i)
-   //      assert(true == set.contains(i));
-
-   //   auto it = set.find(0);
-   //   set.erase(it.second);
-   //   assert(false == set.contains(0));
-   //   assert(29 == set.size());
-   //}
-
-   static void linkedHashSetTests()
+   template<typename Set>
+   void stringSetTests()
    {
-      LinkedHashSet<std::string> stringSet;
+      Set stringSet;
       assert(true == stringSet.insert("a"));
       assert(true == stringSet.insert("b"));
       assert(false == stringSet.insert("b"));
       assert(true == stringSet.contains("a"));
       assert(true == stringSet.contains("b"));
+   }
 
-      LinkedHashSet<size_t> set;
+   template<typename Set>
+   void integerSetTests()
+   {
+      Set set;
       for (size_t i = 0; i < 30; ++i)
          set.insert(i);
 
@@ -65,35 +46,16 @@ namespace algorithm
          assert(false == set.contains(i));
    }
 
+   static void linkedHashSetTests()
+   {
+      stringSetTests<LinkedHashSet<std::string>>();
+      integerSetTests<LinkedHashSet<size_t>>();
+   }
+
    static void denseHashSetTests()
    {
-      DenseHashSet<std::string> stringSet;
-      assert(true == stringSet.insert("a"));
-      assert(true == stringSet.insert("b"));
-      assert(false == stringSet.insert("b"));
-      assert(true == stringSet.contains("a"));
-      assert(true == stringSet.contains("b"));
-
-      DenseHashSet<size_t> set;
-      for (size_t i = 0; i < 30; ++i)
-         set.insert(i);
-
-      assert(30 == set.size());
-      for (size_t i = 0; i < 30; ++i)
-         assert(true == set.contains(i));
-
-      auto it = set.find(0);
-      set.erase(it);
-      assert(false == set.contains(0));
-      assert(29 == set.size());
-
-      for (auto& k : set)
-         assert(true == set.contains(k));
-
-      set.erase(set.begin(), set.end());
-      assert(0 == set.size());
-      for (size_t i = 0; i < 30; ++i)
-         assert(false == set.contains(i));
+      stringSetTests<DenseHashSet<std::string>>();
+      integerSetTests<DenseHashSet<size_t>>();
    }
 
    void setTests()
