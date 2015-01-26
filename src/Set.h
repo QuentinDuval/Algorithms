@@ -1,6 +1,9 @@
 #pragma once
 
+#include "utils/Algorithms.h"
+
 #include <functional>
+#include <list>
 #include <vector>
 
 
@@ -18,17 +21,137 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   //template<typename T>
-   //class LinkedHashSet
-   //{
-   //public:
+   template<
+      typename Key,
+      typename Compare = std::equal_to<Key>,
+      typename Hasher = std::hash<Key>
+   >
+   class LinkedHashSet
+   {
+   public:
+      using key_list = std::list<Key>;
+      using bucket_iterator = typename key_list::const_iterator;
+      using buckets = std::vector<key_list>;
+      class key_iterator;
+
+   public:
+      LinkedHashSet() : LinkedHashSet(Compare(), Hasher()) {}
+      LinkedHashSet(Compare comp, Hasher hash) : m_comp(comp), m_hash(hash), m_count(0), m_buckets(10){}
+      ~LinkedHashSet() = default;
+
+      key_iterator find(Key const& k) const
+      {
+         size_t bucketId = bucketIndex(k);
+         auto& bucket = m_buckets[bucketId];
+         auto it = findIf(bucket, [&](Key const& key) { return m_comp(k, key); });
+         if (it == bucket.end())
+            return end();
+
+         return key_iterator(*this, bucketId, it);
+      }
+
+      bool contains(Key const& k) const
+      {
+         return find(k) != end();
+      }
+
+      bool insert(Key const& k)
+      {
+         if (!insert_(k))
+            return false;
+
+         ++m_count;
+         loadFactorCheck();
+         return true;
+      }
+
+      void erase(key_iterator it)
+      {
+         erase_(it.getBucketIt());
+         --m_count;
+         loadFactorCheck();
+      }
+
+      void erase(key_iterator first, key_iterator last)
+      {
+         m_count -= std::distance(first, last);
+         for (; first != last; first.nextValidState())
+            erase_(first.getBucketIt());
+         loadFactorCheck();
+      }
+
+      key_iterator begin() const
+      {
+         return key_iterator(*this, 0, m_buckets[0].begin());
+      }
+
+      key_iterator end() const
+      {
+         size_t e = m_buckets.size() - 1;
+         return key_iterator(*this, e, m_buckets[e].end());
+      }
+
+      size_t size() const
+      {
+         return m_count;
+      }
+
+   private:
+      size_t bucketIndex(Key const& k) const
+      {
+         return m_hash(k) % m_buckets.size();
+      }
+
+      bool insert_(Key const& k)
+      {
+         auto& bucket = m_buckets[bucketIndex(k)];
+         auto it = findIf(bucket, [&](Key const& key) { return m_comp(k, key); });
+         if (it != bucket.end())
+            return false;
+
+         bucket.push_back(k);
+         return true;
+      }
+
+      void erase_(bucket_iterator it)
+      {
+         auto& k = *it;
+         auto& bucket = m_buckets[bucketIndex(k)];
+         bucket.erase(it);
+      }
+
+      void loadFactorCheck()
+      {
+         size_t upperBound = m_buckets.size() / 2;
+         if (m_count > upperBound)
+            resize(2 * m_buckets.size());
+         else if (m_count < upperBound / 4)
+            resize(m_buckets.size() / 2);
+      }
+
+      void resize(size_t size)
+      {
+         //Extracting the buckets and just move them would not work
+         std::vector<Key> keys;
+         keys.reserve(m_count);
+         for (auto& bucket : m_buckets)
+            std::copy(bucket.begin(), bucket.end(), std::back_inserter(keys));
+
+         m_buckets = buckets(size); //TODO - Make this more efficient
+         for (auto& k : keys)
+            insert_(k);
+      }
+
+   private:
+      Compare m_comp;
+      Hasher m_hash;
+      size_t m_count;
+      buckets m_buckets;
+   };
 
 
-   //private:
-
-
-   //};
-
+   //--------------------------------------------------------------------------
+   // Dense Hash Set
    //--------------------------------------------------------------------------
 
    template<
