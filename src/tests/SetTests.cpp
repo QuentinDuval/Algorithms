@@ -66,12 +66,10 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   void setPerfTests()
+   template<typename Set>
+   void integerSetPerfTests(size_t size)
    {
-      size_t size = 1000000;
-      DenseHashSet<size_t> set;
-
-      std::cout << std::endl << "[Dense Hash Set]" << std::endl;
+      Set set;
 
       std::cout << std::endl << "* Inserts:" << std::endl;
       showTime(std::cout, [&]{
@@ -89,5 +87,16 @@ namespace algorithm
       showTime(std::cout, [&]{
          set.erase(set.begin(), set.end());
       });
+   }
+
+   void setPerfTests()
+   {
+      size_t size = 1000000;
+
+      std::cout << std::endl << "[Linked Hash Set]" << std::endl;
+      integerSetPerfTests<LinkedHashSet<size_t>>(size);
+
+      std::cout << std::endl << "[Dense Hash Set]" << std::endl;
+      integerSetPerfTests<DenseHashSet<size_t>>(size);
    }
 }
