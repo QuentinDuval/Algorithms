@@ -40,9 +40,8 @@ namespace algorithm
 
       key_iterator begin() const
       {
-         key_iterator b(m_root.get());
-         b.sinkLeft();
-         return b;
+         Node* b = sinkLeft(m_root.get());
+         return key_iterator(b);
       }
 
       key_iterator end() const
@@ -117,6 +116,7 @@ namespace algorithm
             return;
 
          Node* node = it.getNode();
+         incrementCount_(node->m_father, -1);
 
          //If the node has no children, just erase it
          if (node->m_count == 1)
@@ -127,20 +127,20 @@ namespace algorithm
          //If one children, just bring it in place
          else if (node->m_left && !node->m_right)
          {
-            fatherMatchingChild(*node) = node->m_left;
+            fatherMatchingChild(*node) = move(node->m_left);
          }
          else if (node->m_right && !node->m_left)
          {
-            fatherMatchingChild(*node) = node->m_right;
+            fatherMatchingChild(*node) = move(node->m_right);
          }
 
-         //TODO - If two children, go right, sink all way down left, swap these nodes, then delete
+         //If two children, go right, sink all way down left, swap these nodes, then delete
          else
          {
-
+            Node* nextHigher = sinkLeft(node->m_right.get());
+            std::swap(nextHigher->m_value, node->m_value);
+            fatherMatchingChild(*nextHigher).reset();
          }
-
-         incrementCount_(father, -1);
       }
 
       size_t size() const
@@ -149,7 +149,16 @@ namespace algorithm
       }
 
    private:
-      void incrementCount_(Node* node, size_t incr = 1)
+      std::unique_ptr<Node>& fatherMatchingChild(Node& node)
+      {
+         if (!node.m_father)
+            return m_root;
+         if (node.m_father->m_left.get() == &node)
+            return node.m_father->m_left;
+         return node.m_father->m_right;
+      }
+
+      static void incrementCount_(Node* node, size_t incr = 1)
       {
          while (node)
          {
@@ -158,13 +167,11 @@ namespace algorithm
          }
       }
 
-      std::unique_ptr<Node>& fatherMatchingChild(Node& node)
+      static Node* sinkLeft(Node* node)
       {
-         if (!node.father)
-            return m_root;
-         if (node.father->m_left.get() == &node)
-            return father->m_left;
-         return node.father->m_right;
+         while (node->m_left)
+            node = node->m_left.get();
+         return node;
       }
 
    private:

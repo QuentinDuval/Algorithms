@@ -20,7 +20,7 @@ namespace algorithm
          if (m_node->m_right)
          {
             m_node = m_node->m_right.get();
-            sinkLeft();
+            m_node = Set::sinkLeft(m_node);
             return *this;
          }
 
@@ -51,12 +51,6 @@ namespace algorithm
       }
 
    private:
-      void sinkLeft()
-      {
-         while (m_node->m_left)
-            m_node = m_node->m_left.get();
-      }
-
       Node* getNode() const
       {
          return m_node;

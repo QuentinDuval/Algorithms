@@ -64,10 +64,13 @@ namespace algorithm
 
       std::vector<size_t> shuffledKeys(keys);
       shuffle(shuffledKeys);
-      for (auto k : shuffledKeys)
-         set.insert(k);
-
+      for (auto k : shuffledKeys) set.insert(k);
       assert(true == equal(begin(set), end(set), std::begin(keys)));
+
+      set.erase(set.find(0));
+      set.erase(set.find(14));
+      set.erase(set.find(29));
+      assert(27 == set.size());
    }
 
    static void linkedHashSetTests()
