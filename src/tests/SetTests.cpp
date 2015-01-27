@@ -19,6 +19,7 @@ namespace algorithm
       assert(false == stringSet.insert("b"));
       assert(true == stringSet.contains("a"));
       assert(true == stringSet.contains("b"));
+      assert(2 == stringSet.size());
    }
 
    template<typename Set>
@@ -46,6 +47,17 @@ namespace algorithm
          assert(false == set.contains(i));
    }
 
+   static void binarySetTests()
+   {
+      BinaryTreeSet<std::string> stringSet;
+      assert(true == stringSet.insert("a"));
+      assert(true == stringSet.insert("b"));
+      assert(false == stringSet.insert("b"));
+      assert(true == stringSet.contains("a"));
+      assert(true == stringSet.contains("b"));
+      assert(2 == stringSet.size());
+   }
+
    static void linkedHashSetTests()
    {
       stringSetTests<LinkedHashSet<std::string>>();
@@ -60,6 +72,7 @@ namespace algorithm
 
    void setTests()
    {
+      binarySetTests();
       linkedHashSetTests();
       denseHashSetTests();
    }

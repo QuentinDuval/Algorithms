@@ -3,21 +3,159 @@
 #include "utils/Algorithms.h"
 
 #include <functional>
+#include <memory>
 #include <list>
 #include <vector>
 
 
 namespace algorithm
 {
-   //template<typename T>
-   //class RedBlackTreeSet
-   //{
-   //public:
+   template<
+      typename Key,
+      typename Compare = std::less<Key>
+   >
+   class BinaryTreeSet
+   {
+   private:
+      struct Node
+      {
+         Node(Key const& k) : Node(nullptr, k) {}
+         Node(Node* father, Key const& k)
+            : m_father(father)
+            , m_value(k)
+            , m_count(1)
+         {}
 
+         Key m_value;
+         size_t m_count;
+         Node* m_father;
+         std::unique_ptr<Node> m_left;
+         std::unique_ptr<Node> m_right;
+      };
 
-   //private:
+      class key_iterator;
 
-   //};
+   public:
+      BinaryTreeSet() : BinaryTreeSet(Compare()) {}
+      BinaryTreeSet(Compare less) : m_less(less), m_root() {}
+
+      key_iterator begin() const
+      {
+         key_iterator b(m_root.get());
+         b.sinkLeft();
+         return b;
+      }
+
+      key_iterator end() const
+      {
+         return key_iterator(nullptr);
+      }
+
+      key_iterator find(Key const& key) const
+      {
+         Node* node = m_root.get();
+         while (node)
+         {
+            if (m_less(key, node->m_value))
+               node = node->m_left.get();
+            else if (m_less(node->m_value, key))
+               node = node->m_right.get();
+            else
+               return key_iterator(node);
+         }
+         return end();
+      }
+
+      bool contains(Key const& key) const
+      {
+         return end() != find(key);
+      }
+
+      bool insert(Key const& key)
+      {
+         if (!m_root)
+         {
+            m_root = std::make_unique<Node>(key);
+            return true;
+         }
+
+         Node* node = m_root.get();
+         while (node)
+         {
+            if (m_less(key, node->m_value))
+            {
+               Node* next = node->m_left.get();
+               if (!next)
+               {
+                  node->m_left = std::make_unique<Node>(key);
+                  incrementCount_(node);
+                  return true;
+               }
+               node = next;
+            }
+            else if (m_less(node->m_value, key))
+            {
+               Node* next = node->m_right.get();
+               if (!next)
+               {
+                  node->m_right = std::make_unique<Node>(key);
+                  incrementCount_(node);
+                  return true;
+               }
+               node = next;
+            }
+            else
+            {
+               return false;
+            }
+         }
+         return false;
+      }
+
+      void erase(key_iterator it)
+      {
+         if (it == end())
+            return;
+
+         Node* node = it.getNode();
+         Node* father = node->m_father;
+
+         //TODO - If not children, just erase
+         //TODO - If one children, just bring it in place
+         //TODO - If two children, go right, sink all way down left, swap these nodes, then delete
+
+         //TODO - Wrong: how to handle the children?
+         //if (father->m_left.get() == node)
+         //   father->m_left.reset();
+         //else if (father->m_right.get() == node)
+         //   father->m_right.reset();
+
+         incrementCount_(father, -1);
+      }
+
+      size_t size() const
+      {
+         return m_root ? m_root->m_count : 0;
+      }
+
+   private:
+      void incrementCount_(Node* node, size_t incr = 1)
+      {
+         while (node)
+         {
+            node->m_count += incr;
+            node = node->m_father;
+         }
+      }
+
+   private:
+      Compare m_less;
+      std::unique_ptr<Node> m_root;
+   };
+
+   //--------------------------------------------------------------------------
+
+   //TODO - Red black tree
 
    //--------------------------------------------------------------------------
 

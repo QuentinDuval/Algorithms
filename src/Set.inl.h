@@ -5,11 +5,75 @@ namespace algorithm
 {
    template<
       typename Key,
+      typename Compare
+   >
+   class BinaryTreeSet<Key, Compare>::key_iterator
+      : public std::iterator<std::input_iterator_tag, Key>
+   {
+   public:
+      using Set = BinaryTreeSet<Key, Compare>;
+
+   public:
+      key_iterator& operator++()
+      {
+         if (m_node->m_right)
+         {
+            m_node = m_node.m_right.get();
+            sinkLeft();
+         }
+         else
+         {
+            //If the children is left go to father, else we reached the end of the tree
+            Node* father = m_node->m_father;
+            if (father && father.m_left.get() == node)
+               m_node = m_node->father;
+            else
+               m_node = nullptr;
+         }
+      }
+
+      bool operator!=(key_iterator const& rhs) const
+      {
+         return m_node != rhs.m_node;
+      }
+
+      bool operator==(key_iterator const& rhs) const
+      {
+         return m_node == rhs.m_node;
+      }
+
+      Key const& operator*() const
+      {
+         return m_node->m_value;
+      }
+
+   private:
+      void sinkLeft()
+      {
+         while (m_node->m_left)
+            m_node = m_node->m_left.get();
+      }
+
+      Node* getNode() const
+      {
+         return m_node;
+      }
+
+   private:
+      key_iterator(Node* node) : m_node(node) {}
+      Node* m_node;
+      friend Set;
+   };
+
+   //--------------------------------------------------------------------------
+
+   template<
+      typename Key,
       typename Compare,
       typename Hasher
    >
    class LinkedHashSet<Key, Compare, Hasher>::key_iterator
-      : public std::iterator<std::input_iterator_tag, size_t>
+      : public std::iterator<std::input_iterator_tag, Key>
    {
    public:
       using Set = LinkedHashSet<Key, Compare, Hasher>;
@@ -80,7 +144,7 @@ namespace algorithm
       typename Hasher
    >
    class DenseHashSet<Key, Compare, Hasher>::key_iterator
-      : public std::iterator<std::input_iterator_tag, size_t>
+      : public std::iterator<std::input_iterator_tag, Key>
    {
    public:
       using Set = DenseHashSet<Key, Compare, Hasher>;
