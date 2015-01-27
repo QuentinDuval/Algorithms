@@ -121,6 +121,12 @@ namespace algorithm
          Node* father = node->m_father;
 
          //TODO - If not children, just erase
+         if (nodes->m_count == 1)
+         {
+
+         }
+
+         //TODO - If not children, just erase
          //TODO - If one children, just bring it in place
          //TODO - If two children, go right, sink all way down left, swap these nodes, then delete
 

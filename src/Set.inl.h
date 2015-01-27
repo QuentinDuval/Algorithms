@@ -16,20 +16,22 @@ namespace algorithm
    public:
       key_iterator& operator++()
       {
+         //If the node has a left child
          if (m_node->m_right)
          {
             m_node = m_node.m_right.get();
             sinkLeft();
+            return *this;
          }
-         else
+
+         //Otherwise, find first father for which the current node is at left
+         Node* father = m_node->m_father;
+         while (father && father.m_left.get() != m_node)
          {
-            //If the children is left go to father, else we reached the end of the tree
-            Node* father = m_node->m_father;
-            if (father && father.m_left.get() == node)
-               m_node = m_node->father;
-            else
-               m_node = nullptr;
+            m_node = father;
+            father = m_node->m_father;
          }
+         return *this;
       }
 
       bool operator!=(key_iterator const& rhs) const
