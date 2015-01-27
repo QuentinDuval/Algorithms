@@ -58,7 +58,9 @@ namespace algorithm
       assert(2 == stringSet.size());
 
       BinaryTreeSet<size_t> set;
-      for (size_t i = 0; i < 30; ++i)
+      for (size_t i = 15; i < 30; ++i)
+         set.insert(i);
+      for (size_t i = 0; i < 15; ++i)
          set.insert(i);
 
       for (auto& k : set)

@@ -19,7 +19,6 @@ namespace algorithm
    private:
       struct Node
       {
-         Node(Key const& k) : Node(nullptr, k) {}
          Node(Node* father, Key const& k)
             : m_father(father)
             , m_value(k)
@@ -75,7 +74,7 @@ namespace algorithm
       {
          if (!m_root)
          {
-            m_root = std::make_unique<Node>(key);
+            m_root = std::make_unique<Node>(nullptr, key);
             return true;
          }
 
@@ -87,7 +86,7 @@ namespace algorithm
                Node* next = node->m_left.get();
                if (!next)
                {
-                  node->m_left = std::make_unique<Node>(key);
+                  node->m_left = std::make_unique<Node>(node, key);
                   incrementCount_(node);
                   return true;
                }
@@ -98,7 +97,7 @@ namespace algorithm
                Node* next = node->m_right.get();
                if (!next)
                {
-                  node->m_right = std::make_unique<Node>(key);
+                  node->m_right = std::make_unique<Node>(node, key);
                   incrementCount_(node);
                   return true;
                }
