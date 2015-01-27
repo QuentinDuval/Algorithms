@@ -56,6 +56,13 @@ namespace algorithm
       assert(true == stringSet.contains("a"));
       assert(true == stringSet.contains("b"));
       assert(2 == stringSet.size());
+
+      BinaryTreeSet<size_t> set;
+      for (size_t i = 0; i < 30; ++i)
+         set.insert(i);
+
+      for (auto& k : set)
+         std::cout << k << std::endl;
    }
 
    static void linkedHashSetTests()

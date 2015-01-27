@@ -19,18 +19,19 @@ namespace algorithm
          //If the node has a left child
          if (m_node->m_right)
          {
-            m_node = m_node.m_right.get();
+            m_node = m_node->m_right.get();
             sinkLeft();
             return *this;
          }
 
          //Otherwise, find first father for which the current node is at left
          Node* father = m_node->m_father;
-         while (father && father.m_left.get() != m_node)
+         while (father && father->m_left.get() != m_node)
          {
             m_node = father;
             father = m_node->m_father;
          }
+         m_node = father;
          return *this;
       }
 
