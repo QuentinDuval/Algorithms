@@ -1,6 +1,7 @@
 #include "tests/SetTests.h"
 
 #include "Set.h"
+#include "utils/Algorithms.h"
 #include "utils/Timer.h"
 
 #include <assert.h>
@@ -58,13 +59,15 @@ namespace algorithm
       assert(2 == stringSet.size());
 
       BinaryTreeSet<size_t> set;
-      for (size_t i = 15; i < 30; ++i)
-         set.insert(i);
-      for (size_t i = 0; i < 15; ++i)
-         set.insert(i);
+      std::vector<size_t> keys(30, 0);
+      generate(keys, 0, [](size_t i) { return i + 1; });
 
-      for (auto& k : set)
-         std::cout << k << std::endl;
+      std::vector<size_t> shuffledKeys(keys);
+      shuffle(shuffledKeys);
+      for (auto k : shuffledKeys)
+         set.insert(k);
+
+      assert(true == equal(begin(set), end(set), std::begin(keys)));
    }
 
    static void linkedHashSetTests()
