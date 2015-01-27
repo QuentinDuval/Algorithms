@@ -117,23 +117,28 @@ namespace algorithm
             return;
 
          Node* node = it.getNode();
-         Node* father = node->m_father;
 
-         //TODO - If not children, just erase
-         if (nodes->m_count == 1)
+         //If the node has no children, just erase it
+         if (node->m_count == 1)
+         {
+            fatherMatchingChild(*node).reset();
+         }
+
+         //If one children, just bring it in place
+         else if (node->m_left && !node->m_right)
+         {
+            fatherMatchingChild(*node) = node->m_left;
+         }
+         else if (node->m_right && !node->m_left)
+         {
+            fatherMatchingChild(*node) = node->m_right;
+         }
+
+         //TODO - If two children, go right, sink all way down left, swap these nodes, then delete
+         else
          {
 
          }
-
-         //TODO - If not children, just erase
-         //TODO - If one children, just bring it in place
-         //TODO - If two children, go right, sink all way down left, swap these nodes, then delete
-
-         //TODO - Wrong: how to handle the children?
-         //if (father->m_left.get() == node)
-         //   father->m_left.reset();
-         //else if (father->m_right.get() == node)
-         //   father->m_right.reset();
 
          incrementCount_(father, -1);
       }
@@ -151,6 +156,15 @@ namespace algorithm
             node->m_count += incr;
             node = node->m_father;
          }
+      }
+
+      std::unique_ptr<Node>& fatherMatchingChild(Node& node)
+      {
+         if (!node.father)
+            return m_root;
+         if (node.father->m_left.get() == &node)
+            return father->m_left;
+         return node.father->m_right;
       }
 
    private:
