@@ -42,10 +42,10 @@ namespace algorithm
       for (auto& k : set)
          assert(true == set.contains(k));
 
-      set.erase(set.begin(), set.end());
-      assert(0 == set.size());
-      for (size_t i = 0; i < 30; ++i)
-         assert(false == set.contains(i));
+      //set.erase(set.begin(), set.end());
+      //assert(0 == set.size());
+      //for (size_t i = 0; i < 30; ++i)
+      //   assert(false == set.contains(i));
    }
 
    static void binarySetTests()
@@ -111,10 +111,10 @@ namespace algorithm
             assert(true == set.contains(k));
       });
 
-      std::cout << std::endl << "* Deletes:" << std::endl;
-      showTime(std::cout, [&]{
-         set.erase(set.begin(), set.end());
-      });
+      //std::cout << std::endl << "* Deletes:" << std::endl;
+      //showTime(std::cout, [&]{
+      //   set.erase(set.begin(), set.end());
+      //});
    }
 
    void setPerfTests()

@@ -254,14 +254,6 @@ namespace algorithm
          loadFactorCheck();
       }
 
-      void erase(key_iterator first, key_iterator last)
-      {
-         m_count -= std::distance(first, last);
-         for (; first != last; first.nextValidState())
-            erase_(first.getBucketIt());
-         loadFactorCheck();
-      }
-
       key_iterator begin() const
       {
          return key_iterator(*this, 0, m_buckets[0].begin());
@@ -411,22 +403,6 @@ namespace algorithm
             insert_(k);
 
          --m_count;
-         loadFactorCheck();
-      }
-
-      /** Invalidates the iterators because of load factors */
-      void erase(key_iterator first, key_iterator last)
-      {
-         //Do it now, as iterators are invalidated afterwards
-         m_count -= std::distance(first, last);
-
-         key_container toReinsert;
-         for (; first != last; ++first)
-            erase_(first, toReinsert);
-
-         for (auto& k : toReinsert)
-            insert_(k);
-
          loadFactorCheck();
       }
 
