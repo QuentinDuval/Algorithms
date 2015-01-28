@@ -112,35 +112,13 @@ namespace algorithm
 
       void erase(key_iterator it)
       {
-         if (it == end())
-            return;
+         erase_(it.getNode());
+      }
 
-         Node* node = it.getNode();
-         incrementCount_(node->m_father, -1);
-
-         //If the node has no children, just erase it
-         if (node->m_count == 1)
-         {
-            fatherMatchingChild(*node).reset();
-         }
-
-         //If one children, just bring it in place
-         else if (node->m_left && !node->m_right)
-         {
-            fatherMatchingChild(*node) = move(node->m_left);
-         }
-         else if (node->m_right && !node->m_left)
-         {
-            fatherMatchingChild(*node) = move(node->m_right);
-         }
-
-         //If two children, go right, sink all way down left, swap these nodes, then delete
-         else
-         {
-            Node* nextHigher = sinkLeft(node->m_right.get());
-            std::swap(nextHigher->m_value, node->m_value);
-            fatherMatchingChild(*nextHigher).reset();
-         }
+      void erase(key_iterator first, key_iterator last)
+      {
+         //for (; first != last;)
+         //   first = erase_(first);
       }
 
       size_t size() const
@@ -149,7 +127,47 @@ namespace algorithm
       }
 
    private:
-      std::unique_ptr<Node>& fatherMatchingChild(Node& node)
+      /** Erase and return the next iterator */
+      void erase_(Node* node)
+      {
+         if (!node)
+            return;
+
+         //If two children, go right, sink all way down left, swap these nodes, then delete
+         if (node->m_right && node->m_left)
+         {
+            Node* nextHigher = sinkLeft(node->m_right.get());
+            std::swap(nextHigher->m_value, node->m_value);
+            erase_(nextHigher);
+            return;
+         }
+
+         //Otherwise:
+         Node* father = node->m_father;
+         incrementCount_(father, -1);
+
+         //If one children, just bring it in place
+         if (node->m_left)
+         {
+            auto& fatherLink = incomingLink(*node);
+            fatherLink = move(node->m_left);
+            fatherLink->m_father = father;
+         }
+         else if (node->m_right)
+         {
+            auto& fatherLink = incomingLink(*node);
+            fatherLink = move(node->m_right);
+            fatherLink->m_father = father;
+         }
+
+         //Otherwise, just destroy the node
+         else
+         {
+            incomingLink(*node).reset();
+         }
+      }
+
+      std::unique_ptr<Node>& incomingLink(Node& node)
       {
          if (!node.m_father)
             return m_root;
