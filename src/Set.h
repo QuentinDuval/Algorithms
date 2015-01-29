@@ -117,8 +117,21 @@ namespace algorithm
 
       void erase(key_iterator first, key_iterator last)
       {
-         //for (; first != last;)
-         //   first = erase_(first);
+         auto start = std::distance(begin(), first);
+         auto count = std::distance(first, last);
+
+         auto prev = begin();
+         for (decltype(start) i = 0; i < start - 1; ++i)
+            ++prev;
+
+         for (decltype(count) i = 0; i < count; ++i)
+         {
+            erase_(first.getNode());
+            if (start != 0)
+               first = prev++;
+            else
+               first = begin();
+         }
       }
 
       size_t size() const
@@ -187,7 +200,7 @@ namespace algorithm
 
       static Node* sinkLeft(Node* node)
       {
-         while (node->m_left)
+         while (node && node->m_left)
             node = node->m_left.get();
          return node;
       }
@@ -249,6 +262,9 @@ namespace algorithm
 
       void erase(key_iterator it)
       {
+         if (it == end())
+            return;
+
          erase_(it.getBucketIt());
          --m_count;
          loadFactorCheck();

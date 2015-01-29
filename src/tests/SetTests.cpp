@@ -6,7 +6,9 @@
 
 #include <assert.h>
 #include <iostream>
+#include <set>
 #include <string>
+#include <unordered_set>
 
 
 namespace algorithm
@@ -42,10 +44,12 @@ namespace algorithm
       for (auto& k : set)
          assert(true == set.contains(k));
 
+      for (size_t i = 0; i < 30; ++i)
+         set.erase(set.find(i));
       //set.erase(set.begin(), set.end());
-      //assert(0 == set.size());
-      //for (size_t i = 0; i < 30; ++i)
-      //   assert(false == set.contains(i));
+      assert(0 == set.size());
+      for (size_t i = 0; i < 30; ++i)
+         assert(false == set.contains(i));
    }
 
    static void binarySetTests()
@@ -71,6 +75,12 @@ namespace algorithm
       set.erase(set.find(14));
       set.erase(set.find(29));
       assert(27 == set.size());
+
+      set.erase(set.find(15), set.end());
+      assert(13 == set.size());
+
+      set.erase(set.begin(), set.end());
+      assert(0 == set.size());
    }
 
    static void linkedHashSetTests()
@@ -99,32 +109,47 @@ namespace algorithm
    {
       Set set;
 
+      std::vector<size_t> keys(size, 0);
+      generate(keys, 0, [](size_t i) { return i + 1; });
+      shuffle(keys);
+
       std::cout << std::endl << "* Inserts:" << std::endl;
       showTime(std::cout, [&]{
-         for (size_t i = 0; i < size; ++i)
+         for (auto i : keys)
             set.insert(i);
       });
 
       std::cout << std::endl << "* Scan and search:" << std::endl;
       showTime(std::cout, [&]{
-         for (auto& k : set)
-            assert(true == set.contains(k));
+         for (auto k : set)
+            assert(set.end() != set.find(k));
       });
 
-      //std::cout << std::endl << "* Deletes:" << std::endl;
-      //showTime(std::cout, [&]{
-      //   set.erase(set.begin(), set.end());
-      //});
+      std::cout << std::endl << "* Deletes:" << std::endl;
+      showTime(std::cout, [&]{
+         for (auto k : keys)
+            set.erase(set.find(k));
+         //set.erase(set.begin(), set.end()); //TODO - for ordered sets
+      });
    }
 
    void setPerfTests()
    {
       size_t size = 1000000;
 
+      std::cout << std::endl << "[Binary Tree Set]" << std::endl;
+      integerSetPerfTests<BinaryTreeSet<size_t>>(size);
+
       std::cout << std::endl << "[Linked Hash Set]" << std::endl;
       integerSetPerfTests<LinkedHashSet<size_t>>(size);
 
       std::cout << std::endl << "[Dense Hash Set]" << std::endl;
       integerSetPerfTests<DenseHashSet<size_t>>(size);
+
+      std::cout << std::endl << "[C++ std::set]" << std::endl;
+      integerSetPerfTests<std::set<size_t>>(size);
+
+      std::cout << std::endl << "[C++ std::unordered_set]" << std::endl;
+      integerSetPerfTests<std::unordered_set<size_t>>(size);
    }
 }

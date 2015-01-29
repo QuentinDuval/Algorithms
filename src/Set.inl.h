@@ -35,6 +35,12 @@ namespace algorithm
          return *this;
       }
 
+      key_iterator operator++(int)
+      {
+         key_iterator out = *this;
+         return ++out;
+      }
+
       bool operator!=(key_iterator const& rhs) const
       {
          return m_node != rhs.m_node;
