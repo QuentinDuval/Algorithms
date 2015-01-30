@@ -24,8 +24,8 @@ namespace algorithm
       return true;
    }
 
-   template<typename Container, typename Lesser>
-   static bool isSorted(Container const& cont, Lesser less)
+   template<typename Container, typename Lesser = std::less<typename Container::value_type>>
+   static bool isSorted(Container const& cont, Lesser less = Lesser())
    {
       return isSorted(begin(cont), end(cont), less);
    }

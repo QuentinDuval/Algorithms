@@ -5,6 +5,7 @@
 #include "tests/SetTests.h"
 #include "tests/ShortestPathTests.h"
 #include "tests/SortTests.h"
+#include "tests/StringSortTests.h"
 #include "tests/SpanningTreeTests.h"
 #include "tests/SubStringSearchTests.h"
 #include "tests/TopologicalSortTests.h"
@@ -34,6 +35,7 @@ int main()
    topologicalSortTests();
    spanningTreeTests();
    setTests();
+   stringSortingTests();
 
    unionFindTests();
    unionFindExample();
