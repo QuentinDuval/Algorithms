@@ -58,6 +58,19 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
+   template<typename Projection>
+   struct ComparingWithDefaultLess
+   {
+      ComparingWithDefaultLess(Projection proj) : m_proj(proj) {}
+      Projection m_proj;
+
+      template<typename T>
+      bool operator()(T const& lhs, T const& rhs) const
+      {
+         return m_proj(lhs) < m_proj(rhs);
+      }
+   };
+
    template<typename Projection, typename Less>
    struct ComparingWith
    {
@@ -71,6 +84,12 @@ namespace algorithm
          return m_less(m_proj(lhs), m_proj(rhs));
       }
    };
+
+   template<typename Projection>
+   ComparingWithDefaultLess<Projection> comparingWith(Projection proj)
+   {
+      return ComparingWithDefaultLess<Projection>(proj);
+   }
 
    template<typename Projection, typename Less>
    ComparingWith<Projection, Less> comparingWith(Projection proj, Less less)

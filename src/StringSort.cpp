@@ -1,5 +1,6 @@
 #include "StringSort.h"
 #include "utils/Algorithms.h"
+#include "utils/Functors.h"
 #include "utils/Utils.h"
 
 #include <numeric>
@@ -19,9 +20,9 @@ namespace algorithm
          return 0;
       }
 
-      static void msbSort(Range<string_it> range, size_t k)
+      static void msbSort(Range<string_it> range, size_t k, size_t w)
       {
-         if (range.size() < 2)
+         if (w < k || range.size() < 2)
             return;
 
          /** Count the different characters at index k */
@@ -31,7 +32,7 @@ namespace algorithm
 
          /** Easy optimization, all characters are equal, then just check the next */
          if (std::end(charCounts) != std::find(std::begin(charCounts), std::end(charCounts), range.size()))
-            return msbSort(range, k + 1);
+            return msbSort(range, k + 1, w);
 
          /** Compute the start position of each bucket */
          size_t bucketStarts[UCHAR_MAX + 1] = { 0 }; //TODO - use iterators instead
@@ -67,13 +68,18 @@ namespace algorithm
          {
             auto b = range.begin() + bucketStarts[c];
             auto e = range.begin() + bucketEnds[c];
-            msbSort({ b, e }, k + 1);
+            msbSort({ b, e }, k + 1, w);
          }
       }
    };
 
    void MSBSort::sort(std::vector<std::string>& strings)
    {
-      MSBSortImpl::msbSort({ strings.begin(), strings.end() }, 0);
+      std::vector<std::string>::const_iterator largest =
+         std::max_element(begin(strings), end(strings),
+            comparingWith([](std::string const& s) { return s.size(); }));
+
+      if (largest != end(strings))
+         MSBSortImpl::msbSort({ strings.begin(), strings.end() }, 0, largest->size());
    }
 }
