@@ -27,7 +27,7 @@ namespace algorithm
             return;
 
          /** Count the different characters at index k */
-         size_t charCounts[UCHAR_MAX + 1] = { 0 };
+         std::array<size_t, UCHAR_MAX + 1> charCounts = { 0 };
          for (auto& s : range)
             charCounts[charAt(s, k)] += 1;
 
@@ -36,11 +36,8 @@ namespace algorithm
             return msbSort(range, k + 1, w);
 
          /** Compute the start position of each bucket */
-         std::array<string_it, UCHAR_MAX + 1> bucketStarts;
-         std::array<string_it, UCHAR_MAX + 1> bucketEnds;
-         bucketStarts.fill(range.begin());
-         bucketEnds.fill(range.begin());
-
+         std::array<string_it, UCHAR_MAX + 1> bucketStarts = { range.begin() };
+         std::array<string_it, UCHAR_MAX + 1> bucketEnds = { range.begin() };
          for (size_t c = 1; c < UCHAR_MAX + 1; ++c)
          {
             bucketStarts[c] = bucketStarts[c - 1] + charCounts[c - 1];
@@ -52,7 +49,7 @@ namespace algorithm
          {
             while (bucketEnds[c] < bucketStarts[c] + charCounts[c])
             {
-               std::string& str = *(bucketEnds[c]);
+               std::string& str = *bucketEnds[c];
                size_t kthChar = charAt(str, k);
                if (kthChar == c)
                {
@@ -60,8 +57,7 @@ namespace algorithm
                }
                else
                {
-                  std::string& toExchange = *(bucketEnds[kthChar]);
-                  std::swap(str, toExchange);
+                  std::swap(str, *bucketEnds[kthChar]);
                   ++(bucketEnds[kthChar]);
                }
             }
