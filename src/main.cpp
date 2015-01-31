@@ -59,6 +59,7 @@ int main()
 
    if (runPerformanceTests("sorts"))
    {
+      stringSortingPerfTests();
       sortingPerfTests();
    }
 
