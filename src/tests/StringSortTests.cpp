@@ -14,13 +14,13 @@ namespace algorithm
 {
    void stringSortingTests()
    {
-      std::vector<std::string> strings = 
+      std::vector<std::string> randomStrings = 
       {
          "toto", "auto", "tata", "blub", "zerg", "abc"
       };
 
-      MSBSort::sort(strings);
-      assert(isSorted(strings));
+      MSBSort::sort(randomStrings);
+      assert(isSorted(randomStrings));
    }
 
    //--------------------------------------------------------------------------
@@ -28,21 +28,25 @@ namespace algorithm
    void stringSortingPerfTests()
    {
       size_t dim = 100000;
-      std::vector<std::string> strings(dim);
+      std::vector<std::string> randomStrings(dim);
       for (size_t i = 0; i < dim; ++i)
       {
          for (size_t j = i; j != 0; j /= 27)
-            strings[i] += ('a' + j - 1);
+            randomStrings[i] += ('a' + j - 1);
       }
-      shuffle(strings);
+      shuffle(randomStrings);
+
+      std::vector<std::string> sameStrings(dim, "aaa");
 
       std::cout << std::endl << "[String sort timings]"
          << "(" << dim << " entries - in milliseconds)" << std::endl;
 
       std::cout << "* Radix sort (" << dim << ")" << std::endl;
-      showTime(std::cout, [=]() mutable { MSBSort::sort(strings); });
+      showTime(std::cout, [=]() mutable { MSBSort::sort(randomStrings); });
+      showTime(std::cout, [=]() mutable { MSBSort::sort(sameStrings); });
 
       std::cout << "* System sort (" << dim << ")" << std::endl;
-      showTime(std::cout, [=]() mutable { std::sort(begin(strings), end(strings)); });
+      showTime(std::cout, [=]() mutable { std::sort(begin(randomStrings), end(randomStrings)); });
+      showTime(std::cout, [=]() mutable { std::sort(begin(sameStrings), end(sameStrings)); });
    }
 }
