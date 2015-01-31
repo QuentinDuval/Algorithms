@@ -3,6 +3,7 @@
 #include "utils/Functors.h"
 #include "utils/Utils.h"
 
+#include <array>
 #include <numeric>
 #include <vector>
 
@@ -35,8 +36,11 @@ namespace algorithm
             return msbSort(range, k + 1, w);
 
          /** Compute the start position of each bucket */
-         size_t bucketStarts[UCHAR_MAX + 1] = { 0 }; //TODO - use iterators instead
-         size_t bucketEnds[UCHAR_MAX + 1] = { 0 };
+         std::array<string_it, UCHAR_MAX + 1> bucketStarts;
+         std::array<string_it, UCHAR_MAX + 1> bucketEnds;
+         bucketStarts.fill(range.begin());
+         bucketEnds.fill(range.begin());
+
          for (size_t c = 1; c < UCHAR_MAX + 1; ++c)
          {
             bucketStarts[c] = bucketStarts[c - 1] + charCounts[c - 1];
@@ -48,7 +52,7 @@ namespace algorithm
          {
             while (bucketEnds[c] < bucketStarts[c] + charCounts[c])
             {
-               std::string& str = *(range.begin() + bucketEnds[c]);
+               std::string& str = *(bucketEnds[c]);
                size_t kthChar = charAt(str, k);
                if (kthChar == c)
                {
@@ -56,7 +60,7 @@ namespace algorithm
                }
                else
                {
-                  std::string& toExchange = *(range.begin() + bucketEnds[kthChar]);
+                  std::string& toExchange = *(bucketEnds[kthChar]);
                   std::swap(str, toExchange);
                   ++(bucketEnds[kthChar]);
                }
@@ -66,12 +70,10 @@ namespace algorithm
          /** Recurse on each bucket */
          for (size_t c = 1; c < UCHAR_MAX + 1; ++c)
          {
-            if (bucketStarts[c] == bucketEnds[c])
-               continue;
-
-            auto b = range.begin() + bucketStarts[c];
-            auto e = range.begin() + bucketEnds[c];
-            msbSort({ b, e }, k + 1, w);
+            auto b = bucketStarts[c];
+            auto e = bucketEnds[c];
+            if (b != e)
+               msbSort({ b, e }, k + 1, w);
          }
       }
    };
