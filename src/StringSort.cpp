@@ -66,6 +66,9 @@ namespace algorithm
          /** Recurse on each bucket */
          for (size_t c = 1; c < UCHAR_MAX + 1; ++c)
          {
+            if (bucketStarts[c] == bucketEnds[c])
+               continue;
+
             auto b = range.begin() + bucketStarts[c];
             auto e = range.begin() + bucketEnds[c];
             msbSort({ b, e }, k + 1, w);
