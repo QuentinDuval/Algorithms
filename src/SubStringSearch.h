@@ -29,5 +29,4 @@ namespace algorithm
    };
 
    //TODO - Add the regex parser
-   //TODO - Add the simplex algorithm
 }

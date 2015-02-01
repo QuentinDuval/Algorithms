@@ -43,7 +43,7 @@ int main()
    sortingTests();
    subStringSearchTests();
    //TODO - Add the max flow
-   //TODO - Add Linear programming
+   //TODO - Add Linear programming (simplex)
 
    if (runPerformanceTests("graphs"))
    {
