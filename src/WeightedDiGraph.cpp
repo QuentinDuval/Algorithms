@@ -13,8 +13,10 @@ namespace algorithm
       });
    }
 
-   void serializeTo(std::ostream&, WeightedDiGraph const&)
+   void serializeTo(std::ostream& os, WeightedDiGraph const& g)
    {
-
+      WeightedDiGraph::serializeTo(g, os, [](std::ostream& os, WeightedEdge const& e) {
+         os << e.from() << " " << e.to() << " " << e.weight();
+      });
    }
 }

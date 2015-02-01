@@ -59,11 +59,11 @@ namespace algorithm
       assert(5 == wg.vertexCount());
       assert(3 == wg.edgeCount());
 
-      for (auto e : wg.edgesFrom(0))
-         std::cout << e.to() << std::endl;
-
-      for (auto w : wg.adjacents(3))
-         std::cout << w << std::endl;
+      std::stringstream outStream;
+      serializeTo(outStream, wg);
+      WeightedDiGraph wg2 = weightedDiGraphFrom(outStream);
+      assert(5 == wg2.vertexCount());
+      assert(3 == wg2.edgeCount());
    }
 
    void graphTests()
