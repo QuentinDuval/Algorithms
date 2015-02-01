@@ -14,7 +14,21 @@ namespace algorithm
          , m_data(w * h, val)
       {}
 
-      Matrix(size_t w, size_t h) : Matrix(w, h, T()) {}
+      Matrix(size_t w, size_t h)
+         : Matrix(w, h, T())
+      {}
+
+      Matrix(size_t w, size_t h, std::initializer_list<T> const& init)
+         : Matrix(w, h)
+      {
+         size_t i = 0;
+         for (auto d : init)
+         {
+            at(i % m_width, i / m_width) = d;
+            ++i;
+         }
+      }
+
       ~Matrix() = default;
 
       size_t width()  const { return m_width; }

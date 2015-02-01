@@ -4,6 +4,7 @@
 #include "tests/PriorityQueueTests.h"
 #include "tests/SetTests.h"
 #include "tests/ShortestPathTests.h"
+#include "tests/SimplexTests.h"
 #include "tests/SortTests.h"
 #include "tests/StringSortTests.h"
 #include "tests/SpanningTreeTests.h"
@@ -36,6 +37,7 @@ int main()
    spanningTreeTests();
    setTests();
    stringSortingTests();
+   simplexTests();
 
    unionFindTests();
    unionFindExample();
