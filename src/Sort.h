@@ -226,7 +226,7 @@ namespace algorithm
             return;
 
          auto pivot = first;
-         std::uniform_int_distribution<size_t> distribution(0, std::distance(first, last));
+         std::uniform_int_distribution<size_t> distribution(0, std::distance(first, last) - 1);
          std::advance(pivot, distribution(rg));
 
          auto lowEnd = std::partition(first, last, std::bind(less, _1, *pivot));
