@@ -11,8 +11,7 @@
 
 namespace algorithm
 {
-   //TODO - This example could be made generic
-   /** Example with people joining a network */
+   /** Example with people joining a network (This example could be made generic) */
    class SocialNetwork
       : public NonCopyable
    {
