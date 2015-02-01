@@ -27,4 +27,7 @@ namespace algorithm
    {
       static size_t search(std::string const& text, std::string const& pattern);
    };
+
+   //TODO - Add the regex parser
+   //TODO - Add the simplex algorithm
 }
