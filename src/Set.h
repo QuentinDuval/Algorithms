@@ -327,7 +327,8 @@ namespace algorithm
          for (auto& bucket : m_buckets)
             std::copy(bucket.begin(), bucket.end(), std::back_inserter(keys));
 
-         m_buckets = buckets(size); //TODO - Make this more efficient
+         m_buckets.clear();
+         m_buckets.resize(size);
          for (auto& k : keys)
             insert_(k);
       }
