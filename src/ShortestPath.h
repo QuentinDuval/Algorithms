@@ -39,6 +39,8 @@ namespace algorithm
       std::vector<size_t>  pathTo      (size_t to) const;
       double               pathLengthTo(size_t to) const;
 
+      //TODO - Add heuristic for based on the remaining distance from node X, to have the A* algorithm
+
    private:
       bool relax(WeightedEdge const&);
 
