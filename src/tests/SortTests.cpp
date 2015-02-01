@@ -56,9 +56,9 @@ namespace algorithm
    static void runTests(std::ostream& stream, size_t size)
    {
       SortTester tester(stream, size);
-      tester.runTest<SelectionSort>       ("* Selection sort");
-      tester.runTest<BubbleSort>          ("* Bubble sort");
-      tester.runTest<InsertionSort>       ("* Insertion sort");
+      //tester.runTest<SelectionSort>       ("* Selection sort");
+      //tester.runTest<BubbleSort>          ("* Bubble sort");
+      //tester.runTest<InsertionSort>       ("* Insertion sort");
       tester.runTest<HeapSort>            ("* Heap sort");
       tester.runTest<SystemHeapSort>      ("* System Heap sort");
       tester.runTest<ThreeWayQuickSort>   ("* Quick sort");
@@ -74,6 +74,6 @@ namespace algorithm
 
    void sortingPerfTests()
    {
-      runTests(std::cout, 50000);
+      runTests(std::cout, 1000000);
    }
 }

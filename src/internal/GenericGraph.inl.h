@@ -21,6 +21,6 @@ namespace algorithm
    template<typename WriteEdge>
    void GenericGraph<Edge>::serializeTo(GenericGraph<Edge> const& g, std::ostream& os, WriteEdge writeEdge)
    {
-      //TODO
+      //TODO - mark the node you just went through and binary search to find if marked? (or just full array with marked true)
    }
 }

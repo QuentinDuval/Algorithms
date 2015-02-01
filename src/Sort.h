@@ -207,11 +207,9 @@ namespace algorithm
       template<typename FwdIter, typename Lesser>
       static void sort(FwdIter first, FwdIter last, Lesser less)
       {
-         if (first == last)
-            return;
-
-         shuffle(first, last);
-         sortImpl(first, last, less);
+         std::random_device rd;
+         std::mt19937 g(rd());
+         sortImpl(g, first, last, less);
       }
 
       template<typename Container, typename Lesser>
@@ -221,18 +219,21 @@ namespace algorithm
       }
 
    private:
-      template<typename FwdIter, typename Lesser>
-      static void sortImpl(FwdIter first, FwdIter last, Lesser less)
+      template<typename RandGen, typename FwdIter, typename Lesser>
+      static void sortImpl(RandGen& rg, FwdIter first, FwdIter last, Lesser less)
       {
          if (first == last)
             return;
 
-         auto pivot = *first;
-         auto lowEnd = std::partition(first, last, std::bind(less, _1, pivot));
-         auto highIt = std::partition(lowEnd, last, logicalNot(std::bind(less, pivot, _1)));
+         auto pivot = first;
+         std::uniform_int_distribution<size_t> distribution(0, std::distance(first, last));
+         std::advance(pivot, distribution(rg));
 
-         sortImpl(first, lowEnd, less);
-         sortImpl(highIt, last, less);
+         auto lowEnd = std::partition(first, last, std::bind(less, _1, *pivot));
+         auto highIt = std::partition(lowEnd, last, logicalNot(std::bind(less, *pivot, _1)));
+
+         sortImpl(rg, first, lowEnd, less);
+         sortImpl(rg, highIt, last, less);
       }
    };
 
