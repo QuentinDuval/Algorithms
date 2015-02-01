@@ -11,21 +11,31 @@
 namespace algorithm
 {
    template<typename Edge>
-   class EdgeContractSafisfied
+   class DiGraphEdgeContract
    {
-      template <typename C> static char test(decltype(&C::to)); //TODO - Add more constraints
-      template <typename C> static long test(...);
+      template <typename C> static char testTo(decltype(&C::to));
+      template <typename C> static long testTo(...);
+
+      template <typename C> static char testFrom(decltype(&C::from));
+      template <typename C> static long testFrom(...);
+
+      template <typename C> static char testRev(decltype(&C::reverse));
+      template <typename C> static long testRev(...);
 
    public:
-      enum { value = sizeof(test<Edge>(0)) == sizeof(char) };
+      enum { hasTo   = sizeof(testTo<Edge>(0)) == sizeof(char) };
+      enum { hasFrom = sizeof(testFrom<Edge>(0)) == sizeof(char) };
+      enum { hasRev  = sizeof(testRev<Edge>(0)) == sizeof(char) };
    };
 
+   //--------------------------------------------------------------------------
 
    template<typename Edge>
    class GenericDiGraph
    {
-      static_assert(EdgeContractSafisfied<Edge>::value,
-         "Edge does not respect its contract (to, from, reverse).");
+      static_assert(DiGraphEdgeContract<Edge>::hasTo,   "Edge does not have method to.");
+      static_assert(DiGraphEdgeContract<Edge>::hasFrom, "Edge does not have method from.");
+      static_assert(DiGraphEdgeContract<Edge>::hasRev,  "Edge does not have method reverse.");
 
    public:
       using AdjList = std::vector<Edge>;
