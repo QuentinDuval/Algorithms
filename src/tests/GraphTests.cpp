@@ -13,12 +13,12 @@
 
 namespace algorithm
 {
-   void graphTests()
+   static void undirectedGraphTests()
    {
       Graph g(5);
-      g.addEdge({0, 1});
-      g.addEdge({0, 1});
-      g.addEdge({1, 2});
+      g.addEdge({ 0, 1 });
+      g.addEdge({ 0, 1 });
+      g.addEdge({ 1, 2 });
 
       assert(5 == g.vertexCount());
       assert(3 == g.edgeCount());
@@ -30,22 +30,31 @@ namespace algorithm
       assert(0 == adjacentCount(g, 4));
 
       ExceptionChecker<InvalidVertex> tester;
-      tester.assertE([&]{ g.addEdge({1, 5}); });
-      tester.assertE([&]{ g.addEdge({5, 1}); });
+      tester.assertE([&]{ g.addEdge({ 1, 5 }); });
+      tester.assertE([&]{ g.addEdge({ 5, 1 }); });
       tester.assertE([&]{ g.adjacents(5); });
 
       g.addVertex();
       assert(0 == adjacentCount(g, 5));
 
-      std::istringstream stream("5 \n 0 1 \n 1 2 \n 1 3 \n 1 4; 1 5 ");
-      Graph g2 = graphFrom(stream);
+      std::istringstream inStream("5 \n 0 1 \n 1 2 \n 1 3 \n 1 4; 1 5 ");
+      Graph g2 = graphFrom(inStream);
       assert(5 == g2.vertexCount());
       assert(4 == g2.edgeCount());
 
+      std::stringstream outStream;
+      graphTo(outStream, g2);
+      Graph g3 = graphFrom(outStream);
+      assert(5 == g3.vertexCount());
+      assert(4 == g3.edgeCount());
+   }
+
+   static void directedGraphTests()
+   {
       WeightedDiGraph wg(5);
-      wg.addEdge({0, 1, 1. });
-      wg.addEdge({0, 2, 1. });
-      wg.addEdge({3, 4, 2. });
+      wg.addEdge({ 0, 1, 1. });
+      wg.addEdge({ 0, 2, 1. });
+      wg.addEdge({ 3, 4, 2. });
 
       assert(5 == wg.vertexCount());
       assert(3 == wg.edgeCount());
@@ -55,6 +64,12 @@ namespace algorithm
 
       for (auto w : wg.adjacents(3))
          std::cout << w << std::endl;
+   }
+
+   void graphTests()
+   {
+      undirectedGraphTests();
+      directedGraphTests();
    }
 
    //--------------------------------------------------------------------------

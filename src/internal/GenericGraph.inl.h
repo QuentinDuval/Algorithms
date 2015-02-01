@@ -28,6 +28,9 @@ namespace algorithm
          marked[v] = true;
          for (auto& e : g.edgesFrom(v))
          {
+            if (marked[e.to()])
+               continue;
+
             writeEdge(os, e);
             os << std::endl;
          }
