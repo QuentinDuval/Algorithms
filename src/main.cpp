@@ -42,6 +42,8 @@ int main()
    priorityQueueTests();
    sortingTests();
    subStringSearchTests();
+   //TODO - Add the max flow
+   //TODO - Add Linear programming
 
    if (runPerformanceTests("graphs"))
    {
