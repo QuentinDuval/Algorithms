@@ -21,6 +21,6 @@ namespace algorithm
    template<typename WriteEdge>
    void GenericGraph<Edge>::serializeTo(GenericGraph<Edge> const& g, std::ostream& os, WriteEdge writeEdge)
    {
-      //TODO - Euler path (visits every edge, which is easy, not as the Hamilton path)
+      //TODO
    }
 }
