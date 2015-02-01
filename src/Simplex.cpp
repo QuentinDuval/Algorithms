@@ -45,9 +45,9 @@ namespace algorithm
       {
          /** - Find a pivot column: it must have positive coefficient */
          size_t col = c.size();
-         for (size_t x = 0; x < c.size(); ++x)
+         for (size_t x = 0; x < bOffset; ++x)
          {
-            if (0 < m.at(x, a.height()))
+            if (0. < m.at(x, a.height()))
             {
                col = x;
                break;
@@ -62,7 +62,7 @@ namespace algorithm
          for (size_t y = 0; y < a.height(); ++y)
          {
             double tempRatio = m.at(bOffset, y) / m.at(col, y);
-            if (tempRatio < ratio)
+            if (0. < tempRatio && tempRatio < ratio)
             {
                ratio = tempRatio;
                row = y;
