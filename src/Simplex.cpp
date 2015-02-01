@@ -61,8 +61,11 @@ namespace algorithm
          double ratio = std::numeric_limits<double>::max();
          for (size_t y = 0; y < a.height(); ++y)
          {
+            if (0. >= m.at(col, y)) //Avoid crash and infinite oscillation
+               continue;
+
             double tempRatio = m.at(bOffset, y) / m.at(col, y);
-            if (0. < tempRatio && tempRatio < ratio)
+            if (tempRatio < ratio)
             {
                ratio = tempRatio;
                row = y;
