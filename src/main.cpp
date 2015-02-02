@@ -6,6 +6,7 @@
 #include "tests/ShortestPathTests.h"
 #include "tests/SimplexTests.h"
 #include "tests/SortTests.h"
+#include "tests/StringTrieTests.h"
 #include "tests/StringSortTests.h"
 #include "tests/SpanningTreeTests.h"
 #include "tests/SubStringSearchTests.h"
@@ -37,6 +38,7 @@ int main()
    spanningTreeTests();
    setTests();
    stringSortingTests();
+   stringTrieTests();
    simplexTests();
 
    unionFindTests();
@@ -45,7 +47,6 @@ int main()
    sortingTests();
    subStringSearchTests();
    //TODO - Add the max flow
-   //TODO - Add Linear programming (simplex)
 
    if (runPerformanceTests("graphs"))
    {
@@ -59,6 +60,7 @@ int main()
    if (runPerformanceTests("collections"))
    {
       setPerfTests();
+      stringTriePerfTests();
    }
 
    if (runPerformanceTests("sorts"))
