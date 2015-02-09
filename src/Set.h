@@ -22,7 +22,7 @@ namespace algorithm
          Node(Node* father, Key const& k)
             : m_father(father)
             , m_value(k)
-            , m_count(1)
+            , m_count(0)
          {}
 
          Key m_value;
@@ -71,43 +71,7 @@ namespace algorithm
 
       bool insert(Key const& key)
       {
-         if (!m_root)
-         {
-            m_root = std::make_unique<Node>(nullptr, key);
-            return true;
-         }
-
-         Node* node = m_root.get();
-         while (node)
-         {
-            if (m_less(key, node->m_value))
-            {
-               Node* next = node->m_left.get();
-               if (!next)
-               {
-                  node->m_left = std::make_unique<Node>(node, key);
-                  incrementCount_(node);
-                  return true;
-               }
-               node = next;
-            }
-            else if (m_less(node->m_value, key))
-            {
-               Node* next = node->m_right.get();
-               if (!next)
-               {
-                  node->m_right = std::make_unique<Node>(node, key);
-                  incrementCount_(node);
-                  return true;
-               }
-               node = next;
-            }
-            else
-            {
-               return false;
-            }
-         }
-         return false;
+         return insert_(nullptr, m_root, key);
       }
 
       void erase(key_iterator it)
@@ -117,20 +81,15 @@ namespace algorithm
 
       void erase(key_iterator first, key_iterator last)
       {
-         auto start = std::distance(begin(), first);
-         auto count = std::distance(first, last);
-
          auto prev = begin();
+         auto start = std::distance(begin(), first);
          for (decltype(start) i = 0; i < start - 1; ++i)
             ++prev;
 
-         for (decltype(count) i = 0; i < count; ++i)
+         while (first != last)
          {
             erase_(first.getNode());
-            if (start != 0)
-               first = prev++;
-            else
-               first = begin();
+            first = start ? prev++ : begin();
          }
       }
 
@@ -140,7 +99,25 @@ namespace algorithm
       }
 
    private:
-      /** Erase and return the next iterator */
+      bool insert_(Node* father, std::unique_ptr<Node>& currentNode, Key const& key)
+      {
+         if (!currentNode)
+         {
+            currentNode = std::make_unique<Node>(father, key);
+            incrementCount_(currentNode.get());
+            return true;
+         }
+         else if (m_less(key, currentNode->m_value))
+         {
+            return insert_(currentNode.get(), currentNode->m_left, key);
+         }
+         else if (m_less(currentNode->m_value, key))
+         {
+            return insert_(currentNode.get(), currentNode->m_right, key);
+         }
+         return false;
+      }
+
       void erase_(Node* node)
       {
          if (!node)
@@ -155,29 +132,23 @@ namespace algorithm
             return;
          }
 
-         //Otherwise:
+         //Otherwise, replace the incoming node from father:
          Node* father = node->m_father;
-         incrementCount_(father, -1);
-
-         //If one children, just bring it in place
          if (node->m_left)
          {
-            auto& fatherLink = incomingLink(*node);
-            fatherLink = move(node->m_left);
-            fatherLink->m_father = father;
+            node->m_left->m_father = father;
+            incomingLink(*node) = move(node->m_left);
          }
          else if (node->m_right)
          {
-            auto& fatherLink = incomingLink(*node);
-            fatherLink = move(node->m_right);
-            fatherLink->m_father = father;
+            node->m_right->m_father = father;
+            incomingLink(*node) = move(node->m_right);
          }
-
-         //Otherwise, just destroy the node
          else
          {
             incomingLink(*node).reset();
          }
+         incrementCount_(father, -1);
       }
 
       std::unique_ptr<Node>& incomingLink(Node& node)
@@ -213,7 +184,6 @@ namespace algorithm
    //--------------------------------------------------------------------------
 
    //TODO - Red black tree
-   //TODO - Add tries
 
    //--------------------------------------------------------------------------
 
