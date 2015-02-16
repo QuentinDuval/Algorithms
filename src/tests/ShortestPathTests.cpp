@@ -80,12 +80,26 @@ namespace algorithm
       }
    }
 
+   static void floydWarshallShortestPathTests()
+   {
+      const size_t dim = 4;
+      WeightedGraph g = make2DWeightedPlane(dim);
+
+      FloydWarshallShortestPath sp(g);
+      for (size_t i : g.vertices())
+      {
+         double expectedLength = i % dim + i / dim;
+         assert(expectedLength == sp.pathLength(0, i));
+      }
+   }
+
    void shortestPathTests()
    {
       graphShortestPathTests();
       weightedGraphShortestPathTests();
       dagShortestPathTests();
       bellmanFordShortestPathTests();
+      floydWarshallShortestPathTests();
    }
 
    //--------------------------------------------------------------------------

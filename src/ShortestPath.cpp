@@ -60,14 +60,50 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   DijkstraShortestPathFrom::DijkstraShortestPathFrom(WeightedDiGraph const& g, size_t from)
+   RelaxBasedShortestPath::RelaxBasedShortestPath(size_t from, size_t order)
       : m_from(from)
-      , m_marked(g.vertexCount(), false)
-      , m_sources(g.vertexCount())
-      , m_distances(g.vertexCount(), std::numeric_limits<double>::max())
+      , m_sources(order)
+      , m_distances(order, std::numeric_limits<double>::max())
+   {}
+
+   bool RelaxBasedShortestPath::hasPathTo(size_t to) const
+   {
+      return m_distances[to] != std::numeric_limits<double>::max();
+   }
+
+   double RelaxBasedShortestPath::pathLengthTo(size_t to) const
+   {
+      return m_distances[to];
+   }
+
+   std::vector<size_t> RelaxBasedShortestPath::pathTo(size_t to) const
+   {
+      std::vector<size_t> out;
+      if (hasPathTo(to))
+         fillPathNodes(m_sources, m_from, to, out);
+      return out;
+   }
+
+   bool RelaxBasedShortestPath::relax(WeightedEdge const& e)
+   {
+      auto v = e.from();
+      auto w = e.to();
+      if (m_distances[v] + e.weight() >= m_distances[w])
+         return false;
+
+      m_distances[w] = m_distances[v] + e.weight();
+      m_sources[w] = v;
+      return true;
+   }
+
+   //--------------------------------------------------------------------------
+
+   DijkstraShortestPathFrom::DijkstraShortestPathFrom(WeightedDiGraph const& g, size_t from)
+      : RelaxBasedShortestPath(from, g.vertexCount())
    {
       //Initialization
-      m_marked[from] = true;
+      std::vector<bool> marked(g.vertexCount(), false);
+      marked[from] = true;
       m_distances[from] = 0.;
 
       MinPriorityIndexedQueue<size_t, double> nodes;
@@ -82,14 +118,14 @@ namespace algorithm
       while (!nodes.empty())
       {
          auto v = nodes.removeTop();
-         if (m_marked[v])
+         if (marked[v])
             continue;
 
-         m_marked[v] = true;
+         marked[v] = true;
          for (auto& e : g.edgesFrom(v))
          {
             auto w = e.to();
-            if (m_marked[w])
+            if (marked[w])
                continue;
 
             if (relax(e))
@@ -102,94 +138,25 @@ namespace algorithm
       : DijkstraShortestPathFrom(g.toDiGraph(), from)
    {}
 
-   bool DijkstraShortestPathFrom::relax(WeightedEdge const& e)
-   {
-      auto v = e.from();
-      auto w = e.to();
-      if (m_distances[v] + e.weight() >= m_distances[w])
-         return false;
-
-      m_distances[w] = m_distances[v] + e.weight();
-      m_sources[w] = v;
-      return true;
-      
-   }
-
-   bool DijkstraShortestPathFrom::hasPathTo(size_t to) const
-   {
-      return m_marked[to];
-   }
-
-   double DijkstraShortestPathFrom::pathLengthTo(size_t to) const
-   {
-      return m_distances[to];
-   }
-
-   std::vector<size_t> DijkstraShortestPathFrom::pathTo(size_t to) const
-   {
-      std::vector<size_t> out;
-      if (hasPathTo(to))
-         fillPathNodes(m_sources, m_from, to, out);
-      return out;
-   }
-
    //--------------------------------------------------------------------------
 
    TopologicalShortestPathFrom::TopologicalShortestPathFrom(WeightedDiGraph const& g, size_t from)
-      : m_from(from)
-      , m_marked(g.vertexCount(), false)
-      , m_sources(g.vertexCount())
-      , m_distances(g.vertexCount(), std::numeric_limits<double>::max())
+      : RelaxBasedShortestPath(from, g.vertexCount())
    {
-      m_marked[from] = true;
       m_distances[from] = 0.;
 
       TopologicalSort sort(g, from);
       for (auto& v : sort.order())
       {
-         m_marked[v] = true;
          for (auto& e : g.edgesFrom(v))
             relax(e);
       }
    }
 
-   bool TopologicalShortestPathFrom::relax(WeightedEdge const& e)
-   {
-      auto v = e.from();
-      auto w = e.to();
-      if (m_distances[v] + e.weight() >= m_distances[w])
-         return false;
-
-      m_distances[w] = m_distances[v] + e.weight();
-      m_sources[w] = v;
-      return true;
-
-   }
-
-   bool TopologicalShortestPathFrom::hasPathTo(size_t to) const
-   {
-      return m_marked[to];
-   }
-
-   double TopologicalShortestPathFrom::pathLengthTo(size_t to) const
-   {
-      return m_distances[to];
-   }
-
-   std::vector<size_t> TopologicalShortestPathFrom::pathTo(size_t to) const
-   {
-      std::vector<size_t> out;
-      if (hasPathTo(to))
-         fillPathNodes(m_sources, m_from, to, out);
-      return out;
-   }
-
    //--------------------------------------------------------------------------
 
    BellmanFordShortestPathFrom::BellmanFordShortestPathFrom(WeightedDiGraph const& g, size_t from)
-      : m_from(from)
-      , m_sources(g.vertexCount())
-      , m_distances(g.vertexCount(), std::numeric_limits<double>::max())
+      : RelaxBasedShortestPath(from, g.vertexCount())
    {
       std::vector<size_t> lastChanged(g.vertexCount(), std::numeric_limits<size_t>::max());
       m_distances[from] = 0.;
@@ -222,34 +189,32 @@ namespace algorithm
       : BellmanFordShortestPathFrom(g.toDiGraph(), from)
    {}
 
-   bool BellmanFordShortestPathFrom::relax(WeightedEdge const& e)
+   //--------------------------------------------------------------------------
+
+   FloydWarshallShortestPath::FloydWarshallShortestPath(WeightedDiGraph const& g)
+      : m_weights(g.vertexCount(), g.vertexCount(), std::numeric_limits<double>::max())
    {
-      auto v = e.from();
-      auto w = e.to();
-      if (m_distances[v] + e.weight() >= m_distances[w])
-         return false;
+      //Initialization - compute the shortest path with 0 intermediary nodes
+      for (size_t v : g.vertices())
+      {
+         m_weights.at(v, v) = 0;
+         for (auto& e : g.edgesFrom(v))
+            m_weights.at(v, e.to()) = e.weight();
+      }
 
-      m_distances[w] = m_distances[v] + e.weight();
-      m_sources[w] = v;
-      return true;
-
+      //Relaxing the edges - each time considering an additional intermediary node
+      for (size_t k : g.vertices())
+         for (size_t from : g.vertices())
+            for (size_t to : g.vertices())
+               m_weights.at(from, to) = std::min(m_weights.at(from, to), m_weights.at(from, k) + m_weights.at(k, to));
    }
+   
+   FloydWarshallShortestPath::FloydWarshallShortestPath(WeightedGraph const& g)
+      : FloydWarshallShortestPath(g.toDiGraph())
+   {}
 
-   bool BellmanFordShortestPathFrom::hasPathTo(size_t to) const
+   double FloydWarshallShortestPath::pathLength(size_t from, size_t to) const
    {
-      return m_distances[to] != std::numeric_limits<double>::max();
-   }
-
-   double BellmanFordShortestPathFrom::pathLengthTo(size_t to) const
-   {
-      return m_distances[to];
-   }
-
-   std::vector<size_t> BellmanFordShortestPathFrom::pathTo(size_t to) const
-   {
-      std::vector<size_t> out;
-      if (hasPathTo(to))
-         fillPathNodes(m_sources, m_from, to, out);
-      return out;
+      return m_weights.at(from, to);
    }
 }

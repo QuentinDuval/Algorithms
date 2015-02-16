@@ -3,7 +3,7 @@
 #include "GraphSearch.h"
 #include "internal/GenericDiGraph.h"
 #include "internal/GenericGraph.h"
-#include <deque>
+#include <queue>
 
 
 namespace algorithm
@@ -31,14 +31,14 @@ namespace algorithm
          if (isMarked(v))
             return;
 
-         std::deque<size_t> toScan;
-         toScan.push_back(v);
+         std::queue<size_t> nodesToScan;
+         nodesToScan.push(v);
          mark(v);
 
-         while (!toScan.empty())
+         while (!nodesToScan.empty())
          {
-            auto current = toScan.front();
-            toScan.pop_front();
+            auto current = nodesToScan.front();
+            nodesToScan.pop();
 
             for (auto e : m_graph.edgesFrom(current))
             {
@@ -48,7 +48,7 @@ namespace algorithm
                
                listener(e);
                mark(a);
-               toScan.push_back(a);
+               nodesToScan.push(a);
             }
          }
       }

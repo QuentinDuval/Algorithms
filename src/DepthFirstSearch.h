@@ -6,6 +6,7 @@
 #include "internal/GenericGraph.h"
 
 #include <functional>
+#include <stack>
 #include <vector>
 
 
@@ -56,15 +57,16 @@ namespace algorithm
       {
          auto edges = m_graph.edgesFrom(v);
          using StackedRange = std::pair<size_t, decltype(edges)>;
-         std::vector<StackedRange> stack{ { v, edges } };
+         std::stack<StackedRange, std::vector<StackedRange>> stack;
+         stack.emplace(v, edges);
 
          while (!stack.empty())
          {
-            auto& range = stack.back().second;
+            auto& range = stack.top().second;
             if (range.empty())
             {
-               onAdjVisited(stack.back().first);
-               stack.pop_back();
+               onAdjVisited(stack.top().first);
+               stack.pop();
                continue;
             }
             
@@ -77,7 +79,7 @@ namespace algorithm
                listener(*e);
                mark(c);
                auto nextRange = m_graph.edgesFrom(c);
-               stack.emplace_back(c, nextRange);
+               stack.emplace(c, nextRange);
             }
             else if (onAlreadyMarked(*e))
             {

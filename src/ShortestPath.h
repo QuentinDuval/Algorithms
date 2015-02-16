@@ -6,6 +6,7 @@
 #include "Graph.h"
 #include "WeightedDiGraph.h"
 #include "WeightedGraph.h"
+#include "utils/Matrix.h"
 #include <vector>
 
 
@@ -29,68 +30,66 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
+   class RelaxBasedShortestPath
+   {
+   public:
+      bool hasPathTo(size_t to) const;
+      std::vector<size_t> pathTo(size_t to) const;
+      double pathLengthTo(size_t to) const;
+
+   protected:
+      RelaxBasedShortestPath(size_t from, size_t order);
+      ~RelaxBasedShortestPath() = default;
+
+      bool relax(WeightedEdge const& e);
+
+   protected:
+      size_t m_from;
+      std::vector<size_t> m_sources;
+      std::vector<double> m_distances;
+   };
+
+   //--------------------------------------------------------------------------
+
+   //TODO - Add heuristic for based on the remaining distance from node X, to have the A* algorithm
    class DijkstraShortestPathFrom
+      : public RelaxBasedShortestPath
    {
    public:
       DijkstraShortestPathFrom(WeightedDiGraph const&, size_t from);
       DijkstraShortestPathFrom(WeightedGraph   const&, size_t from);
-
-      bool                 hasPathTo   (size_t to) const;
-      std::vector<size_t>  pathTo      (size_t to) const;
-      double               pathLengthTo(size_t to) const;
-
-      //TODO - Add heuristic for based on the remaining distance from node X, to have the A* algorithm
-
-   private:
-      bool relax(WeightedEdge const&);
-
-   private:
-      size_t m_from;
-      std::vector<bool> m_marked;
-      std::vector<size_t> m_sources;
-      std::vector<double> m_distances;
    };
 
    //--------------------------------------------------------------------------
 
    class TopologicalShortestPathFrom
+      : public RelaxBasedShortestPath
    {
    public:
       TopologicalShortestPathFrom(WeightedDiGraph const&, size_t from);
-
-      bool                 hasPathTo   (size_t to) const;
-      std::vector<size_t>  pathTo      (size_t to) const;
-      double               pathLengthTo(size_t to) const;
-
-   private:
-      bool relax(WeightedEdge const&);
-
-   private:
-      size_t m_from;
-      std::vector<bool> m_marked;
-      std::vector<size_t> m_sources;
-      std::vector<double> m_distances;
    };
-
 
    //--------------------------------------------------------------------------
 
    class BellmanFordShortestPathFrom
+      : public RelaxBasedShortestPath
    {
    public:
       BellmanFordShortestPathFrom(WeightedDiGraph const&, size_t from);
       BellmanFordShortestPathFrom(WeightedGraph   const&, size_t from);
+   };
 
-      bool                 hasPathTo   (size_t to) const;
-      std::vector<size_t>  pathTo      (size_t to) const;
-      double               pathLengthTo(size_t to) const;
+   //--------------------------------------------------------------------------
+
+   class FloydWarshallShortestPath
+   {
+   public:
+      explicit FloydWarshallShortestPath(WeightedDiGraph const&);
+      explicit FloydWarshallShortestPath(WeightedGraph   const&);
+
+      double pathLength(size_t from, size_t to) const;
 
    private:
-      bool relax(WeightedEdge const&);
-
-   private:
-      size_t m_from;
-      std::vector<size_t> m_sources;
-      std::vector<double> m_distances;
+      Matrix<double> m_weights;
    };
 }
