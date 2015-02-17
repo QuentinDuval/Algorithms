@@ -84,16 +84,21 @@ namespace algorithm
       return out;
    }
 
-   bool RelaxBasedShortestPath::relax(WeightedEdge const& e)
+   static bool relaxDistance(std::vector<double>& distances, std::vector<size_t>& sources, WeightedEdge const& e)
    {
       auto v = e.from();
       auto w = e.to();
-      if (m_distances[v] + e.weight() >= m_distances[w])
+      if (distances[v] + e.weight() >= distances[w])
          return false;
 
-      m_distances[w] = m_distances[v] + e.weight();
-      m_sources[w] = v;
+      distances[w] = distances[v] + e.weight();
+      sources[w] = v;
       return true;
+   }
+
+   bool RelaxBasedShortestPath::relax(WeightedEdge const& e)
+   {
+      return relaxDistance(m_distances, m_sources, e);
    }
 
    //--------------------------------------------------------------------------
@@ -216,5 +221,59 @@ namespace algorithm
    double FloydWarshallShortestPath::pathLength(size_t from, size_t to) const
    {
       return m_weights.at(from, to);
+   }
+
+   //--------------------------------------------------------------------------
+
+   AStarShortestPathFromTo::AStarShortestPathFromTo(WeightedDiGraph const& g, DistanceEstimation distHeuristic)
+      : m_diGraph(g)
+      , m_distHeuristic(std::move(distHeuristic))
+   {}
+
+   AStarShortestPathFromTo::AStarShortestPathFromTo(WeightedGraph const& g, DistanceEstimation distHeuristic)
+      : AStarShortestPathFromTo(g.toDiGraph(), distHeuristic)
+   {}
+
+   std::pair<double, AStarShortestPathFromTo::Path> AStarShortestPathFromTo::shortestPath(size_t from, size_t to) const
+   {
+      using NodeWithDist = std::pair<size_t, double>;
+      using NodeWithDists = std::vector<NodeWithDist>;
+
+      std::vector<bool> marked(m_diGraph.vertexCount(), false);
+      std::vector<size_t> sources(m_diGraph.vertexCount(), 0);
+      std::vector<double> distances(m_diGraph.vertexCount(), std::numeric_limits<double>::max());
+      auto less = reverseComparison(comparingWith(GetSecond()));
+      std::priority_queue<NodeWithDist, NodeWithDists, decltype(less)> priorityQueue(less);
+
+      distances[from] = 0.;
+      priorityQueue.emplace(from, 0.);
+
+      while (!priorityQueue.empty())
+      {
+         size_t curr = priorityQueue.top().first;
+         priorityQueue.pop();
+         if (marked[curr])
+            continue;
+
+         //We found our destination, stop there
+         if (curr == to)
+            break;
+
+         for (auto& e : m_diGraph.edgesFrom(curr))
+         {
+            if (marked[e.to()])
+               continue;
+
+            if (!relaxDistance(distances, sources, e))
+               continue;
+
+            double dist = distances[e.to()] + m_distHeuristic(e.to(), to);
+            priorityQueue.emplace(e.to(), dist);
+         }
+      }
+
+      std::vector<size_t> path;
+      fillPathNodes(sources, from, to, path);
+      return std::make_pair(distances[to], path);
    }
 }

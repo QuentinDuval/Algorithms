@@ -7,6 +7,8 @@
 #include "WeightedDiGraph.h"
 #include "WeightedGraph.h"
 #include "utils/Matrix.h"
+
+#include <functional>
 #include <vector>
 
 
@@ -51,7 +53,6 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   //TODO - Add heuristic for based on the remaining distance from node X, to have the A* algorithm
    class DijkstraShortestPathFrom
       : public RelaxBasedShortestPath
    {
@@ -91,5 +92,28 @@ namespace algorithm
 
    private:
       Matrix<double> m_weights;
+   };
+
+   //--------------------------------------------------------------------------
+
+   class AStarShortestPathFromTo
+   {
+   public:
+      /**
+       * Heuristic providing the estimated distance between two points.
+       * If it always returns 0, then we simply get Dijsktra.
+       */
+      using DistanceEstimation = std::function<double(size_t, size_t)>;
+      using Path = std::vector<size_t>;
+
+   public:
+      AStarShortestPathFromTo(WeightedDiGraph const&, DistanceEstimation);
+      AStarShortestPathFromTo(WeightedGraph   const&, DistanceEstimation);
+
+      std::pair<double, Path> shortestPath(size_t from, size_t to) const;
+
+   private:
+      WeightedDiGraph const& m_diGraph;
+      DistanceEstimation m_distHeuristic;
    };
 }

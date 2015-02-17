@@ -8,6 +8,7 @@
 #include "utils/Timer.h"
 
 #include <assert.h>
+#include <cmath>
 #include <iostream>
 #include <sstream>
 
@@ -93,6 +94,32 @@ namespace algorithm
       }
    }
 
+   static double noEstimations (size_t, size_t)
+   {
+      return 0.;
+   };
+
+   static double manhattanDistance(size_t dim, size_t from, size_t to)
+   {
+      int fromX = from % dim;
+      int fromY = from / dim;
+      int toX = to % dim;
+      int toY = to / dim;
+      return abs(fromX - toX) + abs(fromY - toY);
+   };
+
+   static void aStarShortestPathFromToTests()
+   {
+      const size_t dim = 4;
+      WeightedGraph g = make2DWeightedPlane(dim);
+
+      AStarShortestPathFromTo dijkstra(g, noEstimations);
+      assert(6. == dijkstra.shortestPath(0, 15).first);
+
+      AStarShortestPathFromTo aStar(g, [dim](size_t from, size_t to) { return manhattanDistance(dim, from, to); });
+      assert(6. == aStar.shortestPath(0, 15).first);
+   }
+
    void shortestPathTests()
    {
       graphShortestPathTests();
@@ -100,6 +127,7 @@ namespace algorithm
       dagShortestPathTests();
       bellmanFordShortestPathTests();
       floydWarshallShortestPathTests();
+      aStarShortestPathFromToTests();
    }
 
    //--------------------------------------------------------------------------
@@ -129,6 +157,18 @@ namespace algorithm
       std::cout << std::endl << "[Shortest path] Weighed graph of size (Topological) " << dim * dim << std::endl;
       showTime(std::cout, [&]{
          TopologicalShortestPathFrom sp(dag, 0);
+      });
+
+      std::cout << std::endl << "[Single shortest path] (Dijkstra) Unweighed graph of size " << dim * dim << std::endl;
+      showTime(std::cout, [&]{
+         AStarShortestPathFromTo sp(wg, noEstimations);
+         sp.shortestPath(0, dim * dim - 1);
+      });
+
+      std::cout << std::endl << "[Single shortest path] (A*) Unweighed graph of size " << dim * dim << std::endl;
+      showTime(std::cout, [&]{
+         AStarShortestPathFromTo sp(wg, [dim](size_t from, size_t to) { return manhattanDistance(dim, from, to); });
+         sp.shortestPath(0, dim * dim - 1);
       });
    }
 }
