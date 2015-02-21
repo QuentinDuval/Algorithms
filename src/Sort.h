@@ -94,7 +94,8 @@ namespace algorithm
          for (auto start = first + 1; start != last; --last)
          {
             bool move = false;
-            for (auto prev = start - 1, curr = start; curr != last; ++prev, ++curr)
+            auto prev = start - 1;
+            for (auto curr = start; curr != last; prev = curr++)
             {
                if (less(*curr, *prev))
                {
