@@ -87,11 +87,13 @@ namespace algorithm
    static void redBlackTreeTests()
    {
       RedBlackTreeSet<size_t> set;
+      
       std::vector<size_t> keys(30, 0);
       generate(keys, 0, [](size_t i) { return i + 1; });
-
       for (auto k : keys)
          set.insert(k);
+
+      assert(30 == set.size());
    }
 
    static void linkedHashSetTests()

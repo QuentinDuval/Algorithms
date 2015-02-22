@@ -213,7 +213,7 @@ namespace algorithm
       RbtNode(RbtNode* father, Key const& k)
          : AbstractNode<Key>(k)
          , m_father(father)
-         , m_incomingRed(true)
+         , m_incomingRed(father ? true : false)
       {}
 
       RbtNode* m_father;
@@ -295,8 +295,16 @@ namespace algorithm
       {
          std::unique_ptr<Node> newTop = std::move(rightChild);
          std::unique_ptr<Node> oldTop = std::move(topNode);
+         newTop->m_father = oldTop->m_father;
+         oldTop->m_father = newTop.get();
+         std::swap(oldTop->m_count, newTop->m_count);
 
-         oldTop->m_right = std::move(newTop->m_left);
+         if (newTop->m_left)
+         {
+            oldTop->m_right = std::move(newTop->m_left);
+            oldTop->m_right->m_father = oldTop.get();
+         }
+         
          newTop->m_left = std::move(oldTop);
          topNode = std::move(newTop);
       }
@@ -305,8 +313,16 @@ namespace algorithm
       {
          std::unique_ptr<Node> newTop = std::move(leftChild);
          std::unique_ptr<Node> oldTop = std::move(topNode);
+         newTop->m_father = oldTop->m_father;
+         oldTop->m_father = newTop.get();
+         std::swap(oldTop->m_count, newTop->m_count);
 
-         oldTop->m_left = std::move(newTop->m_right);
+         if (newTop->m_right)
+         {
+            oldTop->m_left = std::move(newTop->m_right);
+            oldTop->m_left->m_father = oldTop.get();
+         }
+
          newTop->m_right = std::move(oldTop);
          topNode = std::move(newTop);
       }
