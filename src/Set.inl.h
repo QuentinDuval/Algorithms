@@ -5,8 +5,7 @@ namespace algorithm
 {
    template<
       typename Node,
-      typename Key,
-      typename Compare
+      typename Key
    >
    class BinaryTreeSetIterator
       : public std::iterator<std::input_iterator_tag, Key>

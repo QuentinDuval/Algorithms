@@ -11,9 +11,8 @@
 namespace algorithm
 {
    template<
-      typename Set,
-      typename Key,
-      typename Compare
+      typename Node,
+      typename Key
    >
    class BinaryTreeSetIterator;
 
@@ -47,7 +46,7 @@ namespace algorithm
          }
       };
 
-      using key_iterator = BinaryTreeSetIterator<Node, Key, Compare>;
+      using key_iterator = BinaryTreeSetIterator<Node, Key>;
 
    public:
       BinaryTreeSet() : BinaryTreeSet(Compare()) {}
