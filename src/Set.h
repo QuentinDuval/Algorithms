@@ -205,7 +205,22 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   
+   template<typename Key>
+   struct RbtNode : BstNode<Key>
+   {
+      using super_t = BstNode<Key>;
+      bool m_incomingRed;
+
+      RbtNode(RbtNode* father, Key const& k)
+         : super_t(father, k)
+         , m_incomingRed(true);
+      {}
+
+      static RbtNode* sinkLeft(RbtNode* node)
+      {
+         return static_cast<RbtNode*>(super_t::sinkLeft(node));
+      }
+   };
 }
 
 #include "Set.inl.h"
