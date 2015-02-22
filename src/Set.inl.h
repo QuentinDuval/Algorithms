@@ -4,23 +4,24 @@
 namespace algorithm
 {
    template<
+      typename Node,
       typename Key,
       typename Compare
    >
-   class BinaryTreeSet<Key, Compare>::key_iterator
+   class BinaryTreeSetIterator
       : public std::iterator<std::input_iterator_tag, Key>
    {
    public:
-      using Set = BinaryTreeSet<Key, Compare>;
+      explicit BinaryTreeSetIterator(Node* node) : m_node(node) {}
+      ~BinaryTreeSetIterator() = default;
 
-   public:
-      key_iterator& operator++()
+      BinaryTreeSetIterator& operator++()
       {
          //If the node has a left child
          if (m_node->m_right)
          {
             m_node = m_node->m_right.get();
-            m_node = Set::sinkLeft(m_node);
+            m_node = Node::sinkLeft(m_node);
             return *this;
          }
 
@@ -35,18 +36,18 @@ namespace algorithm
          return *this;
       }
 
-      key_iterator operator++(int)
+      BinaryTreeSetIterator operator++(int)
       {
-         key_iterator out = *this;
+         BinaryTreeSetIterator out = *this;
          return ++out;
       }
 
-      bool operator!=(key_iterator const& rhs) const
+      bool operator!=(BinaryTreeSetIterator const& rhs) const
       {
          return m_node != rhs.m_node;
       }
 
-      bool operator==(key_iterator const& rhs) const
+      bool operator==(BinaryTreeSetIterator const& rhs) const
       {
          return m_node == rhs.m_node;
       }
@@ -56,16 +57,13 @@ namespace algorithm
          return m_node->m_value;
       }
 
-   private:
       Node* getNode() const
       {
          return m_node;
       }
 
    private:
-      key_iterator(Node* node) : m_node(node) {}
       Node* m_node;
-      friend Set;
    };
 
    //--------------------------------------------------------------------------

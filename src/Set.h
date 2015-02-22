@@ -11,12 +11,20 @@
 namespace algorithm
 {
    template<
+      typename Set,
+      typename Key,
+      typename Compare
+   >
+   class BinaryTreeSetIterator;
+
+
+   template<
       typename Key,
       typename Compare = std::less<Key>
    >
    class BinaryTreeSet
    {
-   private:
+   public:
       struct Node
       {
          Node(Node* father, Key const& k)
@@ -30,9 +38,16 @@ namespace algorithm
          Node* m_father;
          std::unique_ptr<Node> m_left;
          std::unique_ptr<Node> m_right;
+
+         static Node* sinkLeft(Node* node)
+         {
+            while (node && node->m_left)
+               node = node->m_left.get();
+            return node;
+         }
       };
 
-      class key_iterator;
+      using key_iterator = BinaryTreeSetIterator<Node, Key, Compare>;
 
    public:
       BinaryTreeSet() : BinaryTreeSet(Compare()) {}
@@ -40,7 +55,7 @@ namespace algorithm
 
       key_iterator begin() const
       {
-         Node* b = sinkLeft(m_root.get());
+         Node* b = Node::sinkLeft(m_root.get());
          return key_iterator(b);
       }
 
@@ -127,7 +142,7 @@ namespace algorithm
          //If two children, go right, sink all way down left, swap these nodes, then delete
          if (node.m_right && node.m_left)
          {
-            Node* nextHigher = sinkLeft(node.m_right.get());
+            Node* nextHigher = Node::sinkLeft(node.m_right.get());
             std::swap(nextHigher->m_value, node.m_value);
             erase(key_iterator(nextHigher));
             return;
@@ -170,13 +185,6 @@ namespace algorithm
          }
       }
 
-      static Node* sinkLeft(Node* node)
-      {
-         while (node && node->m_left)
-            node = node->m_left.get();
-         return node;
-      }
-
    private:
       Compare m_less;
       std::unique_ptr<Node> m_root;
@@ -184,7 +192,7 @@ namespace algorithm
 
    //--------------------------------------------------------------------------
 
-   //TODO - Red black tree
+   
 
    //--------------------------------------------------------------------------
 
