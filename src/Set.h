@@ -87,16 +87,19 @@ namespace algorithm
    //--------------------------------------------------------------------------
 
    template<typename Key>
-   struct BstNode
+   struct AbstractNode
    {
-      BstNode(BstNode* father, Key const& k)
-         : m_father(father)
-         , m_value(k)
-         , m_count(0)
-      {}
-
+      AbstractNode(Key const& k) : m_value(k), m_count(0) {}
       Key m_value;
       size_t m_count;
+   };
+
+   template<typename Key>
+   struct BstNode : AbstractNode<Key>
+   {
+      BstNode(BstNode* father, Key const& k)
+         : AbstractNode<Key>(k), m_father(father) {}
+
       BstNode* m_father;
       std::unique_ptr<BstNode> m_left;
       std::unique_ptr<BstNode> m_right;
@@ -108,7 +111,6 @@ namespace algorithm
          return node;
       }
    };
-
 
    template<
       typename Key,
@@ -206,19 +208,24 @@ namespace algorithm
    //--------------------------------------------------------------------------
 
    template<typename Key>
-   struct RbtNode : BstNode<Key>
+   struct RbtNode : AbstractNode<Key>
    {
-      using super_t = BstNode<Key>;
-      bool m_incomingRed;
-
       RbtNode(RbtNode* father, Key const& k)
-         : super_t(father, k)
+         : AbstractNode<Key>(k)
+         , m_father(father)
          , m_incomingRed(true)
       {}
 
+      RbtNode* m_father;
+      bool m_incomingRed;
+      std::unique_ptr<RbtNode> m_left;
+      std::unique_ptr<RbtNode> m_right;
+
       static RbtNode* sinkLeft(RbtNode* node)
       {
-         return static_cast<RbtNode*>(super_t::sinkLeft(node));
+         while (node && node->m_left)
+            node = node->m_left.get();
+         return node;
       }
    };
 
@@ -244,14 +251,15 @@ namespace algorithm
    private:
       bool insert_(Node* father, std::unique_ptr<Node>& currentNode, Key const& key)
       {
-         bool modified = false;
          if (!currentNode)
          {
             currentNode = std::make_unique<Node>(father, key);
             incrementCount_(currentNode.get());
-            modified = true;
+            return true;
          }
-         else if (m_less(key, currentNode->m_value))
+
+         bool modified = false;
+         if (m_less(key, currentNode->m_value))
          {
             modified = insert_(currentNode.get(), currentNode->m_left, key);
          }
@@ -259,8 +267,6 @@ namespace algorithm
          {
             modified = insert_(currentNode.get(), currentNode->m_right, key);
          }
-
-         //Rebalance the tree in case of modification
          if (!modified)
             return false;
 
@@ -279,7 +285,7 @@ namespace algorithm
          return true;
       }
 
-      bool isRedLinkTo(Node* node) const
+      bool isRedLinkTo(std::unique_ptr<Node>& node) const
       {
          if (!node) return false;
          return node->m_incomingRed;
