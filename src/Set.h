@@ -258,22 +258,52 @@ namespace algorithm
          else if (m_less(currentNode->m_value, key))
          {
             modified = insert_(currentNode.get(), currentNode->m_right, key);
-            if (modified && currentNode->m_right->m_incomingRed)
-            {
-               //rotateLeft();
-            }
          }
 
          //Rebalance the tree in case of modification
-         if (modified && currentNode->m_left->m_incomingRed && currentNode->m_incomingRed)
+         if (!modified)
+            return false;
+
+         if (!currentNode->m_left->m_incomingRed && currentNode->m_right->m_incomingRed)
          {
-            //rotateRight();
+            rotateLeft(currentNode, currentNode->m_right);
          }
-         if (modified && currentNode->m_left->m_incomingRed && currentNode->m_right->m_incomingRed)
+         if (currentNode->m_left->m_incomingRed && currentNode->m_left->m_left->m_incomingRed)
          {
-            //switchColor();
+            rotateRight(currentNode, currentNode->m_left);
          }
-         return modified;
+         if (currentNode->m_left->m_incomingRed && currentNode->m_right->m_incomingRed)
+         {
+            switchColors(currentNode);
+         }
+         return true;
+      }
+
+      void rotateLeft(std::unique_ptr<Node>& topNode, std::unique_ptr<Node>& rightChild)
+      {
+         std::unique_ptr<Node> newTop = std::move(rightChild);
+         std::unique_ptr<Node> oldTop = std::move(topNode);
+
+         oldTop->m_right = std::move(newTop->m_left);
+         newTop->m_left = std::move(oldTop);
+         topNode = std::move(newTop);
+      }
+
+      void rotateRight(std::unique_ptr<Node>& topNode, std::unique_ptr<Node>& leftChild)
+      {
+         std::unique_ptr<Node> newTop = std::move(leftChild);
+         std::unique_ptr<Node> oldTop = std::move(topNode);
+
+         oldTop->m_left = std::move(newTop->m_right);
+         newTop->m_right = std::move(oldTop);
+         topNode = std::move(newTop);
+      }
+
+      void switchColors(std::unique_ptr<Node>& node)
+      {
+         node->m_left->m_incomingRed = false;
+         node->m_right->m_incomingRed = false;
+         node->m_incomingRed = true;
       }
    };
 }
