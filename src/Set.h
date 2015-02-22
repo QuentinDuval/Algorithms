@@ -10,10 +10,6 @@
 
 namespace algorithm
 {
-   template<typename Node, typename Key>
-   class BinaryTreeSetIterator;
-
-
    template<
       typename Node,
       typename Key,
@@ -22,7 +18,7 @@ namespace algorithm
    class AbstractBinaryTreeSet
    {
    protected:
-      using key_iterator = BinaryTreeSetIterator<Node, Key>;
+      class key_iterator;
 
    public:
       AbstractBinaryTreeSet() : AbstractBinaryTreeSet(Compare()) {}

@@ -5,16 +5,17 @@ namespace algorithm
 {
    template<
       typename Node,
-      typename Key
+      typename Key,
+      typename Compare
    >
-   class BinaryTreeSetIterator
+   class AbstractBinaryTreeSet<Node, Key, Compare>::key_iterator
       : public std::iterator<std::input_iterator_tag, Key>
    {
    public:
-      explicit BinaryTreeSetIterator(Node* node) : m_node(node) {}
-      ~BinaryTreeSetIterator() = default;
+      explicit key_iterator(Node* node) : m_node(node) {}
+      ~key_iterator() = default;
 
-      BinaryTreeSetIterator& operator++()
+      key_iterator& operator++()
       {
          //If the node has a left child
          if (m_node->m_right)
@@ -35,18 +36,18 @@ namespace algorithm
          return *this;
       }
 
-      BinaryTreeSetIterator operator++(int)
+      key_iterator operator++(int)
       {
-         BinaryTreeSetIterator out = *this;
+         key_iterator out = *this;
          return ++out;
       }
 
-      bool operator!=(BinaryTreeSetIterator const& rhs) const
+      bool operator!=(key_iterator const& rhs) const
       {
          return m_node != rhs.m_node;
       }
 
-      bool operator==(BinaryTreeSetIterator const& rhs) const
+      bool operator==(key_iterator const& rhs) const
       {
          return m_node == rhs.m_node;
       }
