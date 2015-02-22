@@ -15,39 +15,18 @@ namespace algorithm
 
 
    template<
+      typename Node,
       typename Key,
       typename Compare = std::less<Key>
    >
-   class BinaryTreeSet
+   class AbstractBinaryTreeSet
    {
-   private:
-      struct Node
-      {
-         Node(Node* father, Key const& k)
-            : m_father(father)
-            , m_value(k)
-            , m_count(0)
-         {}
-
-         Key m_value;
-         size_t m_count;
-         Node* m_father;
-         std::unique_ptr<Node> m_left;
-         std::unique_ptr<Node> m_right;
-
-         static Node* sinkLeft(Node* node)
-         {
-            while (node && node->m_left)
-               node = node->m_left.get();
-            return node;
-         }
-      };
-
+   protected:
       using key_iterator = BinaryTreeSetIterator<Node, Key>;
 
    public:
-      BinaryTreeSet() : BinaryTreeSet(Compare()) {}
-      BinaryTreeSet(Compare less) : m_less(less), m_root() {}
+      AbstractBinaryTreeSet() : AbstractBinaryTreeSet(Compare()) {}
+      AbstractBinaryTreeSet(Compare less) : m_less(less), m_root() {}
 
       key_iterator begin() const
       {
@@ -80,6 +59,75 @@ namespace algorithm
          return end() != find(key);
       }
 
+      size_t size() const
+      {
+         return m_root ? m_root->m_count : 0;
+      }
+
+   protected:
+      std::unique_ptr<Node>& incomingLink(Node& node)
+      {
+         if (!node.m_father)
+            return m_root;
+         if (node.m_father->m_left.get() == &node)
+            return node.m_father->m_left;
+         return node.m_father->m_right;
+      }
+
+      static void incrementCount_(Node* node, size_t incr = 1)
+      {
+         while (node)
+         {
+            node->m_count += incr;
+            node = node->m_father;
+         }
+      }
+
+   protected:
+      Compare m_less;
+      std::unique_ptr<Node> m_root;
+   };
+
+   //--------------------------------------------------------------------------
+
+   template<typename Key>
+   struct BstNode
+   {
+      BstNode(BstNode* father, Key const& k)
+         : m_father(father)
+         , m_value(k)
+         , m_count(0)
+      {}
+
+      Key m_value;
+      size_t m_count;
+      BstNode* m_father;
+      std::unique_ptr<BstNode> m_left;
+      std::unique_ptr<BstNode> m_right;
+
+      static BstNode* sinkLeft(BstNode* node)
+      {
+         while (node && node->m_left)
+            node = node->m_left.get();
+         return node;
+      }
+   };
+
+
+   template<
+      typename Key,
+      typename Compare = std::less<Key>
+   >
+   class BinaryTreeSet
+      : public AbstractBinaryTreeSet<BstNode<Key>, Key, Compare>
+   {
+   private:
+      using Node = BstNode<Key>;
+
+   public:
+      BinaryTreeSet() : BinaryTreeSet(Compare()) {}
+      BinaryTreeSet(Compare less) : AbstractBinaryTreeSet(less) {}
+
       bool insert(Key const& key)
       {
          return insert_(nullptr, m_root, key);
@@ -106,11 +154,6 @@ namespace algorithm
             erase(first);
             first = start ? prev++ : begin();
          }
-      }
-
-      size_t size() const
-      {
-         return m_root ? m_root->m_count : 0;
       }
 
    private:
@@ -162,28 +205,6 @@ namespace algorithm
          }
          incrementCount_(father, -1);
       }
-
-      std::unique_ptr<Node>& incomingLink(Node& node)
-      {
-         if (!node.m_father)
-            return m_root;
-         if (node.m_father->m_left.get() == &node)
-            return node.m_father->m_left;
-         return node.m_father->m_right;
-      }
-
-      static void incrementCount_(Node* node, size_t incr = 1)
-      {
-         while (node)
-         {
-            node->m_count += incr;
-            node = node->m_father;
-         }
-      }
-
-   private:
-      Compare m_less;
-      std::unique_ptr<Node> m_root;
    };
 
    //--------------------------------------------------------------------------
