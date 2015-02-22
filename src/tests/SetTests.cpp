@@ -1,5 +1,6 @@
 #include "tests/SetTests.h"
 
+#include "HashSet.h"
 #include "Set.h"
 #include "utils/Algorithms.h"
 #include "utils/Timer.h"
