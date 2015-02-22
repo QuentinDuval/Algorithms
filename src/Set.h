@@ -248,6 +248,15 @@ namespace algorithm
          return insert_(nullptr, m_root, key);
       }
 
+      void erase(key_iterator it)
+      {
+         if (it == end())
+            return;
+
+         //Node& node = *(it.getNode());
+         //erase_(incomingLink(node), node);
+      }
+
    private:
       bool insert_(Node* father, std::unique_ptr<Node>& currentNode, Key const& key)
       {

@@ -94,6 +94,7 @@ namespace algorithm
          set.insert(k);
 
       assert(30 == set.size());
+      assert(true == equal(begin(set), end(set), std::begin(keys)));
    }
 
    static void linkedHashSetTests()
@@ -151,8 +152,11 @@ namespace algorithm
    {
       size_t size = 1000000;
 
-      std::cout << std::endl << "[Binary Tree Set]" << std::endl;
+      std::cout << std::endl << "[Binary Search Tree Set]" << std::endl;
       integerSetPerfTests<BinaryTreeSet<size_t>>(size);
+
+      std::cout << std::endl << "[Red Black BST Set]" << std::endl;
+      integerSetPerfTests<RedBlackTreeSet<size_t>>(size);
 
       std::cout << std::endl << "[Linked Hash Set]" << std::endl;
       integerSetPerfTests<LinkedHashSet<size_t>>(size);
