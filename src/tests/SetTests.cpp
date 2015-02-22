@@ -53,7 +53,7 @@ namespace algorithm
          assert(false == set.contains(i));
    }
 
-   static void binarySetTests()
+   static void binarySearchTreeTests()
    {
       BinaryTreeSet<std::string> stringSet;
       assert(true == stringSet.insert("a"));
@@ -84,6 +84,11 @@ namespace algorithm
       assert(0 == set.size());
    }
 
+   static void redBlackTreeTests()
+   {
+      RedBlackTreeSet<size_t> set;
+   }
+
    static void linkedHashSetTests()
    {
       stringSetTests<LinkedHashSet<std::string>>();
@@ -98,7 +103,8 @@ namespace algorithm
 
    void setTests()
    {
-      binarySetTests();
+      binarySearchTreeTests();
+      redBlackTreeTests();
       linkedHashSetTests();
       denseHashSetTests();
    }

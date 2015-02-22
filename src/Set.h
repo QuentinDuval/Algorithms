@@ -213,7 +213,7 @@ namespace algorithm
 
       RbtNode(RbtNode* father, Key const& k)
          : super_t(father, k)
-         , m_incomingRed(true);
+         , m_incomingRed(true)
       {}
 
       static RbtNode* sinkLeft(RbtNode* node)
@@ -244,21 +244,36 @@ namespace algorithm
    private:
       bool insert_(Node* father, std::unique_ptr<Node>& currentNode, Key const& key)
       {
+         bool modified = false;
          if (!currentNode)
          {
             currentNode = std::make_unique<Node>(father, key);
             incrementCount_(currentNode.get());
-            return true;
+            modified = true;
          }
          else if (m_less(key, currentNode->m_value))
          {
-            return insert_(currentNode.get(), currentNode->m_left, key);
+            modified = insert_(currentNode.get(), currentNode->m_left, key);
          }
          else if (m_less(currentNode->m_value, key))
          {
-            return insert_(currentNode.get(), currentNode->m_right, key);
+            modified = insert_(currentNode.get(), currentNode->m_right, key);
+            if (modified && currentNode->m_right->m_incomingRed)
+            {
+               //rotateLeft();
+            }
          }
-         return false;
+
+         //Rebalance the tree in case of modification
+         if (modified && currentNode->m_left->m_incomingRed && currentNode->m_incomingRed)
+         {
+            //rotateRight();
+         }
+         if (modified && currentNode->m_left->m_incomingRed && currentNode->m_right->m_incomingRed)
+         {
+            //switchColor();
+         }
+         return modified;
       }
    };
 }
