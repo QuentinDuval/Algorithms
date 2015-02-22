@@ -264,19 +264,25 @@ namespace algorithm
          if (!modified)
             return false;
 
-         if (!currentNode->m_left->m_incomingRed && currentNode->m_right->m_incomingRed)
+         if (!isRedLinkTo(currentNode->m_left) && isRedLinkTo(currentNode->m_right))
          {
             rotateLeft(currentNode, currentNode->m_right);
          }
-         if (currentNode->m_left->m_incomingRed && currentNode->m_left->m_left->m_incomingRed)
+         if (isRedLinkTo(currentNode->m_left) && currentNode->m_left && isRedLinkTo(currentNode->m_left->m_left))
          {
             rotateRight(currentNode, currentNode->m_left);
          }
-         if (currentNode->m_left->m_incomingRed && currentNode->m_right->m_incomingRed)
+         if (isRedLinkTo(currentNode->m_left) && isRedLinkTo(currentNode->m_right))
          {
             switchColors(currentNode);
          }
          return true;
+      }
+
+      bool isRedLinkTo(Node* node) const
+      {
+         if (!node) return false;
+         return node->m_incomingRed;
       }
 
       void rotateLeft(std::unique_ptr<Node>& topNode, std::unique_ptr<Node>& rightChild)
