@@ -221,6 +221,99 @@ namespace algorithm
          return static_cast<RbtNode*>(super_t::sinkLeft(node));
       }
    };
+
+   template<
+      typename Key,
+      typename Compare = std::less<Key>
+   >
+   class RedBlackTreeSet
+      : public AbstractBinaryTreeSet<RbtNode<Key>, Key, Compare>
+   {
+   private:
+      using Node = RbtNode<Key>;
+
+   public:
+      RedBlackTreeSet() : RedBlackTreeSet(Compare()) {}
+      RedBlackTreeSet(Compare less) : AbstractBinaryTreeSet(less) {}
+
+      bool insert(Key const& key)
+      {
+         return insert_(nullptr, m_root, key);
+      }
+
+      void erase(key_iterator it)
+      {
+         if (it == end())
+            return;
+
+         Node& node = *(it.getNode());
+         erase_(incomingLink(node), node);
+      }
+
+      void erase(key_iterator first, key_iterator last)
+      {
+         auto prev = begin();
+         auto start = std::distance(begin(), first);
+         for (decltype(start) i = 0; i < start - 1; ++i)
+            ++prev;
+
+         while (first != last)
+         {
+            erase(first);
+            first = start ? prev++ : begin();
+         }
+      }
+
+   private:
+      bool insert_(Node* father, std::unique_ptr<Node>& currentNode, Key const& key)
+      {
+         if (!currentNode)
+         {
+            currentNode = std::make_unique<Node>(father, key);
+            incrementCount_(currentNode.get());
+            return true;
+         }
+         else if (m_less(key, currentNode->m_value))
+         {
+            return insert_(currentNode.get(), currentNode->m_left, key);
+         }
+         else if (m_less(currentNode->m_value, key))
+         {
+            return insert_(currentNode.get(), currentNode->m_right, key);
+         }
+         return false;
+      }
+
+      void erase_(std::unique_ptr<Node>& incomingLink, Node& node)
+      {
+         //If two children, go right, sink all way down left, swap these nodes, then delete
+         if (node.m_right && node.m_left)
+         {
+            Node* nextHigher = Node::sinkLeft(node.m_right.get());
+            std::swap(nextHigher->m_value, node.m_value);
+            erase(key_iterator(nextHigher));
+            return;
+         }
+
+         //Otherwise, replace the incoming node from father:
+         Node* father = node.m_father;
+         if (node.m_left)
+         {
+            node.m_left->m_father = father;
+            incomingLink = move(node.m_left);
+         }
+         else if (node.m_right)
+         {
+            node.m_right->m_father = father;
+            incomingLink = move(node.m_right);
+         }
+         else
+         {
+            incomingLink.reset();
+         }
+         incrementCount_(father, -1);
+      }
+   };
 }
 
 #include "Set.inl.h"
