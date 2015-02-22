@@ -23,7 +23,7 @@ namespace algorithm
    >
    class BinaryTreeSet
    {
-   public:
+   private:
       struct Node
       {
          Node(Node* father, Key const& k)
