@@ -50,9 +50,13 @@ namespace algorithm
       ConnectedComponents cc1(g1);
       assert(16 == cc1.componentCount());
 
-      DiGraph g2 = make2DPlane(4).toDiGraph();
+      DiGraph g2 = makeReversed(g1);
       ConnectedComponents cc2(g2);
-      assert(1 == cc2.componentCount());
+      assert(16 == cc2.componentCount());
+
+      DiGraph g3 = make2DPlane(4).toDiGraph();
+      ConnectedComponents cc3(g3);
+      assert(1 == cc3.componentCount());
    }
 
    void connectedComponentsTests()
