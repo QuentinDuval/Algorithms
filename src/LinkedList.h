@@ -44,6 +44,16 @@ namespace algorithm
          m_head = std::make_unique<Node>(t, std::move(m_head));
       }
 
+      void popFront()
+      {
+         m_head = std::move(m_head->m_next);
+      }
+
+      T const& head()
+      {
+         return m_head->m_value;
+      }
+
       /** Insert the value just before the iterator */
       void insert(T const& t, iterator it)
       {
@@ -53,6 +63,16 @@ namespace algorithm
          iterator prev = begin();
          for (iterator next = begin(); next != it; prev = next++);
          (*prev.m_node)->m_next = std::make_unique<Node>(t, std::move((*prev.m_node)->m_next));
+      }
+
+      void erase(iterator it)
+      {
+         if (it == begin())
+            return popFront();
+
+         iterator prev = begin();
+         for (iterator next = begin(); next != it; prev = next++);
+         (*prev.m_node)->m_next = std::move((*it.m_node)->m_next);
       }
 
    public:
