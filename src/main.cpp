@@ -1,6 +1,7 @@
 #include "tests/ConnectedComponentTests.h"
 #include "tests/GraphSearchTests.h"
 #include "tests/GraphTests.h"
+#include "tests/LinkedListTests.h"
 #include "tests/PriorityQueueTests.h"
 #include "tests/SetTests.h"
 #include "tests/ShortestPathTests.h"
@@ -29,6 +30,7 @@ static bool runPerformanceTests(std::string const& title)
 
 int main()
 {
+   linkedListTests();
    graphTests();
    graphSearchTests();
    symbolGraphTests();

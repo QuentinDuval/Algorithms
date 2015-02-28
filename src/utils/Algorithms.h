@@ -29,7 +29,7 @@ namespace algorithm
    }
 
    template<typename Container, typename Container2>
-   bool equal(Container const& cont, Container2 cont2)
+   bool equal(Container& cont, Container2& cont2)
    {
       return std::equal(begin(cont), end(cont), begin(cont2));
    }
