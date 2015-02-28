@@ -1,3 +1,4 @@
+#include "tests/BinarySearchTests.h"
 #include "tests/ConnectedComponentTests.h"
 #include "tests/GraphSearchTests.h"
 #include "tests/GraphTests.h"
@@ -30,6 +31,7 @@ static bool runPerformanceTests(std::string const& title)
 
 int main()
 {
+   binarySearchTests();
    linkedListTests();
    graphTests();
    graphSearchTests();
