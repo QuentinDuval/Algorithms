@@ -42,4 +42,12 @@ namespace algorithm
       time(duration, fct, std::forward<Args>(args)...);
       output << " - Time spent: " << duration.count() << std::endl;
    }
+
+   template<typename Unit = std::milli, typename Fct, typename... Args>
+   void showTimeLog(std::ostream& output, std::string const& text, Fct&& fct, Args&&... args)
+   {
+      std::chrono::duration<double, Unit> duration;
+      time(duration, fct, std::forward<Args>(args)...);
+      output << " - Time spent (" << text << "): " << duration.count() << std::endl;
+   }
 }
