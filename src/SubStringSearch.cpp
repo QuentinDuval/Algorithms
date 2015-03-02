@@ -1,6 +1,7 @@
 #include "SubStringSearch.h"
 #include "utils/Matrix.h"
 
+#include <algorithm>
 #include <numeric>
 #include <vector>
 
@@ -30,28 +31,26 @@ namespace algorithm
       if (pattern.empty() || text.empty())
          return std::string::npos;
 
-      const size_t n = pattern.size();
-      std::vector<size_t> rightmostOccur(CHAR_MAX - CHAR_MIN, std::string::npos);
-      for (size_t k = 0; k < n; ++k)
+      const int n = pattern.size();
+      std::vector<int> rightmostOccur(CHAR_MAX - CHAR_MIN, -1);
+      for (int k = 0; k < n; ++k)
          rightmostOccur[pattern[k] - CHAR_MIN] = k;
 
-      for (size_t i = n - 1; i < text.size();)
+      int skip = 0;
+      for (int start = 0; start <= text.size() - n; start += skip)
       {
-         size_t start = i - n + 1;
-         size_t j = i;
-         while (pattern[j - start] == text[j])
+         skip = 0;
+         for (int j = n - 1; j >= 0; --j)
          {
-            if (j == start) return start;
-            --j;
+            if (pattern[j] != text[start + j])
+            {
+               skip = j - rightmostOccur[text[start + j] - CHAR_MIN];
+               if (skip < 1) skip = 1;
+               break;
+            }
          }
 
-         size_t skip = rightmostOccur[pattern[j - start]];
-         if (skip == std::string::npos)
-            i = i + n;
-         else if (skip < j)
-            i = j - skip;
-         else
-            ++i;
+         if (skip == 0) return start;
       }
       return std::string::npos;
    }
