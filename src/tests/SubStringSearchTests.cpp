@@ -29,20 +29,13 @@ namespace algorithm
    {
       std::cout << " * " << algorithmName << std::endl;
       const size_t N = 20000000;
+      const size_t M = 50;
       const std::string text(N, 'a');
 
-      for (size_t M : { 10, 100 })
-      {
-         showTime(std::cout, [&]{
-            search(text, "b" + std::string(M - 1, 'a'));
-            search(text, "a" + std::string(M - 1, 'b'));
-         });
-
-         showTime(std::cout, [&]{
-            search(text, std::string(M - 1, 'a') + "b");
-            search(text, std::string(M - 1, 'b') + "a");
-         });
-      }
+      showTime(std::cout, [&]{ search(text, "b" + std::string(M - 1, 'a')); });
+      showTime(std::cout, [&]{ search(text, "a" + std::string(M - 1, 'b')); });
+      showTime(std::cout, [&]{ search(text, std::string(M - 1, 'a') + "b"); });
+      showTime(std::cout, [&]{ search(text, std::string(M - 1, 'b') + "a"); });
    }
 
    //--------------------------------------------------------------------------
@@ -59,6 +52,7 @@ namespace algorithm
    void subStringSearchPerfTests()
    {
       std::cout << std::endl << "[String search timings] (in milliseconds)" << std::endl;
+      std::cout << "(searching a string made of 'a' only)" << std::endl;
       performanceTests(BruteForceSearch::search, "Brute Force");
       performanceTests(BoyerMooreSearch::search, "Boyer Moore");
       performanceTests(RabinKarpSearch::search, "Rabin Karp");
