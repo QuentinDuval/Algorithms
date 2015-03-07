@@ -27,9 +27,9 @@ namespace algorithm
       return m_trees.size();
    }
 
-   Range<SpanningTree::edge_it> SpanningTree::edges(size_t ccId) const
+   utils::Range<SpanningTree::edge_it> SpanningTree::edges(size_t ccId) const
    {
-      return Range<SpanningTree::edge_it>{ begin(m_trees[ccId]), end(m_trees[ccId]) };
+      return utils::Range<SpanningTree::edge_it>{ begin(m_trees[ccId]), end(m_trees[ccId]) };
    }
 
    //--------------------------------------------------------------------------
@@ -74,9 +74,9 @@ namespace algorithm
       return m_trees.size();
    }
 
-   Range<LazyPrimMinimumSpanningTree::edge_it> LazyPrimMinimumSpanningTree::edges(size_t ccId) const
+   utils::Range<LazyPrimMinimumSpanningTree::edge_it> LazyPrimMinimumSpanningTree::edges(size_t ccId) const
    {
-      return Range<LazyPrimMinimumSpanningTree::edge_it>{ begin(m_trees[ccId]), end(m_trees[ccId]) };
+      return utils::Range<LazyPrimMinimumSpanningTree::edge_it>{ begin(m_trees[ccId]), end(m_trees[ccId]) };
    }
 
    //--------------------------------------------------------------------------
@@ -131,9 +131,9 @@ namespace algorithm
       return m_trees.size();
    }
 
-   Range<EagerPrimMinimumSpanningTree::edge_it> EagerPrimMinimumSpanningTree::edges(size_t ccId) const
+   utils::Range<EagerPrimMinimumSpanningTree::edge_it> EagerPrimMinimumSpanningTree::edges(size_t ccId) const
    {
-      return Range<EagerPrimMinimumSpanningTree::edge_it>{ begin(m_trees[ccId]), end(m_trees[ccId]) };
+      return utils::Range<EagerPrimMinimumSpanningTree::edge_it>{ begin(m_trees[ccId]), end(m_trees[ccId]) };
    }
 
    //--------------------------------------------------------------------------
@@ -163,8 +163,8 @@ namespace algorithm
       }
    }
 
-   Range<KruskalMinimumSpanningTree::edge_it> KruskalMinimumSpanningTree::edges() const
+   utils::Range<KruskalMinimumSpanningTree::edge_it> KruskalMinimumSpanningTree::edges() const
    {
-      return Range<KruskalMinimumSpanningTree::edge_it>{ begin(m_tree), end(m_tree) };
+      return utils::Range<KruskalMinimumSpanningTree::edge_it>{ begin(m_tree), end(m_tree) };
    }
 }

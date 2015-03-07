@@ -55,7 +55,7 @@ namespace algorithm
       {
          auto vid = m_symbolToIds.find(v);
          if (vid == m_symbolToIds.end())
-            throw InvalidVertex(toString(v));
+            throw InvalidVertex(utils::toString(v));
          return vid->second;
       }
 

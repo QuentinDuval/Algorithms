@@ -22,9 +22,9 @@ namespace algorithm
          , m_randomSet(size, 0)
       {
          stream << std::endl << "[Sort timings]" << "(" << size << " entries - in milliseconds)" << std::endl;
-         generate(m_orderedSet, 0, [](int i) { return i + 1; });
-         generate(m_randomSet, 0, [](int i) { return i + 1; });
-         shuffle(m_randomSet);
+         utils::generate(m_orderedSet, 0, [](int i) { return i + 1; });
+         utils::generate(m_randomSet, 0, [](int i) { return i + 1; });
+         utils::shuffle(m_randomSet);
       }
 
       template<typename Algorithm>
@@ -33,15 +33,15 @@ namespace algorithm
          m_stream << algorithmName << std::endl;
 
          std::vector<int> v1 = m_uniformSet;
-         showTime(m_stream, [&](){ Algorithm::sort(v1, std::less<int>()); });
+         utils::showTime(m_stream, [&](){ Algorithm::sort(v1, std::less<int>()); });
 
          std::vector<int> v2 = m_orderedSet;
-         showTime(m_stream, [&](){ Algorithm::sort(v2, std::less<int>()); });
-         showTime(m_stream, [&](){ Algorithm::sort(v2, std::greater<int>()); });
+         utils::showTime(m_stream, [&](){ Algorithm::sort(v2, std::less<int>()); });
+         utils::showTime(m_stream, [&](){ Algorithm::sort(v2, std::greater<int>()); });
          assert(isSorted(v2, std::greater<int>()));
 
          std::vector<int> v3 = m_randomSet;
-         showTime(m_stream, [&](){ Algorithm::sort(v3, std::less<int>()); });
+         utils::showTime(m_stream, [&](){ Algorithm::sort(v3, std::less<int>()); });
          assert(isSorted(v3, std::less<int>()));
       }
 

@@ -5,7 +5,7 @@
 namespace algorithm
 {
    InvalidVertex::InvalidVertex(size_t vertexId)
-      : std::domain_error("Invalid vertex: " + toString(vertexId))
+      : std::domain_error("Invalid vertex: " + utils::toString(vertexId))
    {}
 
    InvalidVertex::InvalidVertex(std::string const& vertexName)

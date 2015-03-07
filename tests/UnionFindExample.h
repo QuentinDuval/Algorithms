@@ -13,7 +13,7 @@ namespace algorithm
 {
    /** Example with people joining a network (This example could be made generic) */
    class SocialNetwork
-      : public NonCopyable
+      : public utils::NonCopyable
    {
    public:
       using AccountId = std::string;

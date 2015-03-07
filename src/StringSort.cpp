@@ -21,7 +21,7 @@ namespace algorithm
          return 0;
       }
 
-      static void msbSort(Range<string_it> range, size_t k, size_t w)
+      static void msbSort(utils::Range<string_it> range, size_t k, size_t w)
       {
          if (w < k || range.size() < 2)
             return;
@@ -79,7 +79,7 @@ namespace algorithm
    {
       std::vector<std::string>::const_iterator largest =
          std::max_element(begin(strings), end(strings),
-            comparingWith([](std::string const& s) { return s.size(); }));
+         utils::comparingWith([](std::string const& s) { return s.size(); }));
 
       if (largest != end(strings))
          MSBSortImpl::msbSort({ strings.begin(), strings.end() }, 0, largest->size());

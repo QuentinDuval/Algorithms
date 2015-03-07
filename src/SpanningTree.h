@@ -18,7 +18,7 @@ namespace algorithm
       SpanningTree(Graph const&);
 
       size_t connectedComponentCount() const;
-      Range<edge_it> edges(size_t ccId) const;
+      utils::Range<edge_it> edges(size_t ccId) const;
 
    private:
       std::vector<Edges> m_trees;
@@ -35,7 +35,7 @@ namespace algorithm
    public:
       explicit LazyPrimMinimumSpanningTree(WeightedGraph const&);
       size_t connectedComponentCount() const;
-      Range<edge_it> edges(size_t ccId) const;
+      utils::Range<edge_it> edges(size_t ccId) const;
 
    private:
       std::vector<Edges> m_trees;
@@ -52,7 +52,7 @@ namespace algorithm
    public:
       explicit EagerPrimMinimumSpanningTree(WeightedGraph const&);
       size_t connectedComponentCount() const;
-      Range<edge_it> edges(size_t ccId) const;
+      utils::Range<edge_it> edges(size_t ccId) const;
 
    private:
       std::vector<Edges> m_trees;
@@ -68,7 +68,7 @@ namespace algorithm
 
    public:
       explicit KruskalMinimumSpanningTree(WeightedGraph const&);
-      Range<edge_it> edges() const;
+      utils::Range<edge_it> edges() const;
 
    private:
       Edges m_tree;

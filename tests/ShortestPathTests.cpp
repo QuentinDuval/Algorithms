@@ -30,7 +30,7 @@ namespace algorithm
       }
 
       //Testing paths
-      assert(equal(sp.pathTo(15), std::vector<size_t>{1, 2, 3, 7, 11, 15}));
+      assert(utils::equal(sp.pathTo(15), std::vector<size_t>{1, 2, 3, 7, 11, 15}));
    }
 
    static void weightedGraphShortestPathTests()
@@ -48,7 +48,7 @@ namespace algorithm
       }
 
       //Testing paths
-      assert(equal(sp.pathTo(15), std::vector<size_t>{1, 5, 9, 10, 11, 15}));
+      assert(utils::equal(sp.pathTo(15), std::vector<size_t>{1, 5, 9, 10, 11, 15}));
    }
 
    static void dagShortestPathTests()
@@ -138,35 +138,35 @@ namespace algorithm
 
       Graph g = make2DPlane(dim, true);
       std::cout << std::endl << "[Shortest path] Unweighed graph of size " << dim * dim << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          ShortestPathFrom sp(g, 0);
       });
 
       WeightedGraph wg = make2DRandomWeightedPlane(dim, true);
       std::cout << std::endl << "[Shortest path] Weighed graph of size (Dijkstra) " << dim * dim << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          DijkstraShortestPathFrom sp(wg, 0);
       });
 
       std::cout << std::endl << "[Shortest path] Weighed graph of size (Bellman-Ford) " << dim * dim << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          BellmanFordShortestPathFrom sp(wg, 0);
       });
 
       WeightedDiGraph dag = make2DWeightedDiPlane(dim, true);
       std::cout << std::endl << "[Shortest path] Weighed graph of size (Topological) " << dim * dim << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          TopologicalShortestPathFrom sp(dag, 0);
       });
 
       std::cout << std::endl << "[Single shortest path] (Dijkstra) Unweighed graph of size " << dim * dim << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          AStarShortestPathFromTo sp(wg, noEstimations);
          sp.shortestPath(0, dim * dim - 1);
       });
 
       std::cout << std::endl << "[Single shortest path] (A*) Unweighed graph of size " << dim * dim << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          AStarShortestPathFromTo sp(wg, [dim](size_t from, size_t to) { return manhattanDistance(dim, from, to); });
          sp.shortestPath(0, dim * dim - 1);
       });

@@ -49,7 +49,7 @@ namespace algorithm
 
    private:
       template<typename Edge, typename VertexIt>
-      void dfsInOrder(DFS<Edge>& dfs, Range<VertexIt> const& range)
+      void dfsInOrder(DFS<Edge>& dfs, utils::Range<VertexIt> const& range)
       {
          for (auto v : range)
          {

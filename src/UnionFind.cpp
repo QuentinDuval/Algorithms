@@ -10,7 +10,7 @@ namespace algorithm
       : m_fathers(elementCount, 0)
       , m_weights(elementCount, 1)
    {
-      generate(m_fathers, 0, [](IdType in){ return in + 1; });
+      utils::generate(m_fathers, 0, [](IdType in){ return in + 1; });
    }
 
    UnionFind::IdType UnionFind::addId()
@@ -71,6 +71,6 @@ namespace algorithm
    }
 
    UnionFind::InvalidId::InvalidId(IdType id)
-      : std::domain_error("Invalid id: " + toString(id))
+      : std::domain_error("Invalid id: " + utils::toString(id))
    {}
 }

@@ -1,7 +1,10 @@
 #pragma once
+
 #include "DepthFirstSearch.h"
 #include "internal/GenericDiGraph.h"
 #include "utils/Algorithms.h"
+#include "utils/Range.h"
+
 #include <vector>
 
 
@@ -33,9 +36,9 @@ namespace algorithm
          dfs.postOrderFrom(from, [this](size_t v) { m_vertices.emplace_back(v); });
       }
 
-      Range<vertex_it> order() const
+      utils::Range<vertex_it> order() const
       {
-         return Range<vertex_it>{ rbegin(m_vertices), rend(m_vertices) };
+         return utils::Range<vertex_it>{ rbegin(m_vertices), rend(m_vertices) };
       }
 
    private:

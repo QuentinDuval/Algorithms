@@ -29,7 +29,7 @@ namespace algorithm
       assert(0 == adjacentCount(g, 3));
       assert(0 == adjacentCount(g, 4));
 
-      ExceptionChecker<InvalidVertex> tester;
+      utils::ExceptionChecker<InvalidVertex> tester;
       tester.assertE([&]{ g.addEdge({ 1, 5 }); });
       tester.assertE([&]{ g.addEdge({ 5, 1 }); });
       tester.assertE([&]{ g.adjacents(5); });

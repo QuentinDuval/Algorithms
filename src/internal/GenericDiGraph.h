@@ -74,25 +74,25 @@ namespace algorithm
          return m_adjacencyLists.size() - 1;
       }
 
-      Range<edge_it> edgesFrom(size_t v) const
+      utils::Range<edge_it> edgesFrom(size_t v) const
       {
          checkVertexId(v);
          auto b = begin(m_adjacencyLists[v]);
          auto e = end(m_adjacencyLists[v]);
-         return Range<edge_it>(b, e);
+         return utils::Range<edge_it>(b, e);
       }
 
-      Range<destination_it> adjacents(size_t v) const
+      utils::Range<destination_it> adjacents(size_t v) const
       {
          auto edges = edgesFrom(v);
          auto b = destination_it(begin(edges));
          auto e = destination_it(end(edges));
-         return Range<destination_it>(b, e);
+         return utils::Range<destination_it>(b, e);
       }
 
-      Range<vertex_it> vertices() const
+      utils::Range<vertex_it> vertices() const
       {
-         return Range<vertex_it>(0, vertexCount());
+         return utils::Range<vertex_it>(0, vertexCount());
       }
 
       template<typename ReadEdge>

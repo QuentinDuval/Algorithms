@@ -91,7 +91,7 @@ namespace algorithm
       double pathLength(size_t from, size_t to) const;
 
    private:
-      Matrix<double> m_weights;
+      utils::Matrix<double> m_weights;
    };
 
    //--------------------------------------------------------------------------

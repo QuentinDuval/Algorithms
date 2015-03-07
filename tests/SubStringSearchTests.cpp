@@ -32,10 +32,10 @@ namespace algorithm
       const size_t M = 50;
       const std::string text(N, 'a');
 
-      showTimeLog(std::cout, "1 b, 49 a", [&]{ search(text, "b" + std::string(M - 1, 'a')); });
-      showTimeLog(std::cout, "1 a, 49 b", [&]{ search(text, "a" + std::string(M - 1, 'b')); });
-      showTimeLog(std::cout, "49 a, 1 b", [&]{ search(text, std::string(M - 1, 'a') + "b"); });
-      showTimeLog(std::cout, "49 b, 1 a", [&]{ search(text, std::string(M - 1, 'b') + "a"); });
+      utils::showTimeLog(std::cout, "1 b, 49 a", [&]{ search(text, "b" + std::string(M - 1, 'a')); });
+      utils::showTimeLog(std::cout, "1 a, 49 b", [&]{ search(text, "a" + std::string(M - 1, 'b')); });
+      utils::showTimeLog(std::cout, "49 a, 1 b", [&]{ search(text, std::string(M - 1, 'a') + "b"); });
+      utils::showTimeLog(std::cout, "49 b, 1 a", [&]{ search(text, std::string(M - 1, 'b') + "a"); });
    }
 
    //--------------------------------------------------------------------------

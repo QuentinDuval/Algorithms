@@ -242,7 +242,7 @@ namespace algorithm
       std::vector<bool> marked(m_diGraph.vertexCount(), false);
       std::vector<size_t> sources(m_diGraph.vertexCount(), 0);
       std::vector<double> distances(m_diGraph.vertexCount(), std::numeric_limits<double>::max());
-      auto less = reverseComparison(comparingWith(GetSecond()));
+      auto less = utils::reverseComparison(utils::comparingWith(utils::GetSecond()));
       std::priority_queue<NodeWithDist, NodeWithDists, decltype(less)> priorityQueue(less);
 
       distances[from] = 0.;

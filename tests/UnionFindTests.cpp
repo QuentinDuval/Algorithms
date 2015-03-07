@@ -44,7 +44,7 @@ namespace algorithm
    {
       UnionFind uf(10);
 
-      ExceptionChecker<UnionFind::InvalidId> tester;
+      utils::ExceptionChecker<UnionFind::InvalidId> tester;
       tester.assertE([&]{ uf.connect(1, 11); });
       tester.assertE([&]{ uf.connect(11, 1); });
       tester.assertE([&]{ uf.connected(1, 11); });
@@ -68,14 +68,14 @@ namespace algorithm
          << size << " entries, " << links << " links)" << std::endl;
 
       std::vector<size_t> sources(links);
-      generate(sources, 0, [=](int i) { return (i + 1) % size; });
+      utils::generate(sources, 0, [=](int i) { return (i + 1) % size; });
       std::vector<size_t> destinations(sources);
 
-      shuffle(sources);
-      shuffle(destinations);
+      utils::shuffle(sources);
+      utils::shuffle(destinations);
 
       std::cout << "* Union-Find:" << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          UnionFind uf(size);
          for (size_t i = 0; i < links; ++i)
             uf.connect(sources[i], destinations[i]);
@@ -84,7 +84,7 @@ namespace algorithm
       });
 
       std::cout << "* Connected-Components:" << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          Graph g(size);
          for (size_t i = 0; i < links; ++i)
             g.addEdge({ sources[i], destinations[i] });
@@ -95,7 +95,7 @@ namespace algorithm
       });
 
       std::cout << "* Strongly Connected-Components:" << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          Graph g(size);
          for (size_t i = 0; i < links; ++i)
             g.addEdge({ sources[i], destinations[i] });

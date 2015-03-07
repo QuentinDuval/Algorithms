@@ -39,18 +39,18 @@ namespace algorithm
          for (size_t j = i; j != 0; j /= UCHAR_MAX)
             strings[i] += ('a' + j - 1);
       }
-      shuffle(strings);
+      utils::shuffle(strings);
 
       std::cout << std::endl << "[String trie timings]" << std::endl;
       StringTrie t;
 
       std::cout << "* Inserts" << std::endl;
-      showTime(std::cout, [&]() { for (auto& s : strings) t.insert(s); });
+      utils::showTime(std::cout, [&]() { for (auto& s : strings) t.insert(s); });
 
       std::cout << "* Searches" << std::endl;
-      showTime(std::cout, [&]() { for (auto& s : strings) t.search(s); });
+      utils::showTime(std::cout, [&]() { for (auto& s : strings) t.search(s); });
 
       std::cout << "* Removals" << std::endl;
-      showTime(std::cout, [&]() { for (auto& s : strings) t.remove(s); });
+      utils::showTime(std::cout, [&]() { for (auto& s : strings) t.remove(s); });
    }
 }

@@ -126,13 +126,13 @@ namespace algorithm
       DiGraph dg  = make2DTopLeftBottomRightPlane(dim, true);
 
       std::cout << "* Graph:" << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          SearchAlgo s(g);
          s.markFrom(0);
       });
 
       std::cout << "* Directed graph:" << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          SearchAlgo s(dg);
          s.markFrom(0);
       });
@@ -152,10 +152,10 @@ namespace algorithm
       
       DiGraph dg = make2DTopLeftBottomRightPlane(dim, true);
       std::cout << "* No cycle:" << std::endl;
-      showTime(std::cout, [&]{ DirectedCycle<Edge> s(dg); });
+      utils::showTime(std::cout, [&]{ DirectedCycle<Edge> s(dg); });
 
       dg.addEdge({dim * dim - 1, 0});
       std::cout << "* With cycle:" << std::endl;
-      showTime(std::cout, [&]{ DirectedCycle<Edge> s(dg); });
+      utils::showTime(std::cout, [&]{ DirectedCycle<Edge> s(dg); });
    }
 }

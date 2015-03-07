@@ -34,7 +34,7 @@ namespace algorithm
          for (size_t j = i; j != 0; j /= 27)
             randomStrings[i] += ('a' + j - 1);
       }
-      shuffle(randomStrings);
+      utils::shuffle(randomStrings);
 
       std::vector<std::string> sameStrings(dim, "aaa");
 
@@ -42,11 +42,11 @@ namespace algorithm
          << "(" << dim << " entries - in milliseconds)" << std::endl;
 
       std::cout << "* Radix sort (" << dim << ")" << std::endl;
-      showTime(std::cout, [=]() mutable { MSBSort::sort(randomStrings); });
-      showTime(std::cout, [=]() mutable { MSBSort::sort(sameStrings); });
+      utils::showTime(std::cout, [=]() mutable { MSBSort::sort(randomStrings); });
+      utils::showTime(std::cout, [=]() mutable { MSBSort::sort(sameStrings); });
 
       std::cout << "* System sort (" << dim << ")" << std::endl;
-      showTime(std::cout, [=]() mutable { std::sort(begin(randomStrings), end(randomStrings)); });
-      showTime(std::cout, [=]() mutable { std::sort(begin(sameStrings), end(sameStrings)); });
+      utils::showTime(std::cout, [=]() mutable { std::sort(begin(randomStrings), end(randomStrings)); });
+      utils::showTime(std::cout, [=]() mutable { std::sort(begin(sameStrings), end(sameStrings)); });
    }
 }

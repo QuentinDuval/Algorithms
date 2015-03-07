@@ -32,7 +32,7 @@ namespace algorithm
       {
          size_t bucketId = bucketIndex(k);
          auto& bucket = m_buckets[bucketId];
-         auto it = findIf(bucket, [&](Key const& key) { return m_comp(k, key); });
+         auto it = utils::findIf(bucket, [&](Key const& key) { return m_comp(k, key); });
          if (it == bucket.end())
             return end();
 
@@ -89,7 +89,7 @@ namespace algorithm
       bool insert_(Key const& k)
       {
          auto& bucket = m_buckets[bucketIndex(k)];
-         auto it = findIf(bucket, [&](Key const& key) { return m_comp(k, key); });
+         auto it = utils::findIf(bucket, [&](Key const& key) { return m_comp(k, key); });
          if (it != bucket.end())
             return false;
 

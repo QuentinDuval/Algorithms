@@ -10,7 +10,7 @@ namespace algorithm
    struct Simplex
    {
       using Vector = std::vector<double>;
-      using Matrix = Matrix<double>;
+      using Matrix = utils::Matrix<double>;
 
       //TODO - Return the allocation with the solution
       static double solve(Vector const& maxCoef, Matrix const& constraintsMatrix, Vector const& constraintsMaxValues);

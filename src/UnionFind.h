@@ -8,7 +8,7 @@
 namespace algorithm
 {
    class UnionFind
-      : public NonCopyable
+      : public utils::NonCopyable
    {
    public:
       using IdType = std::size_t;

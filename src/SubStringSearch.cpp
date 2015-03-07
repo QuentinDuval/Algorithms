@@ -148,7 +148,7 @@ namespace algorithm
       }
 
    private:
-      Matrix<size_t> m_dfa;
+      utils::Matrix<size_t> m_dfa;
       static const size_t radix = CHAR_MAX - CHAR_MIN;
    };
 

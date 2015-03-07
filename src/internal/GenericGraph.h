@@ -45,17 +45,17 @@ namespace algorithm
          return m_impl.addVertex();
       }
 
-      Range<edge_it> edgesFrom(size_t v) const
+      utils::Range<edge_it> edgesFrom(size_t v) const
       {
          return m_impl.edgesFrom(v);
       }
 
-      Range<destination_it> adjacents(size_t v) const
+      utils::Range<destination_it> adjacents(size_t v) const
       {
          return m_impl.adjacents(v);
       }
 
-      Range<vertex_it> vertices() const
+      utils::Range<vertex_it> vertices() const
       {
          return m_impl.vertices();
       }

@@ -75,7 +75,7 @@ namespace algorithm
    //--------------------------------------------------------------------------
 
    template<typename Key, typename Less = std::less<Key>>
-   using MinPriorityQueue = MaxPriorityQueue<Key, ReverseCompare<Less>>;
+   using MinPriorityQueue = MaxPriorityQueue<Key, utils::ReverseCompare<Less>>;
 
    //--------------------------------------------------------------------------
 
@@ -83,8 +83,8 @@ namespace algorithm
    class MaxPriorityIndexedQueue
    {
    public:
-      MaxPriorityIndexedQueue() : m_impl(comparingWith(GetSecond(), Less())) {}
-      explicit MaxPriorityIndexedQueue(Less less) : m_impl(comparingWith(GetSecond(), less)) {}
+      MaxPriorityIndexedQueue() : m_impl(utils::comparingWith(utils::GetSecond(), Less())) {}
+      explicit MaxPriorityIndexedQueue(Less less) : m_impl(utils::comparingWith(utils::GetSecond(), less)) {}
 
       void add(T k, Priority p)
       {
@@ -98,11 +98,11 @@ namespace algorithm
       size_t   size() const   { return m_impl.size(); }
 
    private:
-      MaxPriorityQueue<std::pair<T, Priority>, ComparingWith<GetSecond, Less>> m_impl;
+      MaxPriorityQueue<std::pair<T, Priority>, utils::ComparingWith<utils::GetSecond, Less>> m_impl;
    };
 
    template<typename T, typename Priority, typename Less = std::less<Priority>>
-   using MinPriorityIndexedQueue = MaxPriorityIndexedQueue<T, Priority, ReverseCompare<Less>>;
+   using MinPriorityIndexedQueue = MaxPriorityIndexedQueue<T, Priority, utils::ReverseCompare<Less>>;
 }
 
 #include "PriorityQueue.inl.h"

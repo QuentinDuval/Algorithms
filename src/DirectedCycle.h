@@ -60,7 +60,7 @@ namespace algorithm
             if (!onStack[v])
                return false;
 
-            auto it = findIf(stack, [v](Edge const& e){ return e.from() == v; });
+            auto it = utils::findIf(stack, [v](Edge const& e){ return e.from() == v; });
             std::copy(it, cend(stack), std::back_inserter(m_cycle));
             m_cycle.push_back(e);
             return true;

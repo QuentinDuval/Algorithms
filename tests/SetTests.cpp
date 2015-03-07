@@ -65,10 +65,10 @@ namespace algorithm
 
       BinaryTreeSet<size_t> set;
       std::vector<size_t> keys(30, 0);
-      generate(keys, 0, [](size_t i) { return i + 1; });
+      utils::generate(keys, 0, [](size_t i) { return i + 1; });
 
       std::vector<size_t> shuffledKeys(keys);
-      shuffle(shuffledKeys);
+      utils::shuffle(shuffledKeys);
       for (auto k : shuffledKeys) set.insert(k);
       assert(true == equal(begin(set), end(set), std::begin(keys)));
 
@@ -89,7 +89,7 @@ namespace algorithm
       RedBlackTreeSet<size_t> set;
       
       std::vector<size_t> keys(30, 0);
-      generate(keys, 0, [](size_t i) { return i + 1; });
+      utils::generate(keys, 0, [](size_t i) { return i + 1; });
       for (auto k : keys)
          set.insert(k);
 
@@ -125,23 +125,23 @@ namespace algorithm
       Set set;
 
       std::vector<size_t> keys(size, 0);
-      generate(keys, 0, [](size_t i) { return i + 1; });
-      shuffle(keys);
+      utils::generate(keys, 0, [](size_t i) { return i + 1; });
+      utils::shuffle(keys);
 
       std::cout << std::endl << "* Inserts:" << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          for (auto i : keys)
             set.insert(i);
       });
 
       std::cout << std::endl << "* Scan and search:" << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          for (auto k : set)
             assert(set.end() != set.find(k));
       });
 
       std::cout << std::endl << "* Deletes:" << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          for (auto k : keys)
             set.erase(set.find(k));
          //set.erase(set.begin(), set.end()); //TODO - for ordered sets

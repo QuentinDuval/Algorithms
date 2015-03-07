@@ -168,10 +168,10 @@ namespace algorithm
          for (size_t step = 1; step < colSize; step = step * 2)
          {
             auto out = temp.begin();
-            for (auto b = first; b != last; advance(b, last, step * 2))
+            for (auto b = first; b != last; utils::advance(b, last, step * 2))
             {
-               auto m = next(b, last, step);
-               auto e = next(m, last, step);
+               auto m = utils::next(b, last, step);
+               auto e = utils::next(m, last, step);
                merge(b, m, m, e, less, out);
             }
             std::copy(begin(temp), end(temp), first);
@@ -231,7 +231,7 @@ namespace algorithm
          std::advance(pivot, distribution(rg));
 
          auto lowEnd = std::partition(first, last, std::bind(less, _1, *pivot));
-         auto highIt = std::partition(lowEnd, last, logicalNot(std::bind(less, *pivot, _1)));
+         auto highIt = std::partition(lowEnd, last, utils::logicalNot(std::bind(less, *pivot, _1)));
 
          sortImpl(rg, first, lowEnd, less);
          sortImpl(rg, highIt, last, less);

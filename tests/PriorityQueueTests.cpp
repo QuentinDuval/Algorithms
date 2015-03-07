@@ -18,7 +18,7 @@ namespace algorithm
          queue.pop();
       }
 
-      ExceptionChecker<EmptyQueueException> checker;
+      utils::ExceptionChecker<EmptyQueueException> checker;
       checker.assertE([&queue]{ queue.pop(); });
       checker.assertE([&queue]{ queue.top(); });
    }

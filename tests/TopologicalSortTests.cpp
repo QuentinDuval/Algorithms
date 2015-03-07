@@ -36,7 +36,7 @@ namespace algorithm
       size_t dim = 1000;
       WeightedDiGraph dag = make2DWeightedDiPlane(dim, true);
       std::cout << std::endl << "[Topological sort] Graph of size " << dim * dim << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          TopologicalSort sort(dag);
       });
    }

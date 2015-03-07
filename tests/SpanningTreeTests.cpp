@@ -74,21 +74,21 @@ namespace algorithm
       WeightedGraph g = make2DRandomWeightedPlane(dim, true);
 
       std::cout << std::endl << "[Minimum spanning tree] Lazy prim's algorithm on " << dim * dim << " nodes." << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          LazyPrimMinimumSpanningTree spt(g);
          assert(1 == spt.connectedComponentCount());
          assert((dim * dim - 1) == spt.edges(0).size());
       });
 
       std::cout << std::endl << "[Minimum spanning tree] Eager prim's algorithm on " << dim * dim << " nodes." << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          EagerPrimMinimumSpanningTree spt(g);
          assert(1 == spt.connectedComponentCount());
          assert((dim * dim - 1) == spt.edges(0).size());
       });
 
       std::cout << std::endl << "[Minimum spanning tree] Kruskal's algorithm on " << dim * dim << " nodes." << std::endl;
-      showTime(std::cout, [&]{
+      utils::showTime(std::cout, [&]{
          KruskalMinimumSpanningTree spt(g);
          assert((dim * dim - 1) == spt.edges().size());
       });
