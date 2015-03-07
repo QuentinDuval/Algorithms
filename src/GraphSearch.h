@@ -38,23 +38,14 @@ namespace algorithm
 
       void markFrom(size_t v)
       {
-         static auto nullListener = [](Edge const&){ return false; };
-         searchImpl(v, nullListener);
+         static auto nullNodeList = [](size_t){ return false; };
+         static auto nullPathList = [](Edge const&){ return false; };
+         searchImpl(v, nullNodeList, nullPathList);
       }
 
       void markFrom(size_t v, OnDiscovered onDiscovered)
       {
-         if (!isMarked(v))
-            onDiscovered(v);
-
-         auto processEdge = [&](Edge const& e)
-         {
-            auto v = e.to();
-            if (!isMarked(v))
-               return onDiscovered(v);
-            return false;
-         };
-         searchImpl(v, processEdge);
+         searchImpl(v, onDiscovered, [&](Edge const& e){ return false; });
       }
 
       void pathsFrom(size_t v, OnProcessEdge onPathTaken)
@@ -66,7 +57,7 @@ namespace algorithm
                return onPathTaken(e);
             return false;
          };
-         searchImpl(v, processEdge);
+         searchImpl(v, [](size_t v) { return false; }, processEdge);
       }
 
    protected:
@@ -79,7 +70,7 @@ namespace algorithm
          ++m_count;
       }
 
-      virtual void searchImpl(size_t v, OnProcessEdge listener) = 0;
+      virtual void searchImpl(size_t v, OnDiscovered, OnProcessEdge) = 0;
 
    private:
       size_t m_count;

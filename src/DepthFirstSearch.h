@@ -18,6 +18,8 @@ namespace algorithm
    public:
       using DiGraph = GenericDiGraph<Edge>;
       using Graph = GenericGraph<Edge>;
+
+      using OnDiscovered = GraphSearch<Edge>::OnDiscovered;
       using OnProcessed = GraphSearch<Edge>::OnProcessed;
       using OnProcessEdge = GraphSearch<Edge>::OnProcessEdge;
 
@@ -33,31 +35,30 @@ namespace algorithm
 
       void postOrderFrom(size_t v, OnProcessed postOrder)
       {
-         searchFrom(v, postOrder, [](Edge const&){ return false; });
+         searchFrom(v, [](size_t){ return false; }, postOrder, [](Edge const&){ return false; });
       }
 
-      void searchFrom(size_t v, OnProcessed postOrder, OnProcessEdge processEdge)
+      void searchFrom(size_t v, OnDiscovered onDiscovered, OnProcessed postOrder, OnProcessEdge processEdge)
       {
-         if (isMarked(v))
-            return;
-
-         mark(v);
-         searchImplIter(v, postOrder, processEdge);
+         if (!isMarked(v))
+            searchImplIter(v, onDiscovered, postOrder, processEdge);
       }
 
    private:
-      void searchImpl(size_t v, OnProcessEdge processEdge) override
+      void searchImpl(size_t v, OnDiscovered onDiscovered, OnProcessEdge processEdge) override
       {
-         searchFrom(v, [](size_t){ return false; }, processEdge);
+         searchFrom(v, onDiscovered, [](size_t){ return false; }, processEdge);
       }
 
       /** Iterative implementation emulating the stack */
-      void searchImplIter(size_t v, OnProcessed postOrder, OnProcessEdge processEdge)
+      void searchImplIter(size_t v, OnDiscovered onDiscovered, OnProcessed postOrder, OnProcessEdge processEdge)
       {
          auto edges = m_graph.edgesFrom(v);
          using StackedRange = std::pair<size_t, decltype(edges)>;
          std::stack<StackedRange, std::vector<StackedRange>> stack;
          stack.emplace(v, edges);
+         mark(v);
+         onDiscovered(v);
 
          while (!stack.empty())
          {
@@ -79,6 +80,7 @@ namespace algorithm
             if (!isMarked(c))
             {
                mark(c);
+               onDiscovered(c);
                auto nextRange = m_graph.edgesFrom(c);
                stack.emplace(c, nextRange);
             }

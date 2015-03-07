@@ -13,6 +13,7 @@ namespace algorithm
    {
    public:
       using DiGraph = GenericDiGraph<Edge>;
+      using OnDiscovered = GraphSearch<Edge>::OnDiscovered;
       using OnProcessEdge = GraphSearch<Edge>::OnProcessEdge;
 
    public:
@@ -26,7 +27,7 @@ namespace algorithm
       {}
 
    private:
-      void searchImpl(size_t v, OnProcessEdge processEdge) override
+      void searchImpl(size_t v, OnDiscovered onDiscovered, OnProcessEdge processEdge) override
       {
          if (isMarked(v))
             return;
@@ -34,6 +35,7 @@ namespace algorithm
          std::queue<size_t> nodesToScan;
          nodesToScan.push(v);
          mark(v);
+         onDiscovered(v);
 
          while (!nodesToScan.empty())
          {
@@ -50,6 +52,7 @@ namespace algorithm
                   continue;
                
                mark(a);
+               onDiscovered(a);
                nodesToScan.push(a);
             }
          }

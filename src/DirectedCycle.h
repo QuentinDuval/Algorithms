@@ -44,6 +44,12 @@ namespace algorithm
          std::vector<Edge> stack;
          std::vector<bool> onStack(g.vertexCount(), false);
 
+         auto preOrder = [&](size_t v)
+         {
+            onStack[v] = true;
+            return false;
+         };
+
          auto postOrder = [&](size_t v)
          {
             onStack[v] = false;
@@ -62,17 +68,14 @@ namespace algorithm
                m_cycle.push_back(e);
                return true;
             }
-
-            if (!dfs.isMarked(v))
-            {
-               onStack[v] = true;
+            
+            if (onStack[e.from()])
                stack.push_back(e);
-            }
             return false;
          };
 
          onStack[from] = true;
-         dfs.searchFrom(from, postOrder, processEdge);
+         dfs.searchFrom(from, preOrder, postOrder, processEdge);
       }
 
    private:
