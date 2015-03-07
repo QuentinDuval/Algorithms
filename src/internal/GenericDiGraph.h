@@ -1,7 +1,7 @@
 #pragma once
 #include "GraphExceptions.h"
 #include "utils/Algorithms.h"
-#include "utils/Utils.h"
+#include "utils/Range.h"
 
 #include <istream>
 #include <iterator>
