@@ -88,9 +88,7 @@ namespace algorithm
       g.addEdge({ 9, 2 });
       DirectedCycle<Edge> c3(g);
       assert(true == c3.hasCycle());
-
-      for (auto e : c3.cycle())
-         std::cout << e << std::endl;
+      assert(8 == c3.cycle().size());
    }
 
    void graphSearchTests()
