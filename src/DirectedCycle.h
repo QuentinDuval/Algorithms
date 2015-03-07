@@ -62,12 +62,13 @@ namespace algorithm
                m_cycle.push_back(e);
                return true;
             }
-            else
+
+            if (!dfs.isMarked(v))
             {
                onStack[v] = true;
                stack.push_back(e);
-               return false;
             }
+            return false;
          };
 
          onStack[from] = true;
