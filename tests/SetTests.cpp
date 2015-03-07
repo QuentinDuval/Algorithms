@@ -1,4 +1,4 @@
-#include "tests/SetTests.h"
+#include "SetTests.h"
 
 #include "HashSet.h"
 #include "Set.h"

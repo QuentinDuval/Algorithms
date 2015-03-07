@@ -1,4 +1,4 @@
-#include "tests/StringTrieTests.h"
+#include "StringTrieTests.h"
 
 #include "StringTrie.h"
 #include "utils/Algorithms.h"

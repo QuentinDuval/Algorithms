@@ -1,4 +1,4 @@
-#include "tests/SortTests.h"
+#include "SortTests.h"
 
 #include "Sort.h"
 #include "utils/Algorithms.h"

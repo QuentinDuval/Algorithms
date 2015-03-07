@@ -1,4 +1,4 @@
-#include "tests/BinarySearchTests.h"
+#include "BinarySearchTests.h"
 
 #include "BinarySearch.h"
 

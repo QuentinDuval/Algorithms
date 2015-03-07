@@ -1,9 +1,9 @@
-#include "tests/GraphTests.h"
+#include "GraphTests.h"
 
 #include "TopologicalSort.h"
 #include "DiGraph.h"
 #include "WeightedDiGraph.h"
-#include "tests/GraphTestUtils.h"
+#include "GraphTestUtils.h"
 #include "utils/Algorithms.h"
 #include "utils/Timer.h"
 

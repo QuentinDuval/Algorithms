@@ -1,4 +1,4 @@
-#include "tests/LinkedListTests.h"
+#include "LinkedListTests.h"
 
 #include "LinkedList.h"
 #include "utils/Algorithms.h"

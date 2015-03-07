@@ -1,4 +1,4 @@
-#include "tests/StringSortTests.h"
+#include "StringSortTests.h"
 
 #include "Sort.h"
 #include "StringSort.h"

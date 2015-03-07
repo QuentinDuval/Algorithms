@@ -1,4 +1,4 @@
-#include "tests/UnionFindTests.h"
+#include "UnionFindTests.h"
 
 #include "ConnectedComponents.h"
 #include "Graph.h"

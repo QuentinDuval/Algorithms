@@ -1,9 +1,9 @@
-#include "tests/GraphTests.h"
+#include "GraphTests.h"
 
 #include "ConnectedComponents.h"
 #include "Graph.h"
 #include "WeightedGraph.h"
-#include "tests/GraphTestUtils.h"
+#include "GraphTestUtils.h"
 #include "utils/TestUtils.h"
 #include "utils/Timer.h"
 

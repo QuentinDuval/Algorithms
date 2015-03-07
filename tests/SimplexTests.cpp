@@ -1,4 +1,4 @@
-#include "tests/SimplexTests.h"
+#include "SimplexTests.h"
 
 #include "Simplex.h"
 #include <iostream>

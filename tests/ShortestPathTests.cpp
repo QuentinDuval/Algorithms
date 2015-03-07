@@ -1,9 +1,9 @@
-#include "tests/ShortestPathTests.h"
+#include "ShortestPathTests.h"
 
 #include "DiGraph.h"
 #include "Graph.h"
 #include "ShortestPath.h"
-#include "tests/GraphTestUtils.h"
+#include "GraphTestUtils.h"
 #include "utils/Algorithms.h"
 #include "utils/Timer.h"
 

@@ -1,4 +1,4 @@
-#include "tests/GraphTests.h"
+#include "GraphTests.h"
 
 #include "DiGraph.h"
 #include "Graph.h"
