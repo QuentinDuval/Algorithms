@@ -7,6 +7,7 @@ namespace algorithm
    class Edge
    {
    public:
+      Edge();
       Edge(size_t from, size_t to);
       size_t from() const;
       size_t to() const;
@@ -27,6 +28,7 @@ namespace algorithm
    class WeightedEdge
    {
    public:
+      WeightedEdge();
       WeightedEdge(size_t from, size_t to, double weight);
       ~WeightedEdge() = default;
 

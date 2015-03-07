@@ -1,6 +1,7 @@
 #include "GraphTests.h"
 
 #include "BreathFirstSearch.h"
+#include "Cycle.h"
 #include "DepthFirstSearch.h"
 #include "DirectedCycle.h"
 #include "Graph.h"
@@ -74,6 +75,21 @@ namespace algorithm
 
    static void cycleTests()
    {
+      Graph g(10);
+      for (size_t i = 1; i < 10; ++i)
+         g.addEdge({ i - 1, i });
+
+      Cycle<Edge> c1(g);
+      assert(false == c1.hasCycle());
+
+      g.addEdge({ 2, 9 });
+      Cycle<Edge> c2(g);
+      assert(true == c2.hasCycle());
+      assert(8 == c2.cycle().size());
+   }
+
+   static void directedCycleTests()
+   {
       DiGraph g(10);
       for (size_t i = 1; i < 10; ++i)
          g.addEdge({ i - 1, i });
@@ -96,6 +112,7 @@ namespace algorithm
       unweightedGraphSearchTests();
       weightedGraphSearchTests();
       cycleTests();
+      directedCycleTests();
    }
 
    //--------------------------------------------------------------------------

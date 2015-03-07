@@ -3,6 +3,10 @@
 
 namespace algorithm
 {
+   Edge::Edge()
+      : Edge(0, 0)
+   {}
+
    Edge::Edge(size_t from, size_t to)
       : m_from(from), m_to(to)
    {}
@@ -23,6 +27,10 @@ namespace algorithm
    }
 
    //--------------------------------------------------------------------------
+
+   WeightedEdge::WeightedEdge()
+      : WeightedEdge(0, 0, 0.)
+   {}
 
    WeightedEdge::WeightedEdge(size_t from, size_t to, double weight)
       : m_from(from)
