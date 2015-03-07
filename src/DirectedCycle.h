@@ -44,30 +44,34 @@ namespace algorithm
          std::vector<Edge> stack;
          std::vector<bool> onStack(g.vertexCount(), false);
 
-         auto postOrder = [&](size_t v){
+         auto postOrder = [&](size_t v)
+         {
             onStack[v] = false;
             if (!stack.empty())
                stack.pop_back();
+            return false;
          };
 
-         auto onPathTaken = [&](Edge const& e) {
-            onStack[e.to()] = true;
-            stack.push_back(e);
-         };
-
-         auto onAlreadyMarked = [&](Edge const& e) {
-            size_t v = e.to();
-            if (!onStack[v])
+         auto processEdge = [&](Edge const& e)
+         {
+            auto v = e.to();
+            if (onStack[v])
+            {
+               auto startCycle = utils::findIf(stack, [v](Edge const& e){ return e.from() == v; });
+               std::copy(startCycle, cend(stack), std::back_inserter(m_cycle));
+               m_cycle.push_back(e);
+               return true;
+            }
+            else
+            {
+               onStack[v] = true;
+               stack.push_back(e);
                return false;
-
-            auto it = utils::findIf(stack, [v](Edge const& e){ return e.from() == v; });
-            std::copy(it, cend(stack), std::back_inserter(m_cycle));
-            m_cycle.push_back(e);
-            return true;
+            }
          };
 
          onStack[from] = true;
-         dfs.searchFrom(from, postOrder, onAlreadyMarked, onPathTaken);
+         dfs.searchFrom(from, postOrder, processEdge);
       }
 
    private:

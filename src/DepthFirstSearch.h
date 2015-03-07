@@ -18,9 +18,8 @@ namespace algorithm
    public:
       using DiGraph = GenericDiGraph<Edge>;
       using Graph = GenericGraph<Edge>;
-      using OnMarked = GraphSearch<Edge>::OnMarked;
-      using OnPathTaken = GraphSearch<Edge>::OnPathTaken;
-      using OnAlreadyFound = std::function<bool(Edge const&)>;
+      using OnProcessed = GraphSearch<Edge>::OnProcessed;
+      using OnProcessEdge = GraphSearch<Edge>::OnProcessEdge;
 
    public:
       explicit DFS(DiGraph const& g)
@@ -32,28 +31,28 @@ namespace algorithm
          : DFS(g.toDiGraph())
       {}
 
-      void postOrderFrom(size_t v, OnMarked postOrder)
+      void postOrderFrom(size_t v, OnProcessed postOrder)
       {
-         searchFrom(v, postOrder, [](Edge const&){ return false; }, [](Edge const&){});
+         searchFrom(v, postOrder, [](Edge const&){ return false; });
       }
 
-      void searchFrom(size_t v, OnMarked postOrder, OnAlreadyFound onAlreadyMarked, OnPathTaken pathTaken)
+      void searchFrom(size_t v, OnProcessed postOrder, OnProcessEdge processEdge)
       {
          if (isMarked(v))
             return;
 
          mark(v);
-         searchImplIter(v, postOrder, onAlreadyMarked, pathTaken);
+         searchImplIter(v, postOrder, processEdge);
       }
 
    private:
-      void searchImpl(size_t v, OnPathTaken listener) override
+      void searchImpl(size_t v, OnProcessEdge processEdge) override
       {
-         searchFrom(v, [](size_t){}, [](Edge const&){ return false; }, listener);
+         searchFrom(v, [](size_t){ return false; }, processEdge);
       }
 
       /** Iterative implementation emulating the stack */
-      void searchImplIter(size_t v, OnMarked onAdjVisited, OnAlreadyFound onAlreadyMarked, OnPathTaken listener)
+      void searchImplIter(size_t v, OnProcessed postOrder, OnProcessEdge processEdge)
       {
          auto edges = m_graph.edgesFrom(v);
          using StackedRange = std::pair<size_t, decltype(edges)>;
@@ -65,120 +64,28 @@ namespace algorithm
             auto& range = stack.top().second;
             if (range.empty())
             {
-               onAdjVisited(stack.top().first);
+               postOrder(stack.top().first);
                stack.pop();
                continue;
             }
             
             auto e = range.begin();
-            auto c = e->to();
             range.pop();
+
+            auto c = e->to();
+            if (processEdge(*e))
+               return;
 
             if (!isMarked(c))
             {
-               listener(*e);
                mark(c);
                auto nextRange = m_graph.edgesFrom(c);
                stack.emplace(c, nextRange);
             }
-            else if (onAlreadyMarked(*e))
-            {
-               return;
-            }
          }
-      }
-
-      /** Alternate iterative implementation when the post-order is not needed (faster) */
-      void searchImplIter2(size_t v, OnPathTaken onAlreadyMarked, OnPathTaken listener)
-      {
-         auto initEdges = reverseRange(m_graph.edgesFrom(v));
-         std::vector<Edge> stack(begin(initEdges), end(initEdges));
-         
-         while (!stack.empty())
-         {
-            auto e = stack.back();
-            auto c = e.to();
-            stack.pop_back();
-            if (isMarked(c))
-               continue;
-
-            listener(e);
-            mark(c);
-            for (auto ne : reverseRange(m_graph.edgesFrom(c)))
-            {
-               if (!isMarked(ne.to()))
-                  stack.push_back(ne);
-               else
-                  onAlreadyMarked(ne);
-            }
-         }
-      }
-
-      /** Recursive implementation: leads to stack overflows for big graphs */
-      void searchImplRec(size_t v, OnMarked onAdjVisited, OnAlreadyFound onAlreadyMarked, OnPathTaken listener)
-      {
-         for (auto e : m_graph.edgesFrom(v))
-         {
-            auto a = e.to();
-            if (isMarked(a))
-            {
-               if (onAlreadyMarked(e));
-                  return;
-               continue;
-            }
-
-            listener(e);
-            mark(a);
-            searchImplRec(a, onAdjVisited, onAlreadyMarked, listener);
-         }
-         onAdjVisited(v);
       }
 
    private:
       DiGraph const& m_graph;
-   };
-
-   //--------------------------------------------------------------------------
-
-   template<typename T>
-   class SymbolDepthFirstSearch
-   {
-   public:
-      using OnMarked = std::function<void(T const&)>;
-
-   public:
-      explicit SymbolDepthFirstSearch(SymbolGraph<T> const& g)
-         : m_dfs(g.underlyingGraph())
-         , m_graph(g)
-      {}
-
-      ~SymbolDepthFirstSearch() = default;
-
-      void searchFrom(T const& v)
-      {
-         static OnMarked nullListener = [](T const&){};
-         searchFrom(v, nullListener);
-      }
-
-      void searchFrom(T const& v, OnMarked listener)
-      {
-         size_t vid = m_graph.idFromSymbol(v);
-         m_dfs.markFrom(vid, [this, &listener](size_t v){ listener(m_graph.symbolFromId(v)); });
-      }
-
-      bool isMarked(T const& v) const
-      {
-         size_t vid = m_graph.idFromSymbol(v);
-         return m_dfs.isMarked(vid);
-      }
-
-      bool allMarked() const
-      {
-         return m_dfs.allMarked();
-      }
-
-   private:
-      DFS<Edge> m_dfs;
-      SymbolGraph<T> const& m_graph;
    };
 }

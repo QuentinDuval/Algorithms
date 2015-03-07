@@ -24,7 +24,10 @@ namespace algorithm
          for (size_t i : g.vertices())
          {
             if (!dfs.isMarked(i))
-               dfs.postOrderFrom(i, [this](size_t v) { m_vertices.emplace_back(v); });
+               dfs.postOrderFrom(i, [this](size_t v) {
+                  m_vertices.emplace_back(v);
+                  return false;
+               });
          }
       }
 
@@ -33,7 +36,10 @@ namespace algorithm
       {
          DFS<Edge> dfs(g);
          m_vertices.reserve(g.vertexCount());
-         dfs.postOrderFrom(from, [this](size_t v) { m_vertices.emplace_back(v); });
+         dfs.postOrderFrom(from, [this](size_t v) {
+            m_vertices.emplace_back(v);
+            return false;
+         });
       }
 
       utils::Range<vertex_it> order() const

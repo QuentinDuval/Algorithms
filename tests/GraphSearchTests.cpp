@@ -19,7 +19,7 @@ namespace algorithm
    void runTest(GraphSearch<Edge>& search, size_t from, std::string const& expected)
    {
       std::ostringstream str;
-      auto out = [&str](size_t v) { str << v; };
+      auto out = [&str](size_t v) { str << v; return false; };
       search.markFrom(from, out);
       assert(expected == str.str());
    }
@@ -93,28 +93,11 @@ namespace algorithm
          std::cout << e << std::endl;
    }
 
-   static void symbolGraphSearchTests()
-   {
-      auto inputs = { "a", "b", "c", "d", "e" };
-      SymbolGraph<std::string> g(begin(inputs), end(inputs));
-      g.addEdge("a", "b");
-      g.addEdge("a", "c");
-      g.addEdge("d", "e");
-
-      std::ostringstream str;
-      auto out = [&str](std::string const& v) { str << v; };
-      SymbolDepthFirstSearch<std::string> dfs(g);
-      dfs.searchFrom("a", out);
-      dfs.searchFrom("d", out);
-      assert("abcde" == str.str());
-   }
-
    void graphSearchTests()
    {
       unweightedGraphSearchTests();
       weightedGraphSearchTests();
       cycleTests();
-      symbolGraphTests();
    }
 
    //--------------------------------------------------------------------------

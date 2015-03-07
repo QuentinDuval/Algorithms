@@ -13,7 +13,7 @@ namespace algorithm
    {
    public:
       using DiGraph = GenericDiGraph<Edge>;
-      using OnPathTaken = GraphSearch<Edge>::OnPathTaken;
+      using OnProcessEdge = GraphSearch<Edge>::OnProcessEdge;
 
    public:
       explicit BFS(DiGraph const& g)
@@ -26,7 +26,7 @@ namespace algorithm
       {}
 
    private:
-      void searchImpl(size_t v, OnPathTaken listener) override
+      void searchImpl(size_t v, OnProcessEdge processEdge) override
       {
          if (isMarked(v))
             return;
@@ -43,10 +43,12 @@ namespace algorithm
             for (auto e : m_graph.edgesFrom(current))
             {
                auto a = e.to();
+               if (processEdge(e))
+                  return;
+
                if (isMarked(a))
                   continue;
                
-               listener(e);
                mark(a);
                nodesToScan.push(a);
             }

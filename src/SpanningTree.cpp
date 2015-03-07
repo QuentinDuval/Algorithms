@@ -17,7 +17,7 @@ namespace algorithm
             continue;
 
          Edges edges;
-         dfs.pathsFrom(v, [&edges](Edge const& e){ edges.push_back(e); });
+         dfs.pathsFrom(v, [&edges](Edge const& e){ edges.push_back(e); return false; });
          m_trees.emplace_back(std::move(edges));
       }
    }

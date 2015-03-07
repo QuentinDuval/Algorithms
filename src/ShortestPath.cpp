@@ -30,6 +30,7 @@ namespace algorithm
       bfs.pathsFrom(from, [this](Edge const& e){
          m_sources[e.to()] = e.from();
          m_marked[e.to()] = true;
+         return false;
       });
    }
 

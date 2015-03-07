@@ -56,7 +56,11 @@ namespace algorithm
             if (dfs.isMarked(v))
                continue;
 
-            dfs.markFrom(v, [this](size_t w) { m_componentIds[w] = m_componentCount; });
+            dfs.markFrom(v, [this](size_t w)
+            {
+               m_componentIds[w] = m_componentCount;
+               return false;
+            });
             ++m_componentCount;
          }
       }

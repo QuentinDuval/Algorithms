@@ -9,8 +9,14 @@ namespace algorithm
    class GraphSearch
    {
    public:
-      using OnMarked = std::function<void(size_t)>;
-      using OnPathTaken = std::function<void(Edge const&)>;
+      /** Called upon starting processing a vertex */
+      using OnDiscovered = std::function<bool(size_t)>;
+
+      /** Called upon discovering an edge */
+      using OnProcessEdge = std::function<bool(Edge const&)>;
+
+      /** Called upon finishing processing a vertex */
+      using OnProcessed = std::function<bool(size_t)>;
 
    public:
       GraphSearch(size_t vertexCount)
@@ -30,36 +36,50 @@ namespace algorithm
          return m_count == m_marked.size();
       }
 
+      void markFrom(size_t v)
+      {
+         static auto nullListener = [](Edge const&){ return false; };
+         searchImpl(v, nullListener);
+      }
+
+      void markFrom(size_t v, OnDiscovered onDiscovered)
+      {
+         if (!isMarked(v))
+            onDiscovered(v);
+
+         auto processEdge = [&](Edge const& e)
+         {
+            auto v = e.to();
+            if (!isMarked(v))
+               return onDiscovered(v);
+            return false;
+         };
+         searchImpl(v, processEdge);
+      }
+
+      void pathsFrom(size_t v, OnProcessEdge onPathTaken)
+      {
+         auto processEdge = [&](Edge const& e)
+         {
+            auto v = e.to();
+            if (!isMarked(v))
+               return onPathTaken(e);
+            return false;
+         };
+         searchImpl(v, processEdge);
+      }
+
+   protected:
       void mark(size_t v)
       {
          if (v >= m_marked.size())
             throw InvalidVertex(v);
+
          m_marked[v] = true;
          ++m_count;
       }
 
-      void markFrom(size_t v)
-      {
-         static auto nullListener = [](Edge const&){};
-         searchImpl(v, nullListener);
-      }
-
-      void markFrom(size_t v, OnMarked onVertexMarked)
-      {
-         if (!isMarked(v))
-            onVertexMarked(v);
-
-         auto listener = [onVertexMarked](Edge const& e){ onVertexMarked(e.to()); };
-         searchImpl(v, listener);
-      }
-
-      void pathsFrom(size_t v, OnPathTaken listener)
-      {
-         searchImpl(v, listener);
-      }
-
-   private:
-      virtual void searchImpl(size_t v, OnPathTaken listener) = 0;
+      virtual void searchImpl(size_t v, OnProcessEdge listener) = 0;
 
    private:
       size_t m_count;
