@@ -31,8 +31,8 @@ namespace algorithm
       }
 
    private:
-      destination_it(edge_it const& it) : m_edgeIt(it) {}
-      edge_it m_edgeIt;
+      destination_it(const_edge_it const& it) : m_edgeIt(it) {}
+      const_edge_it m_edgeIt;
       friend GenericDiGraph<Edge>;
    };
 
