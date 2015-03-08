@@ -50,6 +50,8 @@ namespace algorithm
       ~CapacityEdge() = default;
 
       double flow() const;
+      void addFlow(double f);
+
       double capacity() const;
       CapacityEdge reverse() const;
 

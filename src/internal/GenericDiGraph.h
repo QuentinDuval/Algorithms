@@ -39,7 +39,8 @@ namespace algorithm
 
    public:
       using AdjList = std::vector<Edge>;
-      using edge_it = typename AdjList::const_iterator;
+      using edge_it = typename AdjList::iterator;
+      using const_edge_it = typename AdjList::const_iterator;
       struct destination_it;
       struct vertex_it;
 
@@ -74,12 +75,20 @@ namespace algorithm
          return m_adjacencyLists.size() - 1;
       }
 
-      utils::Range<edge_it> edgesFrom(size_t v) const
+      utils::Range<edge_it> edgesFrom(size_t v)
       {
          checkVertexId(v);
          auto b = begin(m_adjacencyLists[v]);
          auto e = end(m_adjacencyLists[v]);
          return utils::Range<edge_it>(b, e);
+      }
+
+      utils::Range<const_edge_it> edgesFrom(size_t v) const
+      {
+         checkVertexId(v);
+         auto b = begin(m_adjacencyLists[v]);
+         auto e = end(m_adjacencyLists[v]);
+         return utils::Range<const_edge_it>(b, e);
       }
 
       utils::Range<destination_it> adjacents(size_t v) const

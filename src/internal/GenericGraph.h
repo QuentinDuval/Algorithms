@@ -17,6 +17,7 @@ namespace algorithm
    public:
       using DiGraphImpl = GenericDiGraph<Edge>;
       using edge_it = typename DiGraphImpl::edge_it;
+      using const_edge_it = typename DiGraphImpl::const_edge_it;
       using vertex_it = typename DiGraphImpl::vertex_it;
       using destination_it = typename DiGraphImpl::destination_it;
 
@@ -45,7 +46,12 @@ namespace algorithm
          return m_impl.addVertex();
       }
 
-      utils::Range<edge_it> edgesFrom(size_t v) const
+      utils::Range<edge_it> edgesFrom(size_t v)
+      {
+         return m_impl.edgesFrom(v);
+      }
+
+      utils::Range<const_edge_it> edgesFrom(size_t v) const
       {
          return m_impl.edgesFrom(v);
       }

@@ -74,6 +74,11 @@ namespace algorithm
       return m_flow;
    }
 
+   void CapacityEdge::addFlow(double f)
+   {
+      m_flow += f;
+   }
+
    double CapacityEdge::capacity() const
    {
       return m_capacity;
