@@ -26,6 +26,11 @@ namespace algorithm
       return Edge(to(), from());
    }
 
+   std::ostream& operator<< (std::ostream& os, Edge const& e)
+   {
+      return os << e.from() << " " << e.to();
+   }
+
    //--------------------------------------------------------------------------
 
    WeightedEdge::WeightedEdge()
@@ -45,6 +50,11 @@ namespace algorithm
    WeightedEdge WeightedEdge::reverse() const
    {
       return WeightedEdge(to(), from(), m_weight);
+   }
+
+   std::ostream& operator<< (std::ostream& os, WeightedEdge const& e)
+   {
+      return os << e.from() << " " << e.to() << " " << e.weight();
    }
 
    //--------------------------------------------------------------------------
@@ -71,6 +81,13 @@ namespace algorithm
 
    CapacityEdge CapacityEdge::reverse() const
    {
-      return CapacityEdge(to(), from(), capacity());
+      CapacityEdge reversed(to(), from(), capacity());
+      reversed.m_flow = m_capacity - m_flow;
+      return reversed;
+   }
+
+   std::ostream& operator<< (std::ostream& os, CapacityEdge const& e)
+   {
+      return os << e.from() << " " << e.to() << " " << e.capacity();
    }
 }

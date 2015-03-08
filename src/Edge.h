@@ -18,10 +18,7 @@ namespace algorithm
       size_t m_to;
    };
 
-   inline std::ostream& operator<< (std::ostream& os, Edge const& e)
-   {
-      return os << e.from() << " " << e.to();
-   }
+   std::ostream& operator<< (std::ostream& os, Edge const& e);
 
    //--------------------------------------------------------------------------
 
@@ -40,10 +37,7 @@ namespace algorithm
       double m_weight;
    };
 
-   inline std::ostream& operator<< (std::ostream& os, WeightedEdge const& e)
-   {
-      return os << e.from() << " " << e.to() << " " << e.weight();
-   }
+   std::ostream& operator<< (std::ostream& os, WeightedEdge const& e);
 
    //--------------------------------------------------------------------------
 
@@ -64,9 +58,6 @@ namespace algorithm
       double m_capacity;
    };
 
-   inline std::ostream& operator<< (std::ostream& os, CapacityEdge const& e)
-   {
-      return os << e.from() << " " << e.to() << " " << e.capacity();
-   }
+   std::ostream& operator<< (std::ostream& os, CapacityEdge const& e);
 }
 
