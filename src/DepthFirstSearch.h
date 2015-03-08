@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GraphSearch.h"
-#include "SymbolGraph.h"
 #include "internal/GenericDiGraph.h"
 #include "internal/GenericGraph.h"
 
