@@ -42,7 +42,7 @@ namespace algorithm
             auto current = nodesToScan.front();
             nodesToScan.pop();
 
-            for (auto e : m_graph.edgesFrom(current))
+            for (auto& e : m_graph.edgesFrom(current))
             {
                auto a = e.to();
                if (processEdge(e))
