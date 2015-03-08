@@ -33,20 +33,9 @@ namespace algorithm
    {}
 
    WeightedEdge::WeightedEdge(size_t from, size_t to, double weight)
-      : m_from(from)
-      , m_to(to)
+      : Edge(from, to)
       , m_weight(weight)
    {}
-
-   size_t WeightedEdge::from() const
-   {
-      return m_from;
-   }
-
-   size_t WeightedEdge::to() const
-   {
-      return m_to;
-   }
 
    double WeightedEdge::weight() const
    {
@@ -56,5 +45,32 @@ namespace algorithm
    WeightedEdge WeightedEdge::reverse() const
    {
       return WeightedEdge(to(), from(), m_weight);
+   }
+
+   //--------------------------------------------------------------------------
+
+   CapacityEdge::CapacityEdge()
+      : CapacityEdge(0, 0, 0.)
+   {}
+
+   CapacityEdge::CapacityEdge(size_t from, size_t to, double capacity)
+      : Edge(from, to)
+      , m_flow(0.)
+      , m_capacity(capacity)
+   {}
+
+   double CapacityEdge::flow() const
+   {
+      return m_flow;
+   }
+
+   double CapacityEdge::capacity() const
+   {
+      return m_capacity;
+   }
+
+   CapacityEdge CapacityEdge::reverse() const
+   {
+      return CapacityEdge(to(), from(), capacity());
    }
 }
