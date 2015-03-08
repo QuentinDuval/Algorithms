@@ -51,6 +51,7 @@ namespace algorithm
 
       double flow() const;
       void addFlow(double f);
+      double remainingCapacity() const;
 
       double capacity() const;
       CapacityEdge reverse() const;

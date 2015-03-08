@@ -79,6 +79,11 @@ namespace algorithm
       m_flow += f;
    }
 
+   double CapacityEdge::remainingCapacity() const
+   {
+      return m_capacity - m_flow;
+   }
+
    double CapacityEdge::capacity() const
    {
       return m_capacity;
@@ -87,7 +92,7 @@ namespace algorithm
    CapacityEdge CapacityEdge::reverse() const
    {
       CapacityEdge reversed(to(), from(), capacity());
-      reversed.m_flow = m_capacity - m_flow;
+      reversed.m_flow = remainingCapacity();
       return reversed;
    }
 
