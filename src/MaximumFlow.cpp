@@ -63,6 +63,8 @@ namespace algorithm
 
                marked[dest] = true;
                parent[dest] = &e;
+               nodeQueue.push_back(dest);
+
                if (dest == m_to)
                   return reconstructPath(parent);
             }
@@ -99,9 +101,15 @@ namespace algorithm
       size_t m_to;
    };
 
-   void computeMaximumFlow(CapacityGraph& graph, size_t from, size_t to)
+
+   double computeMaximumFlow(CapacityGraph& graph, size_t from, size_t to)
    {
       FordFulkerson ff(graph, from, to);
       ff.compute();
+
+      double maxFlow = 0.;
+      for (auto& e : graph.edgesFrom(from))
+         maxFlow += e.flow();
+      return maxFlow;
    }
 }
