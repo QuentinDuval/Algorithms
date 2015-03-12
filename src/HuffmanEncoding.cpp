@@ -43,7 +43,7 @@ namespace algorithm
             out.writeBit(false);
             encodeTree(tree->m_left, out);
             out.writeBit(false);
-            encodeTree(tree->m_left, out);
+            encodeTree(tree->m_right, out);
          }
       }
 
