@@ -58,7 +58,7 @@ namespace algorithm
          {
             CharFreqNodePtr left = decodeTree(input);
             CharFreqNodePtr right = decodeTree(input);
-            return std::make_unique<CharFreqNode>(left, right);
+            return std::make_unique<CharFreqNode>(std::move(left), std::move(right));
          }
       }
    }
@@ -142,7 +142,7 @@ namespace algorithm
       CharFreqNodePtr huffmanTree = buildCodingTree(input);
       CharToCodeMapping mapping = huffmanMapping(huffmanTree);
 
-      encodeTree(*huffmanTree, out);
+      encodeTree(huffmanTree, out);
       for (char c : input)
       {
          for (bool b : mapping[c])
