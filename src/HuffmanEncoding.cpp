@@ -31,15 +31,35 @@ namespace algorithm
       using FrequencyNodes = std::vector < CharFreqNodePtr > ;
       using CharToCodeMapping = std::unordered_map < char, std::vector<bool> > ;
 
-      void encodeTree(CharFreqNode& input, OutBitStream& out)
+      void encodeTree(CharFreqNodePtr& tree, OutBitStream& out)
       {
-         //TODO
+         if ('\0' != tree->m_val)
+         {
+            out.writeBit(true); //Leaf
+            out.writeChar(tree->m_val);
+         }
+         else
+         {
+            out.writeBit(false);
+            encodeTree(tree->m_left, out);
+            out.writeBit(false);
+            encodeTree(tree->m_left, out);
+         }
       }
 
       CharFreqNodePtr decodeTree(InBitStream& input)
       {
-         //TODO
-         return CharFreqNodePtr();
+         bool isLeaf = input.readBit();
+         if (isLeaf)
+         {
+            return std::make_unique<CharFreqNode>(input.readChar(), 1);
+         }
+         else
+         {
+            CharFreqNodePtr left = decodeTree(input);
+            CharFreqNodePtr right = decodeTree(input);
+            return std::make_unique<CharFreqNode>(left, right);
+         }
       }
    }
 
