@@ -101,7 +101,7 @@ namespace algorithm
          CharFreqNodePtr fst = std::move(freqs.back());
          freqs.pop_back();
 
-         std::pop_heap(begin(freqs), end(freqs) - 1, minFreqFirst);
+         std::pop_heap(begin(freqs), end(freqs), minFreqFirst);
          CharFreqNodePtr snd = std::move(freqs.back());
          freqs.pop_back();
 
