@@ -27,9 +27,9 @@ namespace algorithm
          std::unique_ptr<CharFreqNode> m_right;
       };
 
-      using CharFreqNodePtr = std::unique_ptr < CharFreqNode > ;
-      using FrequencyNodes = std::vector < CharFreqNodePtr > ;
-      using CharToCodeMapping = std::unordered_map < char, std::vector<bool> > ;
+      using CharFreqNodePtr = std::unique_ptr < CharFreqNode >;
+      using FrequencyNodes = std::vector < CharFreqNodePtr >;
+      using CharToCodeMapping = std::unordered_map < char, std::vector<bool> >;
 
       void encodeTree(CharFreqNodePtr& tree, OutBitStream& out)
       {
@@ -42,7 +42,6 @@ namespace algorithm
          {
             out.writeBit(false);
             encodeTree(tree->m_left, out);
-            out.writeBit(false);
             encodeTree(tree->m_right, out);
          }
       }
@@ -157,7 +156,7 @@ namespace algorithm
 
    static void decodeOneChar(CharFreqNodePtr& tree, InBitStream& input, OutBitStream& out)
    {
-      if ('\0' == tree->m_val)
+      if ('\0' != tree->m_val)
       {
          out.writeChar(tree->m_val);
       }
