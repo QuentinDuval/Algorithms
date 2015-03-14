@@ -3,37 +3,37 @@
 
 namespace algorithm
 {
-   StringTrie::StringTrie()
+   StringTrieSet::StringTrieSet()
       : m_isValue(false)
       , m_subTries()
    {}
 
-   bool StringTrie::insert(std::string const& s)
+   bool StringTrieSet::insert(std::string const& s)
    {
       if (s.empty()) return false;
       return insert(begin(s), end(s));
    }
 
-   bool StringTrie::remove(std::string const& s)
+   bool StringTrieSet::remove(std::string const& s)
    {
       if (s.empty()) return false;
       return remove(begin(s), end(s));
    }
 
-   bool StringTrie::search(std::string const& s) const
+   bool StringTrieSet::search(std::string const& s) const
    {
       if (s.empty()) return false;
       return search(begin(s), end(s));
    }
 
-   size_t StringTrie::size() const
+   size_t StringTrieSet::size() const
    {
       return m_count;
    }
 
    //--------------------------------------------------------------------------
 
-   bool StringTrie::insert(string_it start, string_it end)
+   bool StringTrieSet::insert(string_it start, string_it end)
    {
       auto next = start + 1;
       if (next == end)
@@ -48,7 +48,7 @@ namespace algorithm
 
       auto& subTrie = m_subTries[*start];
       if (!subTrie)
-         subTrie.reset(new StringTrie);
+         subTrie.reset(new StringTrieSet);
 
       if (!subTrie->insert(next, end))
          return false;
@@ -57,7 +57,7 @@ namespace algorithm
       return true;
    }
 
-   bool StringTrie::remove(string_it start, string_it end)
+   bool StringTrieSet::remove(string_it start, string_it end)
    {
       auto next = start + 1;
       if (next == end)
@@ -85,7 +85,7 @@ namespace algorithm
       return true;
    }
 
-   bool StringTrie::search(string_it start, string_it end) const
+   bool StringTrieSet::search(string_it start, string_it end) const
    {
       auto next = start + 1;
       if (next == end)

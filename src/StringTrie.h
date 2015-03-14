@@ -7,11 +7,11 @@
 
 namespace algorithm
 {
-   class StringTrie
+   class StringTrieSet
    {
    public:
-      StringTrie();
-      ~StringTrie() = default;
+      StringTrieSet();
+      ~StringTrieSet() = default;
 
       bool insert(std::string const&);
       bool remove(std::string const&);
@@ -20,7 +20,7 @@ namespace algorithm
 
    private:
       using string_it = std::string::const_iterator;
-      using subtrie_t = std::unique_ptr<StringTrie>;
+      using subtrie_t = std::unique_ptr<StringTrieSet>;
       using subtrie_map = std::unordered_map<char, subtrie_t>;
 
       bool insert(string_it start, string_it end);
