@@ -34,6 +34,23 @@ namespace algorithm
    }
 
    template<typename T>
+   void StringTrie<T>::longestPrefixOf(KeyIt start, KeyIt end, Key& acc, Key& longest) const
+   {
+      if (start == end)
+         return;
+
+      if (m_value.first)
+         longest = acc;
+
+      auto it = m_subTries.find(*start);
+      if (it != m_subTries.end())
+      {
+         acc += *start;
+         it->second->longestPrefixOf(start + 1, end, acc, longest);
+      }
+   }
+
+   template<typename T>
    bool StringTrie<T>::remove(KeyIt start, KeyIt end)
    {
       if (start == end)

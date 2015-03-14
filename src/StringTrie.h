@@ -46,19 +46,24 @@ namespace algorithm
 
       bool insert(Key const& k, T const& val)
       {
-         if (k.empty()) return false;
          return insert(begin(k), end(k), val);
       }
 
       bool remove(Key const& k)
       {
-         if (k.empty()) return false;
          return remove(begin(k), end(k));
+      }
+
+      Key longestPrefixOf(Key const& k) const
+      {
+         Key acc;
+         Key longest;
+         longestPrefixOf(begin(k), end(k), acc, longest);
+         return longest;
       }
 
       T const* search(Key const& k) const
       {
-         if (k.empty()) return nullptr;
          return search(begin(k), end(k));
       }
       
@@ -73,6 +78,7 @@ namespace algorithm
       using SubTrieMap = std::unordered_map<char, SubTrie>;
 
       bool insert(KeyIt start, KeyIt end, T const&);
+      void longestPrefixOf(KeyIt start, KeyIt end, Key& acc, Key& ret) const;
       bool remove(KeyIt start, KeyIt end);
       T const* search(KeyIt start, KeyIt end) const;
 
