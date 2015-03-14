@@ -32,4 +32,55 @@ namespace algorithm
       bool m_isValue;
       subtrie_map m_subTries;
    };
+
+
+   template<typename T>
+   class StringTrie
+   {
+   public:
+      using Key = std::string;
+
+   public:
+      StringTrie();
+      ~StringTrie() = default;
+
+      bool insert(Key const& k, T const& val)
+      {
+         if (k.empty()) return false;
+         return insert(begin(k), end(k), val);
+      }
+
+      bool remove(Key const& k)
+      {
+         if (k.empty()) return false;
+         return remove(begin(k), end(k));
+      }
+
+      T const* search(Key const& k) const
+      {
+         if (k.empty()) return nullptr;
+         return search(begin(k), end(k));
+      }
+      
+      size_t size() const
+      {
+         return m_count;
+      }
+
+   private:
+      using KeyIt = Key::const_iterator;
+      using SubTrie = std::unique_ptr<StringTrie>;
+      using SubTrieMap = std::unordered_map<char, SubTrie>;
+
+      bool insert(KeyIt start, KeyIt end, T const&);
+      bool remove(KeyIt start, KeyIt end);
+      T const* search(KeyIt start, KeyIt end) const;
+
+   private:
+      size_t m_count;
+      std::pair<bool, T> m_value;
+      SubTrieMap m_subTries;
+   };
 }
+
+#include "StringTrie.inl.h"
