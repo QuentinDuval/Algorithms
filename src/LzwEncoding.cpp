@@ -21,7 +21,7 @@ namespace algorithm
    // ENCODING
    //-----------------------------------------------------------------------------
 
-   unsigned int fillAlphabet(StringTrie<unsigned int>& codewords)
+   static unsigned int fillAlphabet(StringTrie<unsigned int>& codewords)
    {
       unsigned int nextCodeword = 1;
       for (char c = CHAR_MIN; c <= CHAR_MAX; ++c)
@@ -54,7 +54,7 @@ namespace algorithm
    // DECODING
    //-----------------------------------------------------------------------------
 
-   unsigned int fillAlphabet(std::vector<std::string>& fromCodewords)
+   static void fillAlphabet(std::vector<std::string>& fromCodewords)
    {
       for (char c = CHAR_MIN; c <= CHAR_MAX; ++c)
          fromCodewords.push_back(std::string(1, c));
