@@ -16,14 +16,19 @@ namespace algorithm
       m_bits.push_back(b);
    }
 
-   void BitStream::writeChar(unsigned char c)
+   void BitStream::writeInt(unsigned int val, size_t width)
    {
-      unsigned char mask = 0x80;
-      for (size_t i = 0; i < 8; ++i)
+      unsigned char mask = 1 << (width - 1);
+      for (size_t i = 0; i < width; ++i)
       {
-         writeBit(c & mask ? true : false);
+         writeBit(val & mask ? true : false);
          mask = mask >> 1;
       }
+   }
+
+   void BitStream::writeChar(unsigned char c)
+   {
+      writeInt(c, 8);
    }
 
    void BitStream::writeBits(std::vector<bool> const& bits)
@@ -44,9 +49,14 @@ namespace algorithm
 
    unsigned char BitStream::readChar()
    {
-      assert(8 <= toRead());
-      unsigned char val = 0;
-      for (size_t i = 0; i < 8; ++i)
+      return static_cast<unsigned char>(readInt(8));
+   }
+
+   unsigned int BitStream::readInt(size_t width)
+   {
+      assert(width <= toRead());
+      unsigned int val = 0;
+      for (size_t i = 0; i < width; ++i)
       {
          val = val << 1;
          val |= (readBit() ? 1 : 0);

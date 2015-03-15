@@ -3,6 +3,7 @@
 #include <exception>
 #include <vector>
 
+
 namespace algorithm
 {
    class InBitStream
@@ -12,6 +13,7 @@ namespace algorithm
       virtual size_t        toRead() = 0;
       virtual bool          readBit() = 0;
       virtual unsigned char readChar() = 0;
+      virtual unsigned int  readInt(size_t width) = 0;
    };
 
 
@@ -21,6 +23,7 @@ namespace algorithm
       virtual ~OutBitStream() = default;
       virtual void writeBit(bool) = 0;
       virtual void writeChar(unsigned char) = 0;
+      virtual void writeInt(unsigned int, size_t width) = 0;
       virtual void writeBits(std::vector<bool> const&) = 0;
    };
 
@@ -35,11 +38,13 @@ namespace algorithm
 
       void writeBit(bool) override;
       void writeChar(unsigned char) override;
+      void writeInt(unsigned int, size_t width) override;
       void writeBits(std::vector<bool> const&) override;
 
       size_t        toRead() override;
       bool          readBit() override;
       unsigned char readChar() override;
+      unsigned int  readInt(size_t width) override;
 
    private:
       size_t m_readPtr;
