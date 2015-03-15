@@ -78,15 +78,6 @@ namespace algorithm
       return freqNodes;
    }
 
-   static std::string readFullStream(InBitStream& inStream)
-   {
-      std::string fullInput;
-      fullInput.reserve(inStream.toRead() / 8);
-      while (8 <= inStream.toRead())
-         fullInput += inStream.readChar();
-      return fullInput;
-   }
-
    static CharFreqNodePtr buildCodingTree(std::string const& input)
    {
       FrequencyNodes freqs = countFrequencies(input);
@@ -137,7 +128,7 @@ namespace algorithm
 
    void HuffmanEncoding::encode(InBitStream& inStream, OutBitStream& out)
    {
-      std::string input = readFullStream(inStream);
+      std::string input = readString(inStream);
       CharFreqNodePtr huffmanTree = buildCodingTree(input);
       CharToCodeMapping mapping = huffmanMapping(huffmanTree);
 

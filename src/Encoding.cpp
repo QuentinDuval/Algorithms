@@ -12,12 +12,8 @@ namespace algorithm
 
    std::string decodeWith(Encoding& encoding, InBitStream& input)
    {
-      BitStream encoderOut;
-      encoding.decode(input, encoderOut);
-
-      std::string out;
-      while (8 <= encoderOut.toRead())
-         out += encoderOut.readChar();
-      return out;
+      BitStream output;
+      encoding.decode(input, output);
+      return readString(output);
    }
 }

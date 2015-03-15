@@ -50,4 +50,6 @@ namespace algorithm
       size_t m_readPtr;
       std::vector<bool> m_bits;
    };
+
+   std::string readString(InBitStream& inStream);
 }

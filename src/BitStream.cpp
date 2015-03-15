@@ -63,4 +63,15 @@ namespace algorithm
       }
       return val;
    }
+
+   //--------------------------------------------------------------------------
+
+   std::string readString(InBitStream& inStream)
+   {
+      std::string fullInput;
+      fullInput.reserve(inStream.toRead() / 8);
+      while (8 <= inStream.toRead())
+         fullInput += inStream.readChar();
+      return fullInput;
+   }
 }
