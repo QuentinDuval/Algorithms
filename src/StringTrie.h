@@ -39,6 +39,7 @@ namespace algorithm
    {
    public:
       using Key = std::string;
+      using KeyIt = Key::const_iterator;
 
    public:
       StringTrie();
@@ -56,9 +57,13 @@ namespace algorithm
 
       Key longestPrefixOf(Key const& k) const
       {
-         Key acc;
-         Key longest;
-         longestPrefixOf(begin(k), end(k), acc, longest);
+         return longestPrefixOf(begin(k), end(k));
+      }
+
+      Key longestPrefixOf(KeyIt start, KeyIt end) const
+      {
+         Key acc, longest;
+         longestPrefixOf(start, end, acc, longest);
          return longest;
       }
 
@@ -73,7 +78,6 @@ namespace algorithm
       }
 
    private:
-      using KeyIt = Key::const_iterator;
       using SubTrie = std::unique_ptr<StringTrie>;
       using SubTrieMap = std::unordered_map<char, SubTrie>;
 
