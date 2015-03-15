@@ -23,7 +23,7 @@ namespace algorithm
 
    unsigned int fillAlphabet(StringTrie<unsigned int>& codewords)
    {
-      unsigned int nextCodeword = 0;
+      unsigned int nextCodeword = 1;
       for (char c = CHAR_MIN; c <= CHAR_MAX; ++c)
          codewords.insert(std::string(1, c), nextCodeword++);
       return nextCodeword;
@@ -46,6 +46,7 @@ namespace algorithm
             codewords.insert(current, next + 1, nextCodeword++);
          current = next;
       }
+      out.writeInt(END_OF_FILE, m_codewordSize);
    }
 
 
@@ -53,8 +54,34 @@ namespace algorithm
    // DECODING
    //-----------------------------------------------------------------------------
 
+   unsigned int fillAlphabet(std::vector<std::string>& fromCodewords)
+   {
+      for (char c = CHAR_MIN; c <= CHAR_MAX; ++c)
+         fromCodewords.push_back(std::string(1, c));
+   }
+
    void LzwEncoding::decode(InBitStream& input, OutBitStream& out)
    {
-      //TODO
+      if (input.toRead() < m_codewordSize)
+         return;
+
+      std::vector<std::string> fromCodewords(1, "");
+      fillAlphabet(fromCodewords);
+
+      unsigned int codeword = input.readInt(m_codewordSize);
+      while (END_OF_FILE != codeword)
+      {
+         auto const& chars = fromCodewords[codeword];
+         for (char c : chars)
+            out.writeChar(c);
+
+         codeword = input.readInt(m_codewordSize);
+         if (fromCodewords.size() < m_maxCodeWord)
+         {
+            auto const& nextChars = fromCodewords[codeword];
+            if (!nextChars.empty())
+               fromCodewords.push_back(chars + nextChars.at(0));
+         }
+      }
    }
 }

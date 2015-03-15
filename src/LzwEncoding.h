@@ -17,5 +17,8 @@ namespace algorithm
    private:
       size_t m_codewordSize;
       unsigned int m_maxCodeWord;
+
+   private:
+      static const unsigned int END_OF_FILE = 0;
    };
 }
