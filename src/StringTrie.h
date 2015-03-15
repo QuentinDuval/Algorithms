@@ -50,6 +50,8 @@ namespace algorithm
          return insert(begin(k), end(k), val);
       }
 
+      bool insert(KeyIt start, KeyIt end, T const&);
+
       bool remove(Key const& k)
       {
          return remove(begin(k), end(k));
@@ -81,7 +83,6 @@ namespace algorithm
       using SubTrie = std::unique_ptr<StringTrie>;
       using SubTrieMap = std::unordered_map<char, SubTrie>;
 
-      bool insert(KeyIt start, KeyIt end, T const&);
       void longestPrefixOf(KeyIt start, KeyIt end, Key& acc, Key& ret) const;
       bool remove(KeyIt start, KeyIt end);
       T const* search(KeyIt start, KeyIt end) const;
