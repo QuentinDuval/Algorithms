@@ -78,9 +78,16 @@ namespace algorithm
          codeword = input.readInt(m_codewordSize);
          if (fromCodewords.size() < m_maxCodeWord)
          {
-            auto const& nextChars = fromCodewords[codeword];
-            if (!nextChars.empty())
-               fromCodewords.push_back(chars + nextChars.at(0));
+            if (fromCodewords.size() <= codeword)
+            {
+               fromCodewords.push_back(chars + chars.at(0));
+            }
+            else
+            {
+               auto const& nextChars = fromCodewords[codeword];
+               if (!nextChars.empty())
+                  fromCodewords.push_back(chars + nextChars.at(0));
+            }
          }
       }
    }
