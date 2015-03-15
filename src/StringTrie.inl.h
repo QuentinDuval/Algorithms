@@ -36,11 +36,11 @@ namespace algorithm
    template<typename T>
    void StringTrie<T>::longestPrefixOf(KeyIt start, KeyIt end, Key& acc, Key& longest) const
    {
-      if (start == end)
-         return;
-
       if (m_value.first)
          longest = acc;
+
+      if (start == end)
+         return;
 
       auto it = m_subTries.find(*start);
       if (it != m_subTries.end())
