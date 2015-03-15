@@ -18,7 +18,7 @@ namespace algorithm
 
    void BitStream::writeInt(unsigned int val, size_t width)
    {
-      unsigned char mask = 1 << (width - 1);
+      unsigned int mask = 1 << (width - 1);
       for (size_t i = 0; i < width; ++i)
       {
          writeBit(val & mask ? true : false);
