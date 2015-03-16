@@ -64,9 +64,9 @@ namespace algorithm
 
       Key longestPrefixOf(KeyIt start, KeyIt end) const
       {
-         Key acc, longest;
-         longestPrefixOf(start, end, acc, longest);
-         return longest;
+         size_t longestMatch = 0;
+         longestPrefixOf(start, end, 0, longestMatch);
+         return Key(start, start + longestMatch);
       }
 
       T const* search(Key const& k) const
@@ -83,7 +83,7 @@ namespace algorithm
       using SubTrie = std::unique_ptr<StringTrie>;
       using SubTrieMap = std::unordered_map<char, SubTrie>;
 
-      void longestPrefixOf(KeyIt start, KeyIt end, Key& acc, Key& ret) const;
+      void longestPrefixOf(KeyIt start, KeyIt end, size_t depth, size_t& longestMatch) const;
       bool remove(KeyIt start, KeyIt end);
       T const* search(KeyIt start, KeyIt end) const;
 
