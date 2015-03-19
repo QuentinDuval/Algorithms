@@ -29,7 +29,7 @@ namespace algorithm
       {
          GenericDiGraph<Edge> reversed = makeReversed(g);
          DFS<Edge> dfs(reversed);
-         dfsInOrder(dfs, TopologicalSort(g).order());
+         dfsInOrder(dfs, TopologicalSort(g).order()); //It is not really a topological sort but a reversed post order
       }
 
       size_t componentCount() const
